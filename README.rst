@@ -49,15 +49,15 @@ Compare existing add-ons.
 |                                      | Dexterity content types can behave    |                                       |                                       |
 |                                      | like a collective.task_ task. E.g.    |                                       |                                       |
 |                                      | "project", "client", "iteration".     |                                       |                                       |
-|                                      | The "task" content                    |                                       |                                       |
+|                                      | "Task" content                        |                                       |                                       |
 |                                      | type included with                    |                                       |                                       |
 |                                      | `collective.project`_ cannot be used  |                                       |                                       |
-|                                      | when collective.task_ has been        |                                       |                                       |
-|                                      | installed first, due to conflicting   |                                       |                                       |
+|                                      | with collective.task_                 |                                       |                                       |
+|                                      | due to conflicting                    |                                       |                                       |
 |                                      | "task" types.                         |                                       |                                       |
-|                                      | Curiously, no obvious warning or error|                                       |                                       |
-|                                      | occurs on                             |                                       |                                       |
-|                                      | installation of collective.project_.  |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       | It exists.                            | Supports "placeful" tasking.          |
