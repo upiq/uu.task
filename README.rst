@@ -35,31 +35,29 @@ Compare existing add-ons.
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
-| collective.project_                  | Project management add-on whose       |                                       |                                       |
-|                                      | Dexterity content types can behave    | N/A                                   | N/A                                   |
+| collective.project_                  | Project management add-on whose       | N/A                                   | N/A                                   |
+|                                      | Dexterity content types can behave    |                                       |                                       |
 |                                      | like a collective.task_ task. E.g.    |                                       |                                       |
 |                                      | "project", "client", "iteration".     |                                       |                                       |
-|                                      |                                       |                                       |                                       |
 |                                      | The "task" content                    |                                       |                                       |
 |                                      | type included with                    |                                       |                                       |
 |                                      | `collective.project`_ cannot be used  |                                       |                                       |
 |                                      | when collective.task_ has been        |                                       |                                       |
 |                                      | installed first, due to conflicting   |                                       |                                       |
 |                                      | "task" types.                         |                                       |                                       |
-|                                      |                                       |                                       |                                       |
 |                                      | Curiously, no obvious warning or error|                                       |                                       |
 |                                      | occurs on                             |                                       |                                       |
-|                                      | installation of collective.project_   |                                       |                                       |
+|                                      | installation of collective.project_.  |                                       |                                       |
 |                                      |                                       |                                       |                                       |
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
-|                                      |                                       | It exists!                            | Supports "placeful" tasking.          |
+|                                      |                                       | It exists.                            | Supports "placeful" tasking.          |
 |                                      |                                       |                                       |                                       |
 | collective.task_                     | Supports "placeful" tasking. A task is+---------------------------------------+---------------------------------------+
 |                                      | a folder that can contain other       | Allows assignment of task to group,   | No date widget.                       |
 |                                      | (presumably dependent) tasks.         | user and "enquirer".                  |                                       |
 |                                      |                                       +---------------------------------------+---------------------------------------+
-|                                      |                                       |                                       |                                       |
-|                                      |                                       |                                       |                                       |
+|                                      |                                       | Includes "task" behavior which can    |                                       |
+|                                      |                                       | be used by other Dexterity content.   |                                       |
 |                                      |                                       +---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
