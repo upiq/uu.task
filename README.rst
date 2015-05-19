@@ -35,6 +35,16 @@ Compare existing add-ons.
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
+| Products.Poi_                        | Venerable AT-based issue tracker.     | N/A                                   | N/A                                   |
+|                                      | Includes workflow for issue tracker   |                                       |                                       |
+|                                      | and task.                             |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
++--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
 | collective.project_                  | Project management add-on whose       | N/A                                   | N/A                                   |
 |                                      | Dexterity content types can behave    |                                       |                                       |
 |                                      | like a collective.task_ task. E.g.    |                                       |                                       |
@@ -75,5 +85,6 @@ Compare existing add-ons.
 |                                      |                                       |                                       |                                       |
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 
+.. _`Products.Poi`: https://github.com/collective/Products.Poi
 .. _`collective.project`: https://github.com/collective/collective.project
 .. _`collective.task`: https://github.com/collective/collective.task
