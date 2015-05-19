@@ -33,6 +33,25 @@ Compare existing add-ons.
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
+|                                      |                                       |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+| collective.project_                  | Project management add-on whose       |                                       |                                       |
+|                                      | Dexterity content types can behave    | N/A                                   | N/A                                   |
+|                                      | like a collective.task_ task. E.g.    |                                       |                                       |
+|                                      | "project", "client", "iteration".     |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      | The "task" content                    |                                       |                                       |
+|                                      | type included with                    |                                       |                                       |
+|                                      | `collective.project`_ cannot be used  |                                       |                                       |
+|                                      | when collective.task_ has been        |                                       |                                       |
+|                                      | installed first, due to conflicting   |                                       |                                       |
+|                                      | "task" types.                         |                                       |                                       |
+|                                      |                                       |                                       |                                       |
+|                                      | Curiously, no obvious warning or error|                                       |                                       |
+|                                      | occurs on                             |                                       |                                       |
+|                                      | installation of collective.project_   |                                       |                                       |
+|                                      |                                       |                                       |                                       |
++--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       | It exists!                            | Supports "placeful" tasking.          |
 |                                      |                                       |                                       |                                       |
 | collective.task_                     | Supports "placeful" tasking. A task is+---------------------------------------+---------------------------------------+
@@ -51,11 +70,6 @@ Compare existing add-ons.
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
-|                                      |                                       |                                       |                                       |
-|                                      |                                       |                                       |                                       |
-|                                      |                                       |                                       |                                       |
-|                                      |                                       |                                       |                                       |
-|                                      |                                       |                                       |                                       |
-+--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 
+.. _`collective.project`: https://github.com/collective/collective.project
 .. _`collective.task`: https://github.com/collective/collective.task
