@@ -36,8 +36,8 @@ Compare existing add-ons.
 |                                      |                                       | It exists!                            | Supports "placeful" tasking.          |
 |                                      |                                       |                                       |                                       |
 | collective.task_                     | Supports "placeful" tasking. A task is+---------------------------------------+---------------------------------------+
-|                                      | a folder that can contain other       | Allows assignment of group, user,     | No date widget.                       |
-|                                      | (presumably dependent) tasks.         | and "enquirer".                       |                                       |
+|                                      | a folder that can contain other       | Allows assignment of task to group,   | No date widget.                       |
+|                                      | (presumably dependent) tasks.         | user and "enquirer".                  |                                       |
 |                                      |                                       +---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
