@@ -17,7 +17,7 @@ setup(
     long_description=open('README.rst').read() + '\n' + open('CHANGES.rst').read(),
     name='uu.task',
     namespace_packages=[
-        '_uu',  # Avoid namespace clash with stdlib
+        'uu_',  # Avoid namespace clash with stdlib
     ],
     packages=find_packages(),
     version=VERSION,
