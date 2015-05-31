@@ -28,10 +28,10 @@ Content Types
 
 .. image:: screenshot1.png
 
-Comparison
-----------
+Similar Add-ons
+---------------
 
-Compare existing add-ons.
+``uu.task`` is inspired by (and in some cases built on top of) other similar add-ons. Here is a brief comparison of each.
 
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
