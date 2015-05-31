@@ -1,5 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope" xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
     <genericsetup:registerProfile directory="profiles/default" name="default"
+        description="Task Management and Notification System For Plone."
+        title="uu.task"
         provides="Products.GenericSetup.interfaces.EXTENSION" />
 </configure>
