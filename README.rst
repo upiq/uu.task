@@ -31,7 +31,7 @@ Content Types
 Similar Add-ons
 ---------------
 
-``uu.task`` is inspired by (and in some cases built on top of) other similar add-ons. Here is a brief comparison of each.
+``uu.task`` is inspired by (and in some cases built on top of) other similar add-ons. Here is a list and brief comparison of each.
 
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
