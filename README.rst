@@ -21,6 +21,13 @@ Contributors
 * `Sean Upton <https://github.com/seanupton>` (UPIQ, University of Utah Health Sciences)
 * `Alex Clark <http://aclark.net/>` (ACLARK.NET, LLC)
 
+Content Types
+-------------
+
+``uu.task`` contains a task content type called "UU Task" that is configured by default to behave like a ``collective.task`` task.
+
+.. image:: screenshot1.png
+
 Comparison
 ----------
 

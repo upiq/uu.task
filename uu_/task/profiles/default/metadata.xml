@@ -1,3 +1,7 @@
 <metadata>
   <version>1</version>
+  <dependencies>
+    <dependency>profile-collective.task:default</dependency>
+    <dependency>profile-plone.app.dexterity:default</dependency>
+  </dependencies>
 </metadata>
