@@ -1,0 +1,9 @@
+include *.png
+include *.py
+include *.rst
+include buildout.cfg
+recursive-include doc *.png
+recursive-include doc *.rst
+recursive-include doc *.txt
+recursive-include uu_ *.xml
+recursive-include uu_ *.zcml
