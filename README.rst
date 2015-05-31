@@ -66,11 +66,11 @@ Compare existing add-ons.
 |                                      | a folder that can contain other       | Allows assignment of task to group,   | No date widget.                       |
 |                                      | (presumably dependent) tasks.         | user and "enquirer".                  |                                       |
 |                                      |                                       +---------------------------------------+---------------------------------------+
-|                                      |                                       | Includes "task" behavior which can    |                                       |
-|                                      |                                       | be used by other Dexterity content.   |                                       |
+|                                      |                                       | Includes "task" behavior which can    | Possibly no support for assignment of |
+|                                      |                                       | be used by other Dexterity content.   | `more than one principal`_.           |
 |                                      |                                       +---------------------------------------+---------------------------------------+
-|                                      |                                       | Can possibly be used as a framework   |                                       |
-|                                      |                                       | for other task-related add-ons.       |                                       |
+|                                      |                                       | Can be used as a task framework       |                                       |
+|                                      |                                       | by other add-ons.                     |                                       |
 |                                      |                                       +---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
 |                                      |                                       |                                       |                                       |
@@ -88,3 +88,4 @@ Compare existing add-ons.
 .. _`Products.Poi`: https://github.com/collective/Products.Poi
 .. _`collective.project`: https://github.com/collective/collective.project
 .. _`collective.task`: https://github.com/collective/collective.task
+.. _`more than one principal`: https://github.com/upiq/uu.task/issues/3
