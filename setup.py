@@ -24,10 +24,10 @@ setup(
     long_description=open('README.rst').read() + '\n' + open('CHANGES.rst').read(),
     name='uu.task',
     namespace_packages=[
-        'uu_',  # Avoid namespace clash with stdlib
+        'uu',
     ],
     packages=find_packages(),
-    test_suite='uu_.task.tests.UUTaskTestSuite',
+    test_suite='uu.task.tests.UUTaskTestSuite',
     url='https://github.com/upiq/uu.task',
     version=VERSION,
     zip_safe=False,
