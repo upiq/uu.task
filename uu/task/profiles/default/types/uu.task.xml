@@ -7,7 +7,7 @@
         <element value="collective.task.behaviors.ITaskContainer" />
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
-    <property name="description">Assignable Task With Due Date</property>
+    <property name="description">Assignable Task With Due Date; Contains Dependent Tasks</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="schema">uu.task.content.IUUTask</property>
     <property name="title">UU Task</property>
