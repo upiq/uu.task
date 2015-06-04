@@ -24,9 +24,14 @@ Contributors
 Content Types
 -------------
 
-``uu.task`` contains a task content type called "UU Task" that is configured by default to behave like a ``collective.task`` task.
+The ``uu.task`` add-on contains a "UU Task" content type that behaves like a `collective.task`_ task. A `collective.task`_ task behaves like an item and container.
+
+Add UU Task
+~~~~~~~~~~~
 
 .. image:: screenshot1.png
+
+.. image:: screenshot2.png
 
 Similar Add-ons
 ---------------
