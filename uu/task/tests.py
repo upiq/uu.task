@@ -4,7 +4,13 @@ class UUTaskTestSuite(TestSuite):
     """
     """
 
+    def test_uu_task_container():
+        """
+        Verify UUTask is a Container
+        """
+
     def test_uu_task_interface():
         """
-        Test for existence and basic functionality of IUUTask
+        Verify IUUTask interface exists
         """
+
