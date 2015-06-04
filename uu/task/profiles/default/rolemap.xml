@@ -3,7 +3,20 @@
     <role name="Project manager"/>
     <role name="Assigned party"/>
   </roles>
-  <permissions>
-    <!-- Annoying that an empty permissions element has to be here to avoid traceback. Role mapper should assume no permissions element means no permissions if possible. -->
+  <permissions><!-- Annoying that an empty permissions element has to be here to avoid traceback. Plone Role mapper should assume no permissions element means no permissions if possible. -->
+    <permission name="UUTask: Add Task" acquire="True">
+      <role name="Project manager"/>
+    </permission>
+    <permission name="UUTask: Change Task Status" acquire="True">
+      <role name="Assigned party"/>
+      <role name="Project manager"/>
+    </permission>
+    <permission name="UUTask: Edit Task" acquire="True">
+      <role name="Assigned party"/>
+      <role name="Project manager"/>
+    </permission>
+    <permission name="UUTask: Remove Task" acquire="True">
+      <role name="Project manager"/>
+    </permission>
   </permissions>
 </rolemap>
