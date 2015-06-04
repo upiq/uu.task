@@ -1,13 +1,13 @@
 <object name="uu.task">
-    <property name="schema">uu.task.content.IUUTask</property>
-    <property name="description">Assignable Task With Due Date</property>
-    <property name="title">UU Task</property>
+    <property name="allowed_content_types">
+        <element value="uu.task"/>
+    </property>
     <property name="behaviors">
         <element value="collective.task.behaviors.ITask" />
         <element value="collective.task.behaviors.ITaskContainer" />
     </property>
-    <property name="allowed_content_types">
-        <element value="uu.task"/>
-    </property>
+    <property name="description">Assignable Task With Due Date</property>
     <property name="klass">plone.dexterity.content.Container</property>
+    <property name="schema">uu.task.content.IUUTask</property>
+    <property name="title">UU Task</property>
 </object>
