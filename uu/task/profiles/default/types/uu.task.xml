@@ -1,5 +1,5 @@
 <object name="uu.task">
-    <property name="schema">uu.task.content.ITask</property>
+    <property name="schema">uu.task.content.IUUTask</property>
     <property name="description">Assignable Task With Due Date</property>
     <property name="title">UU Task</property>
     <property name="behaviors">

@@ -2,7 +2,7 @@ from plone.directives import form
 from zope import schema
 
 
-class ITask(form.Schema):
+class IUUTask(form.Schema):
     """
     Assignable Task With Due Date
     """
