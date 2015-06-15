@@ -1,0 +1,11 @@
+<object name="uu.taskplanner">
+    <property name="allowed_content_types">
+        <element value="uu.task"/>
+    </property>
+    <property name="behaviors">
+        <element value="plone.app.content.interfaces.INameFromTitle"/>
+    </property>
+    <property name="description">Task Container; Shared Configuration For Contained Tasks</property>
+    <property name="schema">uu.task.content.IUUTaskPlanner</property>
+    <property name="title">UU Task Planner</property>
+</object>
