@@ -1,11 +1,16 @@
 <configure xmlns="http://namespaces.zope.org/zope" xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+
+    <browser:resourceDirectory name="uu.task" directory="static" />
+
     <genericsetup:registerProfile directory="profiles/default" name="default"
         description="Task Management and Notification System For Plone."
         title="uu.task"
         provides="Products.GenericSetup.interfaces.EXTENSION" />
+
     <permission id="uu.task.add" title="UUTask: Add Task" />
     <permission id="uu.task.change" title="UUTask: Change Task Status" />
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
+
 </configure>
