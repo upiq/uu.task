@@ -18,6 +18,7 @@ setup(
     license='Original works in this package are licensed under the GNU General Public License v. 2.0. All original images, documentation, style-sheets, and JavaScript assets are additionally licensed under an MIT-style license.',
     include_package_data=True,
     install_requires=[
+        'collective.z3cform.datagridfield',
         'setuptools',
     ],
     long_description=open('README.rst').read() + '\n' + open('CHANGES.rst').read(),
