@@ -24,7 +24,7 @@ Contributors
 Content Types
 -------------
 
-The ``uu.task`` add-on contains a "UU Task" content type that behaves like a `collective.task`_ task. A `collective.task`_ task behaves like both an item and container. This approach addresses a common UI issue: folder-ish content types containing content items are not universally understood & potentially confusing.
+The ``uu.task`` add-on contains "UU Task" and "UU Task Planner" content types.
 
 Add UU Task
 ~~~~~~~~~~~
