@@ -3,8 +3,6 @@
         <element value="uu.task"/>
     </property>
     <property name="behaviors">
-        <element value="collective.task.behaviors.ITask" />
-        <element value="collective.task.behaviors.ITaskContainer" />
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
     <property name="description">Assignable Task With Due Date; Contains Dependent Tasks</property>
