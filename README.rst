@@ -31,8 +31,6 @@ Add UU Task
 
 .. image:: screenshot1.png
 
-.. image:: screenshot2.png
-
 Similar Add-ons
 ---------------
 
