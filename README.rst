@@ -36,7 +36,7 @@ Add UU Task
 Similar Add-ons
 ---------------
 
-``uu.task`` is inspired by (and in some cases built on top of) other similar add-ons. Here is a list and brief comparison of each.
+``uu.task`` is inspired by similar add-ons. Here is a list and comparison of each.
 
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
