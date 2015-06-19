@@ -5,9 +5,9 @@
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
-    <property name="description">Assignable Task With Due Date; Contains Dependent Tasks</property>
+    <property name="description">Assignable Task With Due Date; May Contain Dependent Tasks</property>
     <property name="klass">plone.dexterity.content.Container</property>
-    <property name="schema">uu.task.content.IUUTask</property>
+    <property name="schema">uu.task.content.UUTask</property>
     <property name="title">UU Task</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/task.png</property>
 </object>
