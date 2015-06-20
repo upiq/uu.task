@@ -10,15 +10,6 @@ class IUUAssignedTask(model.Schema):
     due_on = schema.Datetime(title=u"Due Date")
 
 
-class IUUNotificationRules(model.Schema):
-    """Computed Due Date Rules"""
-
-    notify_for = schema.Float()
-#    units = Choice()
-#    notify_rel = Choice()
-#    source = Choice()
-
-
 class IUUTaskRules(model.Schema):
     """Computed Due Date Rules"""
 
@@ -35,5 +26,4 @@ class IUUTaskRules(model.Schema):
 
 
 alsoProvides(IUUAssignedTask, IFormFieldProvider)
-alsoProvides(IUUNotificationRules, IFormFieldProvider)
 alsoProvides(IUUTaskRules, IFormFieldProvider)
