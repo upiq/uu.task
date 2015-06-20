@@ -24,14 +24,19 @@ Contributors
 Content Types
 -------------
 
-``uu.task`` adds two new types to your site: ``UU Task`` & ``UU Task Planner``.
+``uu.task`` adds content types:
+
+    - UU Task
+    - UU Task Planner
 
 .. image:: screenshot1.png
 
 Behaviors
 ---------
 
-``uu.task`` adds one new behavior to your site: ``UU Assigned Task``.
+``uu.task`` adds a behavior:
+
+    - UU Assigned Task
 
 
 Similar Add-ons
