@@ -14,7 +14,7 @@
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
 
-    <plone:behavior description="Adds due date field" title="Assigned Task"
+    <plone:behavior description="Adds due date field (behavior provided by UU Task add-on)" title="Assigned Task" 
         provides=".behaviors.IAssignedTask" />
 
 </configure>
