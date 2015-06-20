@@ -26,8 +26,8 @@ Content Types
 
 ``uu.task`` adds content types:
 
-    - UU Task
-    - UU Task Planner
+- UU Task
+- UU Task Planner
 
 .. image:: screenshot1.png
 
@@ -36,8 +36,7 @@ Behaviors
 
 ``uu.task`` adds a behavior:
 
-    - UU Assigned Task
-
+- UU Assigned Task
 
 Similar Add-ons
 ---------------
