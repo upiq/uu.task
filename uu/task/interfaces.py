@@ -2,6 +2,15 @@ from zope import schema
 from zope.interface import Interface
 
 
+class IAssignedParties(Interface):
+    """Assigned party -- principal(s) who have been assigned a task. Often a
+        user who has ability, permission, and expectation to view a monthly
+        form, enter data (custom view), and submit the form.
+    """
+
+    principals = schema.List(value_type=schema.Choice([]))
+
+
 class ITask(Interface):
     """Explicit marker interface for UU Task
     """
