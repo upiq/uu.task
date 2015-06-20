@@ -9,10 +9,31 @@
         title="uu.task"
         provides="Products.GenericSetup.interfaces.EXTENSION" />
 
+    <!-- UU Task -->
+
     <permission id="uu.task.add" title="UUTask: Add Task" />
     <permission id="uu.task.change" title="UUTask: Change Task Status" />
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
+
+    <browser:page class=".content.TaskAddForm" for=".interfaces.ITask"
+        name="add" permission="uu.task.add" template="templates/task_add.pt" />
+    <browser:page class=".content.TaskEditForm" for=".interfaces.ITask"
+        name="edit" permission="uu.task.edit" template="templates/task_edit.pt" />
+
+    <!-- UU Task Planner -->
+
+    <permission id="uu.taskplanner.add" title="UUTask: Add Task" />
+    <permission id="uu.taskplanner.change" title="UUTask: Change Task Status" />
+    <permission id="uu.taskplanner.edit" title="UUTask: Edit Task" />
+    <permission id="uu.taskplanner.remove" title="UUTask: Remove Task" />
+
+    <browser:page class=".content.TaskPlannerAddForm" for=".interfaces.ITaskPlanner"
+        name="add" permission="uu.taskplanner.add" template="templates/taskplanner_add.pt" />
+    <browser:page class=".content.TaskPlannerEditForm" for=".interfaces.ITaskPlanner"
+        name="edit" permission="uu.taskplanner.edit" template="templates/taskplanner_edit.pt" />
+
+    <!-- Assigned Task -->
 
     <plone:behavior description="Adds due date field (behavior provided by UU Task add-on)" title="Assigned Task" 
         provides=".behaviors.IAssignedTask" />
