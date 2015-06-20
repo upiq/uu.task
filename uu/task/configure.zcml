@@ -14,7 +14,7 @@
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
 
-    <plone:behavior title="UU Assigned Task" provides=".behaviors.IUUAssignedTask" />
-    <plone:behavior title="UU Task Rules" provides=".behaviors.IUUTaskRules" />
+    <plone:behavior title="UU Assigned Task" provides=".behaviors.IAssignedTask" />
+    <plone:behavior title="UU Task Rules" provides=".behaviors.ITaskRules" />
 
 </configure>

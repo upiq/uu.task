@@ -4,13 +4,13 @@ from zope import schema
 from zope.interface import alsoProvides
 
 
-class IUUAssignedTask(model.Schema):
+class IAssignedTask(model.Schema):
     """Due Date"""
 
     due_on = schema.Datetime(title=u"Due Date")
 
 
-class IUUTaskRules(model.Schema):
+class ITaskRules(model.Schema):
     """Computed Due Date Rules"""
 
     due_in = schema.Int()
@@ -25,5 +25,5 @@ class IUUTaskRules(model.Schema):
 #    timezone = schema.Choice()
 
 
-alsoProvides(IUUAssignedTask, IFormFieldProvider)
-alsoProvides(IUUTaskRules, IFormFieldProvider)
+alsoProvides(IAssignedTask, IFormFieldProvider)
+alsoProvides(ITaskRules, IFormFieldProvider)

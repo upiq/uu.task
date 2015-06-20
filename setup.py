@@ -27,7 +27,7 @@ setup(
         'uu',
     ],
     packages=find_packages(),
-    test_suite='uu.task.tests.UUTaskTestSuite',
+    test_suite='uu.task.tests.UUTaskTests',
     url='https://github.com/upiq/uu.task',
     version=VERSION,
     zip_safe=False,
