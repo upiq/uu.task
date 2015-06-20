@@ -1,5 +1,11 @@
 from zope.interface import Interface
 
 
+class ITask(Interface):
+    """Explicit marker interface for UU Task
+    """
+
+
 class ITaskPlanner(Interface):
-    """Marker interface for UU Task Planner"""
+    """Explicit marker interface for UU Task Planner
+    """
