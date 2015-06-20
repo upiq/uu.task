@@ -15,6 +15,5 @@
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
 
     <plone:behavior title="UU Assigned Task" provides=".behaviors.IAssignedTask" />
-    <plone:behavior title="UU Task Rules" provides=".behaviors.ITaskRules" />
 
 </configure>
