@@ -1,14 +1,16 @@
+from .interfaces import ITask
+from .interfaces import ITaskPlanner
 from plone.supermodel import model
-from zope import schema
+from zope.interface import implementer
 
 
+@implementer(ITask)
 class Task(model.Schema):
-    """Assignable task with due date; may contain dependent tasks"""
+    """Convenience subclass for ``UU Task`` portal type
+    """
 
-    title = schema.TextLine(title=u"Name")
 
-
+@implementer(ITaskPlanner)
 class TaskPlanner(model.Schema):
-    """Task container; shared configuration for contained tasks"""
-
-    title = schema.TextLine(title=u"Name")
+    """Convenience subclass for ``UU Task Planner`` portal type
+    """

@@ -3,8 +3,9 @@
         <element value="uu.task"/>
     </property>
     <property name="behaviors">
-        <element value="uu.task.behaviors.IAssignedTask"/>
         <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
+        <element value="uu.task.behaviors.IAssignedTask"/>
     </property>
     <property name="description">Assignable Task With Due Date; May Contain Dependent Tasks</property>
     <property name="klass">plone.dexterity.content.Container</property>

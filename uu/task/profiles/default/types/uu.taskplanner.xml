@@ -4,6 +4,8 @@
     </property>
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
+        <element value="uu.task.behaviors.IAssignedTask"/>
     </property>
     <property name="description">Task Container; Shared Configuration For Contained Tasks</property>
     <property name="schema">uu.task.content.TaskPlanner</property>
