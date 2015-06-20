@@ -29,14 +29,16 @@ Content Types
 - UU Task
 - UU Task Planner
 
-.. image:: screenshot1.png
+.. image:: screenshot.png
 
 Behaviors
 ---------
 
 ``uu.task`` adds a behavior:
 
-- UU Assigned Task
+- Assigned Task
+
+.. image:: screenshot2.png
 
 Similar Add-ons
 ---------------
