@@ -24,10 +24,7 @@ Contributors
 Content Types
 -------------
 
-The ``uu.task`` add-on contains "UU Task" and "UU Task Planner" content types.
-
-Add UU Task
-~~~~~~~~~~~
+The ``uu.task`` add-on contains ``UU Task`` and ``UU Task Planner`` content types.
 
 .. image:: screenshot1.png
 
