@@ -26,8 +26,8 @@ Content Types
 
 ``uu.task`` adds content types:
 
-- **UU Task**
-- **UU Task Planner**
+- **Task**
+- **Task Planner**
 
 .. image:: screenshot.png
 
