@@ -1,17 +1,21 @@
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from zope import schema
-from zope.interface import alsoProvides
+from zope.interface import provider
 
 
+@provider(IFormFieldProvider)
 class IAssignedTask(model.Schema):
-    """Due Date"""
+    """Due date
+    """
 
     due_on = schema.Datetime(title=u"Due Date")
 
 
+@provider(IFormFieldProvider)
 class ITaskRules(model.Schema):
-    """Computed Due Date Rules"""
+    """Computed due date
+    """
 
     due_in = schema.Int()
 #    due_units = schema.Choice()
@@ -23,7 +27,3 @@ class ITaskRules(model.Schema):
     time_due = schema.Time(title=u"Time of day")
 #    notification_rules = schema.List()
 #    timezone = schema.Choice()
-
-
-alsoProvides(IAssignedTask, IFormFieldProvider)
-alsoProvides(ITaskRules, IFormFieldProvider)
