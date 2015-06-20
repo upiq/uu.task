@@ -1,3 +1,4 @@
+from collective.z3cform.datagridfield import DictRow
 from zope import schema
 from zope.interface import Interface
 
@@ -9,6 +10,16 @@ class IAssignedParties(Interface):
     """
 
     principals = schema.List(value_type=schema.Choice([]))
+
+
+class INotificationRule(Interface):
+    """
+    """
+
+    notify_for = schema.Float()
+    units = schema.Choice([])
+    notify_rel = schema.Choice([])
+    source = schema.Choice([])
 
 
 class ITask(Interface):
@@ -33,5 +44,6 @@ class ITaskRules(Interface):
     dow_n = schema.Int()
     dow = schema.Choice([])
     time_due = schema.Time()
-    notification_rules = schema.List()
+    notification_rules = schema.List(
+        value_type=DictRow(schema=INotificationRule))
     timezone = schema.Choice([])
