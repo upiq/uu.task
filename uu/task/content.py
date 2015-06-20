@@ -1,7 +1,7 @@
 from .interfaces import ITask
 from .interfaces import ITaskPlanner
-from plone.dexterity.browser import add 
-from plone.dexterity.browser import edit 
+from plone.dexterity.browser import add
+from plone.dexterity.browser import edit
 from plone.supermodel import model
 from zope.interface import implementer
 
