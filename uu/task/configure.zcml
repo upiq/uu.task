@@ -18,8 +18,8 @@
 
     <browser:page class=".content.TaskAddForm" for=".interfaces.ITask"
         name="add" permission="uu.task.add" template="templates/task_add.pt" />
-    <browser:page class=".content.TaskEditForm" for=".interfaces.ITask"
-        name="edit" permission="uu.task.edit" template="templates/task_edit.pt" />
+    <browser:page class=".content.TaskEditForm" for=".content.Task"
+        name="edit" permission="uu.task.edit" />
 
     <!-- UU Task Planner -->
 
@@ -30,8 +30,8 @@
 
     <browser:page class=".content.TaskPlannerAddForm" for=".interfaces.ITaskPlanner"
         name="add" permission="uu.taskplanner.add" template="templates/taskplanner_add.pt" />
-    <browser:page class=".content.TaskPlannerEditForm" for=".interfaces.ITaskPlanner"
-        name="edit" permission="uu.taskplanner.edit" template="templates/taskplanner_edit.pt" />
+    <browser:page class=".content.TaskPlannerEditForm" for=".content.TaskPlanner"
+        name="edit" permission="uu.taskplanner.edit" /> 
 
     <!-- Assigned Task -->
 
