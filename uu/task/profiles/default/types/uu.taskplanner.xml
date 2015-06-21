@@ -7,7 +7,7 @@
         <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
         <element value="uu.task.behaviors.IAssignedTask"/>
     </property>
-    <property name="description">Task Container; Shared Configuration For Contained Tasks</property>
+    <property name="description">Series of tasks with shared settings</property>
     <property name="schema">uu.task.content.TaskPlanner</property>
     <property name="title">Task Planner</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/calendar.png</property>
