@@ -6,35 +6,43 @@
 
     <genericsetup:registerProfile directory="profiles/default" name="default"
         description="Task Management and Notification System For Plone."
-        title="uu.task"
-        provides="Products.GenericSetup.interfaces.EXTENSION" />
+        title="uu.task" provides="Products.GenericSetup.interfaces.EXTENSION" />
 
     <!-- UU Task -->
 
+    <!-- Custom permissions -->
     <permission id="uu.task.add" title="UUTask: Add Task" />
     <permission id="uu.task.change" title="UUTask: Change Task Status" />
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
 
-    <browser:page class=".content.TaskAddForm" for=".interfaces.ITask"
-        name="add" permission="uu.task.add" template="templates/task_add.pt" />
-    <browser:page class=".content.TaskEditForm" for=".content.Task"
-        name="edit" permission="uu.task.edit" />
+    <!-- Custom add form -->
+    <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
+        plone.dexterity.interfaces.IDexterityFTI" provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory=".content.TaskAddView" name="uu.task" />
+
+    <!-- Custom edit form -->
+    <browser:page class=".content.TaskEditForm" for=".content.Task" name="edit" permission="uu.task.edit" />
 
     <!-- UU Task Planner -->
 
+    <!-- Custom permissions -->
     <permission id="uu.taskplanner.add" title="UUTask: Add Task" />
     <permission id="uu.taskplanner.change" title="UUTask: Change Task Status" />
     <permission id="uu.taskplanner.edit" title="UUTask: Edit Task" />
     <permission id="uu.taskplanner.remove" title="UUTask: Remove Task" />
 
-    <browser:page class=".content.TaskPlannerAddForm" for=".interfaces.ITaskPlanner"
-        name="add" permission="uu.taskplanner.add" template="templates/taskplanner_add.pt" />
-    <browser:page class=".content.TaskPlannerEditForm" for=".content.TaskPlanner"
-        name="edit" permission="uu.taskplanner.edit" /> 
+    <!-- Custom add form -->
+    <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
+        plone.dexterity.interfaces.IDexterityFTI" provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory=".content.TaskPlannerAddView" name="uu.taskplanner" />
+
+    <!-- Custom edit form -->
+    <browser:page class=".content.TaskPlannerEditForm" for=".content.TaskPlanner" name="edit" permission="uu.taskplanner.edit" /> 
 
     <!-- Assigned Task -->
 
+    <!-- Behavior -->
     <plone:behavior description="Adds due date field (behavior provided by UU Task add-on)" title="Assigned Task" 
         provides=".behaviors.IAssignedTask" />
 

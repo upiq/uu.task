@@ -7,9 +7,18 @@ from plone.supermodel import model
 from zope.interface import implementer
 
 
+# UU Task
+
 class TaskAddForm(add.DefaultAddForm):
     """Custom add form for Task
     """
+    template = ViewPageTemplateFile('templates/task_add.pt')
+
+
+class TaskAddView(add.DefaultAddView):
+    """Custom add view for Task
+    """
+    form = TaskAddForm
 
 
 class TaskEditForm(edit.DefaultEditForm):
@@ -18,21 +27,30 @@ class TaskEditForm(edit.DefaultEditForm):
     template = ViewPageTemplateFile('templates/task_edit.pt')
 
 
+@implementer(ITask)
+class Task(model.Schema):
+    """Assignable task with due date
+    """
+
+
+# UU Task Planner
+
 class TaskPlannerAddForm(add.DefaultAddForm):
     """Custom add form for Task Planner
     """
+    template = ViewPageTemplateFile('templates/taskplanner_add.pt')
+
+
+class TaskPlannerAddView(add.DefaultAddView):
+    """Custom add view for Task Planner
+    """
+    form = TaskPlannerAddForm
 
 
 class TaskPlannerEditForm(edit.DefaultEditForm):
     """Custom edit form for Task
     """
     template = ViewPageTemplateFile('templates/taskplanner_edit.pt')
-
-
-@implementer(ITask)
-class Task(model.Schema):
-    """Assignable task with due date
-    """
 
 
 @implementer(ITaskPlanner)
