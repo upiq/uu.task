@@ -9,4 +9,4 @@ class IAssignedTask(model.Schema):
     """Due date
     """
 
-    due_on = schema.Datetime(title=u"Due Date")
+    due_on = schema.Datetime(title=u"Due Date", required=False)
