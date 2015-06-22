@@ -6,11 +6,11 @@ This repository serves as a place for development of a task managment add-on.
 Introduction
 ------------
 
-``uu.task`` provides configurable, effective task-related email notifications to assigned parties. It includes:
+``uu.task`` provides configurable, effective **task-related email notifications** to **assigned parties**. It includes:
 
 1. A system for project managers to assign content items, such as forms and events, as "tasks" with due dates to assigned parties
-#. A means for assigned parties to receive notification via email about tasks at prescribed times
-#. A mechanism for assigned parties to act on tasks and change notification preferences
+#. A means for assigned parties to receive email notification about tasks **at specific times**
+#. A mechanism for assigned parties to communicate task status to project managers and set notification preferences
 
 Copyright
 ---------
