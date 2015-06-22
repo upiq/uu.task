@@ -1,4 +1,3 @@
-from collective.z3cform.datagridfield import DictRow
 from zope import schema
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.interface import Interface
@@ -138,7 +137,5 @@ class ITaskRules(Interface):
         default='MO',
         )
     time_due = schema.Time()
-    notification_rules = schema.List(
-        value_type=DictRow(schema=INotificationRule))
-    # TODO: use plone.app.event.vocabularies?
+    notification_rules = schema.List()
     timezone = schema.Choice([])

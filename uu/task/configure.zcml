@@ -2,6 +2,8 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone">
 
+    <include package="plone.app.widgets" />
+
     <browser:resourceDirectory name="uu.task" directory="static" />
 
     <genericsetup:registerProfile directory="profiles/default" name="default"
