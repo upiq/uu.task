@@ -15,6 +15,7 @@
     <permission id="uu.task.change" title="UUTask: Change Task Status" />
     <permission id="uu.task.edit" title="UUTask: Edit Task" />
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
+    <permission id="uu.task.view" title="UUTask: View Task" />
 
     <!-- Custom add form -->
     <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
@@ -31,6 +32,7 @@
     <permission id="uu.taskplanner.change" title="UUTaskPlanner: Change Task Status" />
     <permission id="uu.taskplanner.edit" title="UUTaskPlanner: Edit Task" />
     <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
+    <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
 
     <!-- Custom add form -->
     <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
@@ -49,7 +51,7 @@
     <!-- Tasks Status -->
 
     <!-- Browser View -->
-    <browser:page class=".browser.TaskStatus" for="*" name="uu-task-status" permission="zope2.View" template="templates/task-status.pt" />
+    <browser:page class=".browser.TaskStatus" for="*" name="uu-task-status" permission="uu.task.view" template="templates/task-status.pt" />
 
     <!-- Task Extender -->
 

@@ -20,6 +20,10 @@
     <permission name="UUTask: Remove Task" acquire="True">
       <role name="Project manager"/>
     </permission>
+    <permission name="UUTask: View Task" acquire="True">
+      <role name="Assigned party"/>
+      <role name="Project manager"/>
+    </permission>
 
     <!-- UU Task Planner -->
     <permission name="UUTaskPlanner: Add Task" acquire="True">
@@ -34,6 +38,10 @@
       <role name="Project manager"/>
     </permission>
     <permission name="UUTaskPlanner: Remove Task" acquire="True">
+      <role name="Project manager"/>
+    </permission>
+    <permission name="UUTaskPlanner: View Task" acquire="True">
+      <role name="Assigned party"/>
       <role name="Project manager"/>
     </permission>
 
