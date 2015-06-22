@@ -1,0 +1,10 @@
+*.py?
+
+/.installed.cfg
+/.mr.developer.cfg
+/bin/
+/eggs/
+/parts/
+/src/
+/uu.task.egg-info/
+/var/
