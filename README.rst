@@ -108,3 +108,48 @@ Similar Add-ons
 .. _`collective.project`: https://github.com/collective/collective.project
 .. _`collective.task`: https://github.com/collective/collective.task
 .. _`more than one principal`: https://github.com/upiq/uu.task/issues/3
+
+Developers
+----------
+
+Testing
+~~~~~~~
+
+Developers please run tests before committing e.g. ::
+
+    $ make
+    check-manifest
+    lists of files in version control and sdist match
+    pyroma .
+    ------------------------------
+    Checking .
+    Found uu.task
+    ------------------------------
+    Final rating: 10/10
+    Your cheese is so fresh most people think it's a cream: Mascarpone
+    ------------------------------
+    flake8 uu/task/*.py
+    ./parts/plone/bin/interpreter setup.py test
+    running test
+    running egg_info
+    writing requirements to uu.task.egg-info/requires.txt
+    writing uu.task.egg-info/PKG-INFO
+    writing namespace_packages to uu.task.egg-info/namespace_packages.txt
+    writing top-level names to uu.task.egg-info/top_level.txt
+    writing dependency_links to uu.task.egg-info/dependency_links.txt
+    writing entry points to uu.task.egg-info/entry_points.txt
+    reading manifest file 'uu.task.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    writing manifest file 'uu.task.egg-info/SOURCES.txt'
+    running build_ext
+    test_three (uu.task.tests.AnotherTestCase) ... ok
+    test_two (uu.task.tests.AnotherTestCase) ... ok
+    test_one (uu.task.tests.TestCase) ... ok
+    test_five (uu.task.tests.YetAnotherTestCase) ... ok
+    test_four (uu.task.tests.YetAnotherTestCase) ... ok
+    test_six (uu.task.tests.YetAnotherTestCase) ... ok
+
+    ----------------------------------------------------------------------
+    Ran 6 tests in 0.001s
+
+    OK
