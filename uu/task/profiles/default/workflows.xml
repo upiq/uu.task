@@ -4,5 +4,8 @@
   <type type_id="uu.task">
    <bound-workflow workflow_id="uu_task_workflow" />
   </type>
+  <type type_id="uu.taskplanner">
+   <bound-workflow workflow_id="uu_task_workflow" />
+  </type>
  </bindings>
 </object>
