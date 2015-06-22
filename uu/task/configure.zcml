@@ -46,4 +46,14 @@
     <plone:behavior description="Adds due date field (behavior provided by UU Task add-on)" title="Assigned Task" 
         provides=".behaviors.IAssignedTask" />
 
+    <!-- Tasks Status -->
+
+    <!-- Browser View -->
+    <browser:page class=".browser.TaskStatus" for="*" name="uu-task-status" permission="zope2.View" template="templates/task-status.pt" />
+
+    <!-- Task Extender -->
+
+    <!-- Browser View -->
+    <browser:page class=".browser.TaskExtender" for="*" name="uu-task-extender" permission="cmf.ManagePortal" template="templates/task-extender.pt" />
+
 </configure>
