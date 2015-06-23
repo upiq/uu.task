@@ -5,4 +5,3 @@ PKGNAME = 'uu.task'
 
 
 _ = MessageFactory(PKGNAME)
-
