@@ -20,11 +20,11 @@ TEMPORAL_REL_TYPE = mkvocab((
     ('on', _(u'on')),
 ))
 
-SOURCE_DATE = mkvocab(
+SOURCE_DATE = mkvocab((
     ('end', _(u'end date for task')),
     ('start', _(u'start date for task')),
     ('created', _(u'content creation date')),
-)
+))
 
 SOURCE_NOTIFY_DATE = mkvocab(
     [('due', _(u'due date'))] +
