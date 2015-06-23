@@ -1,6 +1,48 @@
 from collective.z3cform.datagridfield import DictRow
 from zope import schema
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.interface import Interface
+
+from uu.task import _
+
+# convenience functions for static vocabularies:
+mkterm = lambda value, title: SimpleTerm(value, title=title)
+mkvocab = lambda s: SimpleVocabulary([mkterm(t, title) for (t, title) in s])
+
+
+TIME_UNITS = mkvocab((
+    ('hours', _(u'hour(s)')),
+    ('days', _(u'day(s)')),
+))
+
+TEMPORAL_REL_TYPE = mkvocab((
+    ('after', _(u'after')),
+    ('before', _(u'before')),
+    ('on', _(u'on')),
+))
+
+SOURCE_DATE = mkvocab(
+    ('end', _(u'end date for task')),
+    ('start', _(u'start date for task')),
+    ('created', _(u'content creation date')),
+)
+
+SOURCE_NOTIFY_DATE = mkvocab(
+    [('due', _(u'due date'))] +
+    [(t.value, t.title) for t in SOURCE_DATE]
+)
+
+
+# Day of week corresponds to vocabulary from RFC5545:
+DOW = mkvocab((
+    ('MO', _(u'Monday')),
+    ('TU', _(u'Tuesday')),
+    ('WE', _(u'Wednesday')),
+    ('TH', _(u'Thursday')),
+    ('FR', _(u'Friday')),
+    ('SA', _(u'Saturday')),
+    ('SU', _(u'Sunday')),
+))
 
 
 class IAssignedParties(Interface):
@@ -17,9 +59,21 @@ class INotificationRule(Interface):
     """
 
     notify_for = schema.Float()
-    units = schema.Choice([])
-    notify_rel = schema.Choice([])
-    source = schema.Choice([])
+    units = schema.Choice(
+        title=_(u'time units'),
+        vocabulary=TIME_UNITS,
+        default='days',
+        )
+    notify_rel = schema.Choice(
+        title=_(u'Time relationship'),
+        vocabulary=TEMPORAL_REL_TYPE,
+        default='before',
+    )
+    source = schema.Choice(
+        title=_(u'Source date'),
+        vocabulary=SOURCE_NOTIFY_DATE,
+        default='due',
+    )
 
 
 class IStartEnd(Interface):
@@ -58,13 +112,33 @@ class ITaskRules(Interface):
     """
 
     due_in = schema.Int()
-    due_units = schema.Choice([])
-    due_rel = schema.Choice([])
-    source = schema.Choice([])
-    use_dow = schema.Bool()
+    due_units = schema.Choice(
+        title=_(u'Time units due'),
+        vocabulary=TIME_UNITS,
+        default='hours',
+        )
+    due_rel = schema.Choice(
+        title=_(u'Due relationship'),
+        vocabulary=TEMPORAL_REL_TYPE,
+        default='after',
+        )
+    source = schema.Choice(
+        title=_(u'Source date'),
+        vocabulary=SOURCE_DATE,
+        )
+    use_dow = schema.Bool(
+        title=_(u'Select due relative to the day of the week?'),
+        required=False,
+        default=True,
+        )
     dow_n = schema.Int()
-    dow = schema.Choice([])
+    dow = schema.Choice(
+        title=_(u'Day of week'),
+        vocabulary=DOW,
+        default='MO',
+        )
     time_due = schema.Time()
     notification_rules = schema.List(
         value_type=DictRow(schema=INotificationRule))
+    # TODO: use plone.app.event.vocabularies?
     timezone = schema.Choice([])
