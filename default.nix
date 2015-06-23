@@ -39,12 +39,19 @@ let
 in mkDerivation{
   name = "uu.task";
 
-  src = ./.;
+  src = builtins.filterSource (path: type:
+          builtins.elem (baseNameOf path) (
+            builtins.filter (x: ! (builtins.elem x [
+                "doc" "uu" "buildout.cfg" "CHANGES.rst" "Makefile" "MANIFEST.in"
+                "README.rst" "screenshot2.png" "screenshot.png" "setup.py" ]))
+              (builtins.attrNames (builtins.readDir ./.))
+          )) ./.;
 
   buildInputs = with pythonPackages; [
     pkgs.libxml2
     pkgs.libxslt
     pkgs.git
+    pkgs.nodejs
     zc_buildout2
     flake8
     check-manifest
