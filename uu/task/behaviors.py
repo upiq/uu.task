@@ -1,5 +1,3 @@
-from plone.app.widgets.dx import DatetimeWidget
-from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from uu.task import _
@@ -18,7 +16,6 @@ class IAssignedTask(model.Schema):
     #    fields=('due_date', 'due_date_rule', 'notification_rules'),
     #)
 
-    form.widget('due_date', DatetimeWidget)
     due_date = schema.Datetime(
         title=u"Due date",
         required=False,

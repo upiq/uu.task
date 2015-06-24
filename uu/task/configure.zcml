@@ -100,4 +100,24 @@
         permission="cmf.ManagePortal"
         />
 
+    <!-- Data Converters for JSONWidget -->
+
+    <adapter
+        factory=".browser.JSONWidgetConverter"
+        for="zope.schema.interfaces.ICollection
+             .browser.IJSONWidget"
+        />
+
+    <adapter
+        factory=".browser.JSONWidgetConverter"
+        for="zope.schema.interfaces.IText
+             .browser.IJSONWidget"
+        />
+
+    <!-- Widgets for IAssignedTask fields -->
+
+    <adapter factory=".browser.DueDateFieldWidget" />
+    <adapter factory=".browser.DueDateRuleFieldWidget" />
+    <adapter factory=".browser.NotificationRulesFieldWidget" />
+
 </configure>

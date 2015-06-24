@@ -1,12 +1,12 @@
-define("uutask-pattern-duedate-rule", [
+define("uutask-pattern-due-date-rule", [
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
   'use strict';
 
   var DueDateRule = Base.extend({
-    name: 'duedate-rule',
-    trigger: '.pat-duedate-rule',
+    name: 'due-date-rule',
+    trigger: '.pat-due-date-rule',
     defaults: {
     },
     init: function() {
@@ -20,15 +20,15 @@ define("uutask-pattern-duedate-rule", [
 });
 
 
-define("uutask-pattern-duedate-notificationrules", [
+define("uutask-pattern-notification-rules", [
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
   'use strict';
 
-  var DueDateNotificationRules = Base.extend({
-    name: 'duedate-notificationrules',
-    trigger: '.pat-duedate-notificationrules',
+  var NotificationRules = Base.extend({
+    name: 'notification-rules',
+    trigger: '.pat-notification-rules',
     defaults: {
     },
     init: function() {
@@ -37,16 +37,16 @@ define("uutask-pattern-duedate-notificationrules", [
     }
   });
 
-  return DueDateNotificationRules;
+  return NotificationRules;
 
 });
 
 
 require([
   'jquery',
-  'uutask-pattern-duedate-rule',
-  'uutask-pattern-duedate-notificationrulesrule'
-], function($, DueDateRule, DueDateNotificationRules) {
+  'uutask-pattern-due-date-rule',
+  'uutask-pattern-notification-rules'
+], function($, DueDateRule, NotificationRules) {
 
   $(document).ready(function() {
   });
