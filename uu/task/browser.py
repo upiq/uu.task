@@ -1,12 +1,9 @@
-import json
-
 from Products.Five.browser import BrowserView
 from plone.app.widgets.base import InputWidget
 from plone.app.widgets.dx import BaseWidget
 from plone.app.widgets.dx import DatetimeWidget
 from uu.task.behaviors import IAssignedTask
 from z3c.form.browser.text import TextWidget
-from z3c.form.converter import BaseDataConverter
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
 from z3c.form.interfaces import ITextWidget
@@ -32,54 +29,24 @@ class TaskExtender(BrowserView):
     """
 
 
-class IJSONWidget(ITextWidget):
-    """Marker interface for the JSONWidget."""
-
-
-class JSONWidgetConverter(BaseDataConverter):
-    """Data converter for ICollection and IText."""
-
-    def toWidgetValue(self, value):
-        """Converts from field value to widget.
-
-        :param value: Query string.
-        :type value: list
-
-        :returns: Query string converted to JSON.
-        :rtype: string
-        """
-        if not value:
-            return ''
-        return json.dumps(value)
-
-    def toFieldValue(self, value):
-        """Converts from widget value to field.
-
-        :param value: Query string.
-        :type value: string
-
-        :returns: Query string.
-        :rtype: list
-        """
-        try:
-            value = json.loads(value)
-        except ValueError:
-            value = None
-        if not value:
-            return self.field.missing_value
-        return value
-
-
 class JSONWidget(BaseWidget, TextWidget):
     """
     """
 
-    implementsOnly(IJSONWidget)
+    implementsOnly(ITextWidget)
 
     _base = InputWidget
 
     pattern = None
     pattern_options = BaseWidget.pattern_options.copy()
+
+    def _base_args(self):
+        """Method which will calculate _base class arguments.
+        """
+        args = super(JSONWidget, self)._base_args()
+        args['name'] = self.name
+        args['value'] = self.value
+        return args
 
 
 @adapter(getSpecification(IAssignedTask['due_date']), IFormLayer)
