@@ -6,9 +6,13 @@
 
     <browser:resourceDirectory name="uu.task" directory="static" />
 
-    <genericsetup:registerProfile directory="profiles/default" name="default"
+    <genericsetup:registerProfile
+        name="default"
+        title="uu.task"
         description="Task Management and Notification System For Plone."
-        title="uu.task" provides="Products.GenericSetup.interfaces.EXTENSION" />
+        directory="profiles/default"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
 
     <!-- UU Task -->
 
@@ -20,12 +24,22 @@
     <permission id="uu.task.view" title="UUTask: View Task" />
 
     <!-- Custom add form -->
-    <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
-        plone.dexterity.interfaces.IDexterityFTI" provides="zope.publisher.interfaces.browser.IBrowserPage"
-        factory=".content.TaskAddView" name="uu.task" />
+    <adapter
+        name="uu.task"
+        for="Products.CMFCore.interfaces.IFolderish
+             Products.CMFDefault.interfaces.ICMFDefaultSkin
+             plone.dexterity.interfaces.IDexterityFTI"
+        provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory=".content.TaskAddView"
+        />
 
     <!-- Custom edit form -->
-    <browser:page class=".content.TaskEditForm" for=".content.Task" name="edit" permission="uu.task.edit" />
+    <browser:page
+        name="edit"
+        for=".content.Task"
+        class=".content.TaskEditForm"
+        permission="uu.task.edit"
+        />
 
     <!-- UU Task Planner -->
 
@@ -37,27 +51,53 @@
     <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
 
     <!-- Custom add form -->
-    <adapter for="Products.CMFCore.interfaces.IFolderish Products.CMFDefault.interfaces.ICMFDefaultSkin
-        plone.dexterity.interfaces.IDexterityFTI" provides="zope.publisher.interfaces.browser.IBrowserPage"
-        factory=".content.TaskPlannerAddView" name="uu.taskplanner" />
+    <adapter
+        for="Products.CMFCore.interfaces.IFolderish
+             Products.CMFDefault.interfaces.ICMFDefaultSkin
+             plone.dexterity.interfaces.IDexterityFTI"
+        provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory=".content.TaskPlannerAddView"
+        name="uu.taskplanner"
+        />
 
     <!-- Custom edit form -->
-    <browser:page class=".content.TaskPlannerEditForm" for=".content.TaskPlanner" name="edit" permission="uu.taskplanner.edit" /> 
+    <browser:page
+        name="edit"
+        for=".content.TaskPlanner"
+        class=".content.TaskPlannerEditForm"
+        permission="uu.taskplanner.edit"
+        />
 
     <!-- Assigned Task -->
 
     <!-- Behavior -->
-    <plone:behavior description="Adds due date field (behavior provided by UU Task add-on)" title="Assigned Task" 
-        provides=".behaviors.IAssignedTask" />
+    <plone:behavior
+        title="Assigned Task"
+        description="Adds due date field (behavior provided by UU Task add-on)"
+        provides=".behaviors.IAssignedTask"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        />
 
     <!-- Tasks Status -->
 
     <!-- Browser View -->
-    <browser:page class=".browser.TaskStatus" for="*" name="uu-task-status" permission="uu.task.view" template="templates/task-status.pt" />
+    <browser:page
+        name="uu-task-status"
+        for="*"
+        class=".browser.TaskStatus"
+        template="templates/task-status.pt"
+        permission="uu.task.view"
+        />
 
     <!-- Task Extender -->
 
     <!-- Browser View -->
-    <browser:page class=".browser.TaskExtender" for="*" name="uu-task-extender" permission="cmf.ManagePortal" template="templates/task-extender.pt" />
+    <browser:page
+        name="uu-task-extender"
+        for="*"
+        class=".browser.TaskExtender"
+        template="templates/task-extender.pt"
+        permission="cmf.ManagePortal"
+        />
 
 </configure>
