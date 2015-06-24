@@ -1,6 +1,6 @@
 from .interfaces import ITask
 from .interfaces import ITaskPlanner
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+#from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.dexterity.browser import add
 from plone.dexterity.browser import edit
 from plone.supermodel import model
@@ -12,7 +12,9 @@ from zope.interface import implementer
 class TaskAddForm(add.DefaultAddForm):
     """Custom add form for Task
     """
-    template = ViewPageTemplateFile('templates/task_add.pt')
+    # XXX: removes all plone styles and also does not show other fieldsets then
+    # default
+    #template = ViewPageTemplateFile('templates/task_add.pt')
 
 
 class TaskAddView(add.DefaultAddView):
@@ -24,7 +26,9 @@ class TaskAddView(add.DefaultAddView):
 class TaskEditForm(edit.DefaultEditForm):
     """Custom edit form for Task
     """
-    template = ViewPageTemplateFile('templates/task_edit.pt')
+    # XXX: removes all plone styles and also does not show other fieldsets then
+    # default
+    #template = ViewPageTemplateFile('templates/task_edit.pt')
 
 
 @implementer(ITask)
@@ -38,7 +42,10 @@ class Task(model.Schema):
 class TaskPlannerAddForm(add.DefaultAddForm):
     """Custom add form for Task Planner
     """
-    template = ViewPageTemplateFile('templates/taskplanner_add.pt')
+
+    # XXX: taskplanner_add.pt removes all plone styles and also does not show
+    # other fieldsets then default
+    #template = ViewPageTemplateFile('templates/taskplanner_add.pt')
 
 
 class TaskPlannerAddView(add.DefaultAddView):
@@ -50,7 +57,9 @@ class TaskPlannerAddView(add.DefaultAddView):
 class TaskPlannerEditForm(edit.DefaultEditForm):
     """Custom edit form for Task
     """
-    template = ViewPageTemplateFile('templates/taskplanner_edit.pt')
+    # XXX: removes all plone styles and also does not show other fieldsets then
+    # default
+    #template = ViewPageTemplateFile('templates/taskplanner_edit.pt')
 
 
 @implementer(ITaskPlanner)
