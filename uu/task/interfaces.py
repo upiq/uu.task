@@ -1,47 +1,5 @@
 from zope import schema
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.interface import Interface
-
-from uu.task import _
-
-# convenience functions for static vocabularies:
-mkterm = lambda value, title: SimpleTerm(value, title=title)
-mkvocab = lambda s: SimpleVocabulary([mkterm(t, title) for (t, title) in s])
-
-
-TIME_UNITS = mkvocab((
-    ('hours', _(u'hour(s)')),
-    ('days', _(u'day(s)')),
-))
-
-TEMPORAL_REL_TYPE = mkvocab((
-    ('after', _(u'after')),
-    ('before', _(u'before')),
-    ('on', _(u'on')),
-))
-
-SOURCE_DATE = mkvocab((
-    ('end', _(u'end date for task')),
-    ('start', _(u'start date for task')),
-    ('created', _(u'content creation date')),
-))
-
-SOURCE_NOTIFY_DATE = mkvocab(
-    [('due', _(u'due date'))] +
-    [(t.value, t.title) for t in SOURCE_DATE]
-)
-
-
-# Day of week corresponds to vocabulary from RFC5545:
-DOW = mkvocab((
-    ('MO', _(u'Monday')),
-    ('TU', _(u'Tuesday')),
-    ('WE', _(u'Wednesday')),
-    ('TH', _(u'Thursday')),
-    ('FR', _(u'Friday')),
-    ('SA', _(u'Saturday')),
-    ('SU', _(u'Sunday')),
-))
 
 
 class IAssignedParties(Interface):
