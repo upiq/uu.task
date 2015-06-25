@@ -20,11 +20,11 @@ class IAssignedTask(model.Schema):
     """adds Due date and notification_rules fields
     """
 
-    #model.fieldset(
-    #    'assigned',
-    #    label=_(u'Assigned'),
-    #    fields=('due_date', 'due_date_rule', 'notification_rules'),
-    #)
+    model.fieldset(
+        'assigned',
+        label=_(u'Assigned'),
+        fields=('due_date', 'due_date_rule', 'notification_rules'),
+    )
 
     due_date = schema.Datetime(
         title=u"Due date",
