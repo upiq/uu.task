@@ -46,7 +46,9 @@ define('uutask-utils', [
       ));
       items.wrapper = $wrapper;
 
-      $('select', $el).select2({ minimumResultsForSearch: -1 });
+      $('select.uutask-field2', $el).select2({ minimumResultsForSearch: -1, width: 100 });
+      $('select.uutask-field3', $el).select2({ minimumResultsForSearch: -1, width: 100 });
+      $('select.uutask-field4', $el).select2({ minimumResultsForSearch: -1, width: 150 });
       $('.uutask-field5', $el).patternPickadate({date:false});
 
       return items;
@@ -112,16 +114,15 @@ define('uutask-pattern-notification-rules', [
     name: 'notification-rules',
     trigger: '.pat-notification-rules',
     defaults: {
-      vocab: {
-        time_units: [],
-        time_relations: [],
-        source_notify_date: [],
+      rule: {
+        field2: [],
+        field3: [],
+        field4: [],
       },
       i18n: {
         add_rule: "Add rule",
         remove: "Remove"
       }
-
     },
     init: function() {
       var self = this;
@@ -144,12 +145,7 @@ define('uutask-pattern-notification-rules', [
           e.stopPropagation();
           e.preventDefault();
 
-          var $rule = Utils.appendRule(
-            self.$rules,
-            self.options.vocab.time_units,
-            self.options.vocab.time_relations,
-            self.options.vocab.source_notify_date
-          );
+          var $rule = Utils.appendRule(self.$rules, self.options, false);
           
           var $remove = $('<a href="#"/>')
             .addClass('notification-rules-remove')
