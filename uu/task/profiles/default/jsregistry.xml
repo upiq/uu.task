@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
-<object name="portal_javascripts" meta_type="JavaScripts Registry">
+<object name="portal_javascripts">
+
   <javascript bundle="default" id="form_tabbing.js" />
+
   <javascript id="++resource++uu.task/app.js" enabled="True"
     cacheable="True" compression="none" cookable="True" inline="False"
     insert-after="++resource++plone.app.widgets.js"
     />
+
 </object>

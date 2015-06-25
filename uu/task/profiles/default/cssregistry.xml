@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_css">
+
+  <stylesheet id="++resource++uu.task/app.css" enabled="True"
+    cacheable="True" compression="safe" cookable="True" expression=""
+    media="" rel="stylesheet" rendering="import" insert-after="*"
+    />
+
+</object>

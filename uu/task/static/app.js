@@ -9,24 +9,23 @@ define('uutask-utils', [
     appendRule: function($el, options, showTime) {
       var items = {
         field1: $('<input type="text"/>')
-          .css('width', '6em')
-          .addClass('uutask-field-1'),
+          .addClass('uutask-field1'),
         field2: $('<select/>')
-          .addClass('uutask-field-2')
+          .addClass('uutask-field2')
           .append(
             $.map(options.rule.field2, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
             })
           ),
         field3: $('<select/>')
-          .addClass('uutask-field-3')
+          .addClass('uutask-field3')
           .append(
             $.map(options.rule.field3, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
             })
           ),
         field4: $('<select/>')
-          .addClass('uutask-field-4')
+          .addClass('uutask-field4')
           .append(
             $.map(options.rule.field4, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
@@ -36,10 +35,10 @@ define('uutask-utils', [
 
       if (showTime === true) {
         items.field5 = $('<input type="text"/>')
-          .addClass('uutask-field-5');
+          .addClass('uutask-field5');
       }
 
-      var $wrapper = $('<ul/>');
+      var $wrapper = $('<ul/>').addClass('uutask-rule');
       $el.append($wrapper.append(
         $.map(items, function(v) {
           return v.wrap($('<li/>')).parent();
@@ -48,7 +47,7 @@ define('uutask-utils', [
       items.wrapper = $wrapper;
 
       $('select', $el).select2({ minimumResultsForSearch: -1 });
-      $('.uutask-field-5', $el).patternPickadate({date:false});
+      $('.uutask-field5', $el).patternPickadate({date:false});
 
       return items;
     }

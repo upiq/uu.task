@@ -1,0 +1,19 @@
+#content ul.uutask-rule {
+    margin: 0;
+    padding: 0;
+  }
+#content ul.uutask-rule > li {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+  }
+#content ul.uutask-rule > li input.uutask-field1 {
+    width: 3em;
+  }
+#content ul.uutask-rule > li .select2-container {
+    margin-bottom: 0.2em;
+  }
+#content ul.uutask-rule > li .pattern-pickadate-wrapper {
+    margin-bottom: -0.6em;
+  }
