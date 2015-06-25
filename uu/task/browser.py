@@ -94,6 +94,7 @@ def DueDateFieldWidget(field, request):
 def DueDateRuleFieldWidget(field, request):
     widget = JSONWidget(request)
     widget.pattern = 'due-date-rule'
+    widget.pattern_options = dict()
     widget.pattern_options['vocab'] = dict(
         time_units=TIME_UNITS,
         time_relations=TIME_RELATIONS,
@@ -112,4 +113,14 @@ def DueDateRuleFieldWidget(field, request):
 def NotificationRulesFieldWidget(field, request):
     widget = JSONWidget(request)
     widget.pattern = 'notification-rules'
+    widget.pattern_options = dict()
+    widget.pattern_options['vocab'] = dict(
+        time_units=TIME_UNITS,
+        time_relations=TIME_RELATIONS,
+        source_notify_date=SOURCE_NOTIFY_DATE,
+    )
+    widget.pattern_options['i18n'] = dict(
+        add_rule=_(u"Add rule"),
+        remove=_(u"Remove"),
+    )
     return FieldWidget(field, widget)
