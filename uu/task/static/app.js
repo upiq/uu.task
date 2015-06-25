@@ -33,13 +33,13 @@ define('uutask-utils', [
           )
       };
 
-      var wrapper = $('<ul/>');
-      $el.append(wrapper..append(
+      var $wrapper = $('<ul/>');
+      $el.append($wrapper.append(
         $.map(items, function(v) {
-          return v.wrap($('<li/>'));
+          return v.wrap($('<li/>')).parent();
         })
       ));
-      items.wrapper = wrapper;
+      items.wrapper = $wrapper;
 
       $('select', $el).select2({ minimumResultsForSearch: -1 });
 
@@ -83,9 +83,9 @@ define('uutask-pattern-due-date-rule', [
 
       self.$rule1 = Utils.appendRule(
         self.$wrapper,
-        self.options.time_units,
-        self.options.time_relations,
-        self.options.source_date
+        self.options.vocab.time_units,
+        self.options.vocab.time_relations,
+        self.options.vocab.source_date
       );
 
       self.$dow = $('<div/>');
@@ -99,15 +99,17 @@ define('uutask-pattern-due-date-rule', [
 
       self.$rule2 = Utils.appendRule(
         self.$wrapper,
-        self.options.days_of_week,
-        self.options.time_relations,
-        self.options.source_date
+        self.options.vocab.days_of_week,
+        self.options.vocab.time_relations,
+        self.options.vocab.source_date
       );
 
       self.update();
-    }
+    },
+    extract: function() {
+    },
     update: function() {
-      var value = JSON.parse(self.$el.val());
+      //var value = JSON.parse(self.$el.val());
     }
   });
 
@@ -118,18 +120,75 @@ define('uutask-pattern-due-date-rule', [
 
 define('uutask-pattern-notification-rules', [
   'jquery',
-  'mockup-patterns-base'
-], function($, Base, undefined) {
+  'mockup-patterns-base',
+  'uutask-utils'
+], function($, Base, Utils, undefined) {
   'use strict';
 
   var NotificationRules = Base.extend({
     name: 'notification-rules',
     trigger: '.pat-notification-rules',
     defaults: {
+      vocab: {
+        time_units: [],
+        time_relations: [],
+        source_notify_date: [],
+      },
+      i18n: {
+        add_rule: "Add rule",
+        remove: "Remove"
+      }
+
     },
     init: function() {
       var self = this;
-      self.$el.css({background: 'blue'});
+
+      self.$el.hide();
+
+      self.$wrapper = $('<div>')
+        .addClass('notification-rules-wrapper')
+        .insertAfter(self.$el);
+
+      self.$rules = $('<div>')
+        .addClass('notification-rules-wrapper-inner')
+        .appendTo(self.$wrapper);
+
+      self.$addRule = $('<a href="#"/>')
+        .addClass('notification-rules-add')
+        .html(self.options.i18n.add_rule)
+        .appendTo(self.$wrapper)
+        .on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          var $rule = Utils.appendRule(
+            self.$rules,
+            self.options.vocab.time_units,
+            self.options.vocab.time_relations,
+            self.options.vocab.source_notify_date
+          );
+          
+          var $remove = $('<a href="#"/>')
+            .addClass('notification-rules-remove')
+            .html(self.options.i18n.remove)
+
+          $remove.wrap($('<li/>'))
+            .parent()
+            .appendTo($rule.wrapper);
+
+          $remove.on('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            $(this).parents('ul').remove()
+          });
+        });
+
+        self.update();
+    },
+    extract: function() {
+    },
+    update: function() {
+      //var value = JSON.parse(self.$el.attr('val'));
     }
   });
 
