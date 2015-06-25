@@ -103,7 +103,8 @@
     <!-- Widgets for IAssignedTask fields -->
 
     <adapter factory=".browser.DueDateFieldWidget" />
-    <adapter factory=".browser.DueDateRuleFieldWidget" />
+    <adapter factory=".browser.DueDateComputedFieldWidget" />
+    <adapter factory=".browser.DueDateComputedRelativeToDOWFieldWidget" />
     <adapter factory=".browser.NotificationRulesFieldWidget" />
 
 </configure>

@@ -89,21 +89,31 @@ def DueDateFieldWidget(field, request):
     return FieldWidget(field, DatetimeWidget(request))
 
 
-@adapter(getSpecification(IAssignedTask['due_date_rule']), IFormLayer)
+@adapter(getSpecification(IAssignedTask['due_date_computed']), IFormLayer)
 @implementer(IFieldWidget)
-def DueDateRuleFieldWidget(field, request):
+def DueDateComputedFieldWidget(field, request):
     widget = JSONWidget(request)
-    widget.pattern = 'due-date-rule'
+    widget.pattern = 'due-date-computed'
     widget.pattern_options = dict()
-    widget.pattern_options['vocab'] = dict(
-        time_units=TIME_UNITS,
-        time_relations=TIME_RELATIONS,
-        source_date=SOURCE_DATE,
-        days_of_week=DAYS_OF_WEEK,
+    widget.pattern_options['rule'] = dict(
+        field2=TIME_UNITS,
+        field3=TIME_RELATIONS,
+        field4=SOURCE_DATE,
     )
-    widget.pattern_options['i18n'] = dict(
-        select_relative_to_dow=_(u"Select relative to day of week"),
-        time_of_day=_(u"Time of day"),
+    return FieldWidget(field, widget)
+
+
+@adapter(getSpecification(
+    IAssignedTask['due_date_computed_relative_to_dow']), IFormLayer)
+@implementer(IFieldWidget)
+def DueDateComputedRelativeToDOWFieldWidget(field, request):
+    widget = JSONWidget(request)
+    widget.pattern = 'due-date-computed'
+    widget.pattern_options = dict()
+    widget.pattern_options['rule'] = dict(
+        field2=DAYS_OF_WEEK,
+        field3=TIME_RELATIONS,
+        field4=SOURCE_DATE,
     )
     return FieldWidget(field, widget)
 
@@ -114,10 +124,10 @@ def NotificationRulesFieldWidget(field, request):
     widget = JSONWidget(request)
     widget.pattern = 'notification-rules'
     widget.pattern_options = dict()
-    widget.pattern_options['vocab'] = dict(
-        time_units=TIME_UNITS,
-        time_relations=TIME_RELATIONS,
-        source_notify_date=SOURCE_NOTIFY_DATE,
+    widget.pattern_options['rule'] = dict(
+        field2=TIME_UNITS,
+        field3=TIME_RELATIONS,
+        field4=SOURCE_NOTIFY_DATE,
     )
     widget.pattern_options['i18n'] = dict(
         add_rule=_(u"Add rule"),

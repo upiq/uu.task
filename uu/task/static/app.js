@@ -1,11 +1,12 @@
 define('uutask-utils', [
   'jquery',
   'select2',
-], function($, Base, Select2, undefined) {
+  'mockup-patterns-pickadate'
+], function($, Base, Select2, PickADate, undefined) {
   'use strict';
 
   return {
-    appendRule: function($el, field2, field3, field4) {
+    appendRule: function($el, options, showTime) {
       var items = {
         field1: $('<input type="text"/>')
           .css('width', '6em')
@@ -13,25 +14,30 @@ define('uutask-utils', [
         field2: $('<select/>')
           .addClass('uutask-field-2')
           .append(
-            $.map(field2, function(item) {
+            $.map(options.rule.field2, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
             })
           ),
         field3: $('<select/>')
           .addClass('uutask-field-3')
           .append(
-            $.map(field3, function(item) {
+            $.map(options.rule.field3, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
             })
           ),
         field4: $('<select/>')
           .addClass('uutask-field-4')
           .append(
-            $.map(field4, function(item) {
+            $.map(options.rule.field4, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
             })
           )
       };
+
+      if (showTime === true) {
+        items.field5 = $('<input type="text"/>')
+          .addClass('uutask-field-5');
+      }
 
       var $wrapper = $('<ul/>');
       $el.append($wrapper.append(
@@ -42,6 +48,7 @@ define('uutask-utils', [
       items.wrapper = $wrapper;
 
       $('select', $el).select2({ minimumResultsForSearch: -1 });
+      $('.uutask-field-5', $el).patternPickadate({date:false});
 
       return items;
     }
@@ -50,7 +57,7 @@ define('uutask-utils', [
 });
 
 
-define('uutask-pattern-due-date-rule', [
+define('uutask-pattern-due-date-computed', [
   'jquery',
   'mockup-patterns-base',
   'uutask-utils'
@@ -58,18 +65,16 @@ define('uutask-pattern-due-date-rule', [
   'use strict';
 
   var DueDateRule = Base.extend({
-    name: 'due-date-rule',
-    trigger: '.pat-due-date-rule',
+    name: 'due-date-computed',
+    trigger: '.pat-due-date-computed',
     defaults: {
-      vocab: {
-        time_units: [],
-        time_relations: [],
-        source_date: [],
-        days_of_week: []
+      rule: {
+        field2: [],
+        field3: [],
+        field4: []
       },
       i18n: {
-        select_relative_to_dow: "",
-        time_of_day: "",
+        time_of_day: "Time of day",
       }
     },
     init: function() {
@@ -78,31 +83,10 @@ define('uutask-pattern-due-date-rule', [
       self.$el.hide();
 
       self.$wrapper = $('<div>')
-        .addClass('due-date-rule-wrapper')
+        .addClass('due-date-computed-wrapper')
         .insertAfter(self.$el);
 
-      self.$rule1 = Utils.appendRule(
-        self.$wrapper,
-        self.options.vocab.time_units,
-        self.options.vocab.time_relations,
-        self.options.vocab.source_date
-      );
-
-      self.$dow = $('<div/>');
-      self.$dow.append(
-        $('<input type="checkbox"/>').on('click', function(e) {
-          // TODO: disable/shadow self.$rule1.wrapper or self.$rule2.wrapper
-        })
-      );
-      self.$dow.append($('<label/>').html(self.options.i18n.select_relative_to_dow));
-      self.$wrapper.append(self.$dow);
-
-      self.$rule2 = Utils.appendRule(
-        self.$wrapper,
-        self.options.vocab.days_of_week,
-        self.options.vocab.time_relations,
-        self.options.vocab.source_date
-      );
+      self.$rule = Utils.appendRule(self.$wrapper, self.options, true);
 
       self.update();
     },
@@ -199,11 +183,41 @@ define('uutask-pattern-notification-rules', [
 
 require([
   'jquery',
-  'uutask-pattern-due-date-rule',
+  'uutask-pattern-due-date-computed',
   'uutask-pattern-notification-rules'
 ], function($, DueDateRule, NotificationRules) {
 
   $(document).ready(function() {
+    var options = [
+      $('#formfield-form-widgets-IAssignedTask-due_date'),
+      $('#formfield-form-widgets-IAssignedTask-due_date_computed'),
+      $('#formfield-form-widgets-IAssignedTask-due_date_computed_relative_to_dow')
+    ];
+    $.each(options, function(i, $el) {
+      $input = $('<input/>')
+        .prop('type', 'radio')
+        .prop('name', 'formfield-form-widgets-IAssignedTask-due_date-radio')
+        .on('change', function(e) {
+          $.each(options, function(i, $el_) {
+            if ($el === $el_) {
+              $('.pattern-pickadate-wrapper', $el_).show();
+              $('.due-date-computed-wrapper', $el_).show();
+            } else {
+              $('.pattern-pickadate-wrapper', $el_).hide();
+              $('.due-date-computed-wrapper', $el_).hide();
+            }
+          });
+        });
+
+      if (i == 0) {
+        $input.prop("checked", true);
+      } else {
+        $('.pattern-pickadate-wrapper', $el).hide();
+        $('.due-date-computed-wrapper', $el).hide();
+      }
+
+      $('label', $el).first().before($input);
+    });
   });
 
 });
