@@ -6,7 +6,7 @@ define('uutask-utils', [
   'use strict';
 
   return {
-    appendRule: function($el, options, showTime) {
+    appendRule: function($el, options, showTime, callback) {
       var items = {
         field1: $('<input type="text"/>')
           .addClass('uutask-field1'),
@@ -44,13 +44,24 @@ define('uutask-utils', [
           return v.wrap($('<li/>')).parent();
         })
       ));
-      items.wrapper = $wrapper;
 
       $('select.uutask-field2', $el).select2({ minimumResultsForSearch: -1, width: 100 });
       $('select.uutask-field3', $el).select2({ minimumResultsForSearch: -1, width: 100 });
       $('select.uutask-field4', $el).select2({ minimumResultsForSearch: -1, width: 150 });
       $('.uutask-field5', $el).patternPickadate({date:false});
 
+      $.map(items, function($el) {
+        $el.on('change', function(e) {
+          callback({
+            field1: items.field1.val(),
+            field2: items.field2.val(),
+            field3: items.field3.val(),
+            field4: items.field4.val()
+          });
+        });
+      });
+
+      items.wrapper = $wrapper;
       return items;
     }
   };
@@ -87,14 +98,31 @@ define('uutask-pattern-due-date-computed', [
         .addClass('due-date-computed-wrapper')
         .insertAfter(self.$el);
 
-      self.$rule = Utils.appendRule(self.$wrapper, self.options, true);
+      self.$rule = Utils.appendRule(self.$wrapper, self.options, true, function(data) {
+        self.$el.val(JSON.stringify(data));
+      });
 
       self.update();
     },
     extract: function() {
     },
     update: function() {
-      //var value = JSON.parse(self.$el.val());
+      var self = this;
+      if (self.$el.val() === "") {
+          self.$rule.field1.val('');
+          self.$rule.field2.select2("val", self.options.rule.field2[0][0]);
+          self.$rule.field3.select2("val", self.options.rule.field3[0][0]); 
+          self.$rule.field4.select2("val", self.options.rule.field4[0][0]); 
+      } else {
+        try {
+          var value = JSON.parse(self.$el.val());
+          self.$rule.field1.val(value.field1);
+          self.$rule.field2.select2("val", value.field2);
+          self.$rule.field3.select2("val", value.field3); 
+          self.$rule.field4.select2("val", value.field4); 
+        } catch (error) {
+        }
+      }
     }
   });
 
@@ -144,29 +172,58 @@ define('uutask-pattern-notification-rules', [
         .on('click', function(e) {
           e.stopPropagation();
           e.preventDefault();
-
-          var $rule = Utils.appendRule(self.$rules, self.options, false);
-          
-          var $remove = $('<a href="#"/>')
-            .addClass('notification-rules-remove')
-            .html(self.options.i18n.remove)
-
-          $remove.wrap($('<li/>'))
-            .parent()
-            .appendTo($rule.wrapper);
-
-          $remove.on('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            $(this).parents('ul').remove()
-          });
+          self.appendRule.call(self);
         });
 
-        self.update();
+      self.update();
     },
-    extract: function() {
+    appendRule: function(value) {
+      var self = this;
+      var $rule = Utils.appendRule(self.$rules, self.options, false, function() {
+        var data = [];
+        $('ul.uutask-rule', self.$rules).each(function(i, $ul) {
+          data.push({
+            field1: $('input.uutask-field1', $ul).val(),
+            field2: $('select.uutask-field2', $ul).val(),
+            field3: $('select.uutask-field3', $ul).val(),
+            field4: $('select.uutask-field4', $ul).val()
+          });
+        });
+        self.$el.val(JSON.stringify(data));
+      });
+
+      if (value !== undefined) {
+        $rule.field1.val(value.field1);
+        $rule.field2.select2("val", value.field2);
+        $rule.field3.select2("val", value.field3); 
+        $rule.field4.select2("val", value.field4); 
+      }
+      
+      var $remove = $('<a href="#"/>')
+        .addClass('notification-rules-remove')
+        .html(self.options.i18n.remove)
+
+      $remove.wrap($('<li/>'))
+        .parent()
+        .appendTo($rule.wrapper);
+
+      $remove.on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).parents('ul').remove()
+      });
     },
     update: function() {
+      var self = this;
+      if (self.$el.val() !== "") {
+        try {
+          var values = JSON.parse(self.$el.val());
+          $.each(values, function(i, value) {
+            self.appendRule(value)
+          });
+        } catch (error) {
+        }
+      }
       //var value = JSON.parse(self.$el.attr('val'));
     }
   });
@@ -183,36 +240,49 @@ require([
 ], function($, DueDateRule, NotificationRules) {
 
   $(document).ready(function() {
+    var id = 'formfield-form-widgets-IAssignedTask-due_date';
+
     var options = [
-      $('#formfield-form-widgets-IAssignedTask-due_date'),
-      $('#formfield-form-widgets-IAssignedTask-due_date_computed'),
-      $('#formfield-form-widgets-IAssignedTask-due_date_computed_relative_to_dow')
+      $('form #' + id),
+      $('form #' + id + '_computed'),
+      $('form #' + id + '_computed_relative_to_dow')
     ];
+
     $.each(options, function(i, $el) {
       $input = $('<input/>')
         .prop('type', 'radio')
-        .prop('name', 'formfield-form-widgets-IAssignedTask-due_date-radio')
+        .prop('name', id + '-radio')
         .on('change', function(e) {
           $.each(options, function(i, $el_) {
             if ($el === $el_) {
-              $('.pattern-pickadate-wrapper', $el_).show();
-              $('.due-date-computed-wrapper', $el_).show();
+              $el_.removeClass('uutask-hidden');
             } else {
-              $('.pattern-pickadate-wrapper', $el_).hide();
-              $('.due-date-computed-wrapper', $el_).hide();
+              $el_.addClass('uutask-hidden');
             }
           });
         });
 
-      if (i == 0) {
+      if ($('input', $el).first().val() !== '') {
         $input.prop("checked", true);
       } else {
-        $('.pattern-pickadate-wrapper', $el).hide();
-        $('.due-date-computed-wrapper', $el).hide();
+        $el.addClass('uutask-hidden');
       }
 
       $('label', $el).first().before($input);
     });
+
+    if ($('input[name=' + id + '-radio]:checked').size() == 0) {
+      $('input[name=' + id + '-radio]:checked').first().prop("checked", true);
+    }
+
+    $('body.portaltype-uu-task form').on('submit', function() {
+      $.each(options, function(i, $el) {
+        if ($('input', $el).first().prop('checked') === false) {
+        $($('input', $el)[1]).val('');
+        }
+      });
+    });
+
   });
 
 });

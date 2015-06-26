@@ -17,3 +17,8 @@
 #content ul.uutask-rule > li .pattern-pickadate-wrapper {
     margin-bottom: -0.6em;
   }
+
+#content .uutask-hidden .due-date-computed-wrapper,
+#content .uutask-hidden .pattern-pickadate-wrapper {
+  display: none;
+}
