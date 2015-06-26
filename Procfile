@@ -1,1 +1,1 @@
-web: buildout -c port.cfg; plone console
+web: buildout -c heroku.cfg; plone console
