@@ -23,7 +23,12 @@ class IAssignedTask(model.Schema):
     model.fieldset(
         'assigned',
         label=_(u'Assigned'),
-        fields=('due_date', 'due_date_rule', 'notification_rules'),
+        fields=(
+            'due_date',
+            'due_date_computed',
+            'due_date_computed_relative_to_dow',
+            'notification_rules',
+        ),
     )
 
     due_date = schema.Datetime(
