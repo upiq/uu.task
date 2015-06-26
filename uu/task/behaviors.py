@@ -56,9 +56,17 @@ class IAssignedTask(model.Schema):
 
     @invariant
     def due_date_validation(data):
-        if data.due_date is not None and \
-                data.due_date_computed is not None and \
-                data.due_date_computed_relative_to_dow is not None:
+        value = 0
+        if data.due_date is not None:
+            value += 1
+
+        if data.due_date_computed is not None:
+            value += 1
+
+        if data.due_date_computed_relative_to_dow is not None:
+            value += 1
+
+        if value > 1:
             raise Invalid(_(u"'Due date', 'Computed due date' and "
                             u"'Computed due date relative to day of week' "
                             u"field can not be provided at the same time"))
