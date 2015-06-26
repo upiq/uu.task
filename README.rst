@@ -49,6 +49,7 @@ Behaviors
 - **Assigned Task**
 
 .. image:: screenshot2.png
+.. image:: screenshot3.png
 
 Demo
 ----
