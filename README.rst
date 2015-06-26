@@ -29,6 +29,7 @@ Contributors
 
 * `Sean Upton <https://github.com/seanupton>` (UPIQ, University of Utah Health Sciences)
 * `Alex Clark <http://aclark.net/>` (ACLARK.NET, LLC)
+* `Rok Garbas <https://github.com/garbas>` (ACLARK.NET, LLC)
 
 Content Types
 -------------
