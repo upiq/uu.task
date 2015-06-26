@@ -50,6 +50,14 @@ Behaviors
 
 .. image:: screenshot2.png
 
+Demo
+----
+
+A demo site is available here:
+
+- http://uu-task-demo.herokuapp.com/
+
+
 Similar Add-ons
 ---------------
 
