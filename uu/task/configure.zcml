@@ -23,24 +23,6 @@
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
     <permission id="uu.task.view" title="UUTask: View Task" />
 
-    <!-- Custom add form -->
-    <adapter
-        name="uu.task"
-        for="Products.CMFCore.interfaces.IFolderish
-             Products.CMFDefault.interfaces.ICMFDefaultSkin
-             plone.dexterity.interfaces.IDexterityFTI"
-        provides="zope.publisher.interfaces.browser.IBrowserPage"
-        factory=".content.TaskAddView"
-        />
-
-    <!-- Custom edit form -->
-    <browser:page
-        name="edit"
-        for=".content.Task"
-        class=".content.TaskEditForm"
-        permission="uu.task.edit"
-        />
-
     <!-- UU Task Planner -->
 
     <!-- Custom permissions -->
@@ -49,24 +31,6 @@
     <permission id="uu.taskplanner.edit" title="UUTaskPlanner: Edit Task" />
     <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
     <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
-
-    <!-- Custom add form -->
-    <adapter
-        for="Products.CMFCore.interfaces.IFolderish
-             Products.CMFDefault.interfaces.ICMFDefaultSkin
-             plone.dexterity.interfaces.IDexterityFTI"
-        provides="zope.publisher.interfaces.browser.IBrowserPage"
-        factory=".content.TaskPlannerAddView"
-        name="uu.taskplanner"
-        />
-
-    <!-- Custom edit form -->
-    <browser:page
-        name="edit"
-        for=".content.TaskPlanner"
-        class=".content.TaskPlannerEditForm"
-        permission="uu.taskplanner.edit"
-        />
 
     <!-- Assigned Task -->
 
