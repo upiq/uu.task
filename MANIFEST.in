@@ -1,12 +1,18 @@
+include *.nix
 include *.png
 include *.py
 include *.rst
 include Makefile
+include Procfile
 include buildout.cfg
+include heroku.cfg
+include teamwork.cfg
 recursive-include doc ICON-LICENSE
 recursive-include doc *.png
 recursive-include doc *.rst
 recursive-include doc *.txt
+recursive-include uu *.css
+recursive-include uu *.js
 recursive-include uu *.png
 recursive-include uu *.pt
 recursive-include uu *.xml
