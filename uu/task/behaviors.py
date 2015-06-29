@@ -24,11 +24,25 @@ class IAssignedTask(model.Schema):
         'assigned',
         label=_(u'Assigned'),
         fields=(
+            'project_manager',
+            'assigned_to',
             'due_date',
             'due_date_computed',
             'due_date_computed_relative_to_dow',
             'notification_rules',
         ),
+    )
+
+    project_manager = schema.TextLine(
+        title=_(u"Project manager"),
+        required=False,
+        constraint=is_json,
+    )
+
+    assigned_to = schema.TextLine(
+        title=_(u"Assigned to"),
+        required=False,
+        constraint=is_json,
     )
 
     due_date = schema.Datetime(

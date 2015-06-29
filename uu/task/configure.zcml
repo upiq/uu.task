@@ -66,6 +66,8 @@
 
     <!-- Widgets for IAssignedTask fields -->
 
+    <adapter factory=".browser.ProjectManagerFieldWidget" />
+    <adapter factory=".browser.AssignedToFieldWidget" />
     <adapter factory=".browser.DueDateFieldWidget" />
     <adapter factory=".browser.DueDateComputedFieldWidget" />
     <adapter factory=".browser.DueDateComputedRelativeToDOWFieldWidget" />

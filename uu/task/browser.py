@@ -63,7 +63,7 @@ class TaskExtender(BrowserView):
     """
 
 
-class JSONWidget(BaseWidget, TextWidget):
+class PatternWidget(BaseWidget, TextWidget):
     """
     """
 
@@ -77,10 +77,28 @@ class JSONWidget(BaseWidget, TextWidget):
     def _base_args(self):
         """Method which will calculate _base class arguments.
         """
-        args = super(JSONWidget, self)._base_args()
+        args = super(PatternWidget, self)._base_args()
         args['name'] = self.name
         args['value'] = self.value
         return args
+
+
+@adapter(getSpecification(IAssignedTask['project_manager']), IFormLayer)
+@implementer(IFieldWidget)
+def ProjectManagerFieldWidget(field, request):
+    widget = PatternWidget(request)
+    widget.pattern = 'project_manager'
+    widget.pattern_options = dict()
+    return FieldWidget(field, widget)
+
+
+@adapter(getSpecification(IAssignedTask['assigned_to']), IFormLayer)
+@implementer(IFieldWidget)
+def AssignedToFieldWidget(field, request):
+    widget = PatternWidget(request)
+    widget.pattern = 'assigned_to'
+    widget.pattern_options = dict()
+    return FieldWidget(field, widget)
 
 
 @adapter(getSpecification(IAssignedTask['due_date']), IFormLayer)
@@ -92,7 +110,7 @@ def DueDateFieldWidget(field, request):
 @adapter(getSpecification(IAssignedTask['due_date_computed']), IFormLayer)
 @implementer(IFieldWidget)
 def DueDateComputedFieldWidget(field, request):
-    widget = JSONWidget(request)
+    widget = PatternWidget(request)
     widget.pattern = 'due-date-computed'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
@@ -107,7 +125,7 @@ def DueDateComputedFieldWidget(field, request):
     IAssignedTask['due_date_computed_relative_to_dow']), IFormLayer)
 @implementer(IFieldWidget)
 def DueDateComputedRelativeToDOWFieldWidget(field, request):
-    widget = JSONWidget(request)
+    widget = PatternWidget(request)
     widget.pattern = 'due-date-computed'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
@@ -121,7 +139,7 @@ def DueDateComputedRelativeToDOWFieldWidget(field, request):
 @adapter(getSpecification(IAssignedTask['notification_rules']), IFormLayer)
 @implementer(IFieldWidget)
 def NotificationRulesFieldWidget(field, request):
-    widget = JSONWidget(request)
+    widget = PatternWidget(request)
     widget.pattern = 'notification-rules'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
