@@ -77,8 +77,8 @@ define('uutask-pattern-due-date-computed', [
   'use strict';
 
   var DueDateRule = Base.extend({
-    name: 'due-date-computed',
-    trigger: '.pat-due-date-computed',
+    name: 'uutask-due-date-computed',
+    trigger: '.pat-uutask-due-date-computed',
     defaults: {
       rule: {
         field2: [],
@@ -139,8 +139,8 @@ define('uutask-pattern-notification-rules', [
   'use strict';
 
   var NotificationRules = Base.extend({
-    name: 'notification-rules',
-    trigger: '.pat-notification-rules',
+    name: 'uutask-notification-rules',
+    trigger: '.pat-uutask-notification-rules',
     defaults: {
       rule: {
         field2: [],

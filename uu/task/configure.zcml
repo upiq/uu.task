@@ -73,4 +73,9 @@
     <adapter factory=".browser.DueDateComputedRelativeToDOWFieldWidget" />
     <adapter factory=".browser.NotificationRulesFieldWidget" />
 
+    <utility
+        factory=".behaviors.UsersGroupsVocabularyFactory"
+        name="uu.task.UsersAndGroups"
+        />
+
 </configure>

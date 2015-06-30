@@ -1,5 +1,6 @@
 from Products.Five.browser import BrowserView
 from plone.app.widgets.base import InputWidget
+from plone.app.widgets.dx import AjaxSelectWidget
 from plone.app.widgets.dx import BaseWidget
 from plone.app.widgets.dx import DatetimeWidget
 from uu.task import _
@@ -86,19 +87,19 @@ class PatternWidget(BaseWidget, TextWidget):
 @adapter(getSpecification(IAssignedTask['project_manager']), IFormLayer)
 @implementer(IFieldWidget)
 def ProjectManagerFieldWidget(field, request):
-    widget = PatternWidget(request)
-    widget.pattern = 'project_manager'
-    widget.pattern_options = dict()
-    return FieldWidget(field, widget)
+    widget = FieldWidget(field, AjaxSelectWidget(request))
+    widget.vocabulary = 'uu.task.UsersAndGroups'
+    widget.pattern_options['allowNewItems'] = False
+    return widget
 
 
 @adapter(getSpecification(IAssignedTask['assigned_to']), IFormLayer)
 @implementer(IFieldWidget)
 def AssignedToFieldWidget(field, request):
-    widget = PatternWidget(request)
-    widget.pattern = 'assigned_to'
-    widget.pattern_options = dict()
-    return FieldWidget(field, widget)
+    widget = FieldWidget(field, AjaxSelectWidget(request))
+    widget.vocabulary = 'uu.task.UsersAndGroups'
+    widget.pattern_options['allowNewItems'] = False
+    return widget
 
 
 @adapter(getSpecification(IAssignedTask['due_date']), IFormLayer)
@@ -110,37 +111,37 @@ def DueDateFieldWidget(field, request):
 @adapter(getSpecification(IAssignedTask['due_date_computed']), IFormLayer)
 @implementer(IFieldWidget)
 def DueDateComputedFieldWidget(field, request):
-    widget = PatternWidget(request)
-    widget.pattern = 'due-date-computed'
+    widget = FieldWidget(field, PatternWidget(request))
+    widget.pattern = 'uutask-due-date-computed'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
         field2=TIME_UNITS,
         field3=TIME_RELATIONS,
         field4=SOURCE_DATE,
     )
-    return FieldWidget(field, widget)
+    return widget
 
 
 @adapter(getSpecification(
     IAssignedTask['due_date_computed_relative_to_dow']), IFormLayer)
 @implementer(IFieldWidget)
 def DueDateComputedRelativeToDOWFieldWidget(field, request):
-    widget = PatternWidget(request)
-    widget.pattern = 'due-date-computed'
+    widget = FieldWidget(field, PatternWidget(request))
+    widget.pattern = 'uutask-due-date-computed'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
         field2=DAYS_OF_WEEK,
         field3=TIME_RELATIONS,
         field4=SOURCE_DATE,
     )
-    return FieldWidget(field, widget)
+    return widget
 
 
 @adapter(getSpecification(IAssignedTask['notification_rules']), IFormLayer)
 @implementer(IFieldWidget)
 def NotificationRulesFieldWidget(field, request):
-    widget = PatternWidget(request)
-    widget.pattern = 'notification-rules'
+    widget = FieldWidget(field, PatternWidget(request))
+    widget.pattern = 'uutask-notification-rules'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
         field2=TIME_UNITS,
@@ -151,4 +152,4 @@ def NotificationRulesFieldWidget(field, request):
         add_rule=_(u"Add rule"),
         remove=_(u"Remove"),
     )
-    return FieldWidget(field, widget)
+    return widget
