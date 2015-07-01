@@ -102,34 +102,19 @@ def AssignedToFieldWidget(field, request):
     return widget
 
 
-@adapter(getSpecification(IAssignedTask['due_date']), IFormLayer)
+@adapter(getSpecification(IAssignedTask['due']), IFormLayer)
 @implementer(IFieldWidget)
-def DueDateFieldWidget(field, request):
-    return FieldWidget(field, DatetimeWidget(request))
-
-
-@adapter(getSpecification(IAssignedTask['due_date_computed']), IFormLayer)
-@implementer(IFieldWidget)
-def DueDateComputedFieldWidget(field, request):
+def DueFieldWidget(field, request):
     widget = FieldWidget(field, PatternWidget(request))
-    widget.pattern = 'uutask-due-date-computed'
+    widget.pattern = 'uutask-due'
     widget.pattern_options = dict()
-    widget.pattern_options['rule'] = dict(
+    widget.pattern_options['date'] = dict()
+    widget.pattern_options['computed'] = dict(
         field2=TIME_UNITS,
         field3=TIME_RELATIONS,
         field4=SOURCE_DATE,
     )
-    return widget
-
-
-@adapter(getSpecification(
-    IAssignedTask['due_date_computed_relative_to_dow']), IFormLayer)
-@implementer(IFieldWidget)
-def DueDateComputedRelativeToDOWFieldWidget(field, request):
-    widget = FieldWidget(field, PatternWidget(request))
-    widget.pattern = 'uutask-due-date-computed'
-    widget.pattern_options = dict()
-    widget.pattern_options['rule'] = dict(
+    widget.pattern_options['computed_dow'] = dict(
         field2=DAYS_OF_WEEK,
         field3=TIME_RELATIONS,
         field4=SOURCE_DATE,

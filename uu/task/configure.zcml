@@ -64,15 +64,13 @@
         permission="cmf.ManagePortal"
         />
 
-    <!-- Widgets for IAssignedTask fields -->
-
+    <!-- Widgets -->
     <adapter factory=".browser.ProjectManagerFieldWidget" />
     <adapter factory=".browser.AssignedToFieldWidget" />
-    <adapter factory=".browser.DueDateFieldWidget" />
-    <adapter factory=".browser.DueDateComputedFieldWidget" />
-    <adapter factory=".browser.DueDateComputedRelativeToDOWFieldWidget" />
+    <adapter factory=".browser.DueFieldWidget" />
     <adapter factory=".browser.NotificationRulesFieldWidget" />
 
+    <!-- Vocabularies -->
     <utility
         factory=".behaviors.UsersGroupsVocabularyFactory"
         name="uu.task.UsersAndGroups"
