@@ -176,6 +176,9 @@ define('uutask-pattern-due', [
       }
 
 
+      $('> div', self.$due_date).show();
+      $('> div', self.$due_date_computed).hide();
+      $('> div', self.$due_date_computed_dow).hide();
 
       if (value.type === 'date') {
         var pattern = self.$due_date_widget.data('pattern-pickadate')

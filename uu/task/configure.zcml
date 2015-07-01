@@ -70,6 +70,14 @@
     <adapter factory=".browser.DueFieldWidget" />
     <adapter factory=".browser.NotificationRulesFieldWidget" />
 
+    <browser:page
+        name="ploneform-render-widget"
+        for=".browser.IInheritParentValue"
+        layer="plone.app.widgets.interfaces.IWidgetsLayer"
+        class=".browser.RenderWidget"
+        permission="zope.Public"
+        />
+
     <!-- Vocabularies -->
     <utility
         factory=".behaviors.UsersGroupsVocabularyFactory"

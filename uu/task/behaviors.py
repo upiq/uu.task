@@ -1,8 +1,8 @@
 import json
 
 from Products.CMFCore.utils import getToolByName
-from plone.app.widgets.browser.vocabulary import _permissions
 from plone.app.vocabularies import SlicableVocabulary
+from plone.app.widgets.browser.vocabulary import _permissions
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from uu.task import _

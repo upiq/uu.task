@@ -1,19 +1,21 @@
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from plone.app.widgets.base import InputWidget
 from plone.app.widgets.dx import AjaxSelectWidget
 from plone.app.widgets.dx import BaseWidget
-from plone.app.widgets.dx import DatetimeWidget
 from uu.task import _
 from uu.task.behaviors import IAssignedTask
+from uu.task.interfaces import ITaskPlanner
 from z3c.form.browser.text import TextWidget
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
 from z3c.form.interfaces import ITextWidget
 from z3c.form.util import getSpecification
 from z3c.form.widget import FieldWidget
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapter
-from zope.interface import implementer
-from zope.interface import implementsOnly
+from zope.interface import implementer, alsoProvides, implementsOnly
 
 
 TIME_UNITS = (
@@ -49,6 +51,16 @@ DAYS_OF_WEEK = (
 )
 
 
+def get_taskplanner(item):
+    #if ITaskPlanner.providedBy(item):
+    if item.portal_type == 'uu.taskplanner':
+        return item
+    elif ISiteRoot.providedBy(item):
+        return None
+    else:
+        return get_taskplanner(item.aq_parent)
+
+
 class TaskStatus(BrowserView):
     """
     View for assigned parties to see tasks assigned and when they are due
@@ -61,6 +73,11 @@ class TaskStatus(BrowserView):
 class TaskExtender(BrowserView):
     """
     View for add-ons to extend their own tasks with task behavior from uu.task
+    """
+
+
+class IInheritParentValue(ITextWidget):
+    """
     """
 
 
@@ -83,6 +100,17 @@ class PatternWidget(BaseWidget, TextWidget):
         args['value'] = self.value
         return args
 
+    def render_parent(self):
+        if ISiteRoot.providedBy(self.context):
+            return None
+
+        taskplanner = get_taskplanner(self.context.aq_parent)
+
+        if not taskplanner:
+            return None
+
+        return 'Parent: %s' % getattr(taskplanner, self.field.__name__)
+
 
 @adapter(getSpecification(IAssignedTask['project_manager']), IFormLayer)
 @implementer(IFieldWidget)
@@ -90,6 +118,7 @@ def ProjectManagerFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.UsersAndGroups'
     widget.pattern_options['allowNewItems'] = False
+    alsoProvides(widget, IInheritParentValue)
     return widget
 
 
@@ -99,6 +128,7 @@ def AssignedToFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.UsersAndGroups'
     widget.pattern_options['allowNewItems'] = False
+    alsoProvides(widget, IInheritParentValue)
     return widget
 
 
@@ -119,6 +149,7 @@ def DueFieldWidget(field, request):
         field3=TIME_RELATIONS,
         field4=SOURCE_DATE,
     )
+    alsoProvides(widget, IInheritParentValue)
     return widget
 
 
@@ -137,4 +168,9 @@ def NotificationRulesFieldWidget(field, request):
         add_rule=_(u"Add rule"),
         remove=_(u"Remove"),
     )
+    alsoProvides(widget, IInheritParentValue)
     return widget
+
+
+class RenderWidget(ViewMixinForTemplates, BrowserView):
+    index = ViewPageTemplateFile('templates/widget.pt')
