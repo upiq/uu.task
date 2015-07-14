@@ -23,6 +23,14 @@
     <permission id="uu.task.remove" title="UUTask: Remove Task" />
     <permission id="uu.task.view" title="UUTask: View Task" />
 
+    <browser:viewlet
+        for="uu.task.interfaces.ITask"
+        name="uu.task.viewlets.task"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+        template="templates/task-viewlet.pt"
+        permission="zope2.View"
+        />
+
     <!-- UU Task Planner -->
 
     <!-- Custom permissions -->
