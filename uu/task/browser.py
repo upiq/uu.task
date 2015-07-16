@@ -6,8 +6,9 @@ from plone.app.widgets.dx import AjaxSelectWidget
 from plone.app.widgets.dx import BaseWidget
 from uu.task import _
 from uu.task.behaviors import IAssignedTask
-from uu.task.content import TaskPlanner
+from uu.task.interfaces import ITaskPlanner
 from z3c.form.browser.text import TextWidget
+from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
 from z3c.form.interfaces import ITextWidget
@@ -52,7 +53,7 @@ DAYS_OF_WEEK = (
 
 
 def get_taskplanner(item):
-    if TaskPlanner.providedBy(item):
+    if ITaskPlanner.providedBy(item):
         return item
     elif ISiteRoot.providedBy(item):
         return None
@@ -98,25 +99,11 @@ class PatternWidget(BaseWidget, TextWidget):
         args['name'] = self.name
         args['value'] = self.value
 
-        context = self.context
-
-        # we need to detect when we are in add form
-        #
-        # for some reason add form for taskplanner content type is not marked
-        # with IAddForm or any other interface that i could use to distinguish
-        #
-        # code that should be working:
-        # from z3c.form.interfaces import IAddForm
-        # if IAddForm.providedBy(getattr(self, 'form')):
-        #
-        # as an ugly hack around just check url to continue working
-
-        # TODO: this needs to be fixed to properly detect taskplanners add form
-        if self.request.getURL().endswith('/++add++uu.taskplanner') or (
-                '/++add++' not in self.request.getURL() and
-                TaskPlanner.providedBy(context) and
-                'pattern_options' in args
-                ):
+        if (IAddForm.providedBy(self.form._parent) and
+                self.form._parent.portal_type == 'uu.taskplanner') or \
+           (not IAddForm.providedBy(self.form._parent) and
+                ITaskPlanner.providedBy(self.context) and
+                'pattern_options' in args):
             args['pattern_options']['date'] = False
 
         return args
