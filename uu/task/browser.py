@@ -6,7 +6,7 @@ from plone.app.widgets.dx import AjaxSelectWidget
 from plone.app.widgets.dx import BaseWidget
 from uu.task import _
 from uu.task.behaviors import IAssignedTask
-from uu.task.interfaces import ITaskPlanner
+from uu.task.content import TaskPlanner
 from z3c.form.browser.text import TextWidget
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
@@ -52,8 +52,7 @@ DAYS_OF_WEEK = (
 
 
 def get_taskplanner(item):
-    #if ITaskPlanner.providedBy(item):
-    if item.portal_type == 'uu.taskplanner':
+    if TaskPlanner.providedBy(item):
         return item
     elif ISiteRoot.providedBy(item):
         return None
@@ -98,6 +97,28 @@ class PatternWidget(BaseWidget, TextWidget):
         args = super(PatternWidget, self)._base_args()
         args['name'] = self.name
         args['value'] = self.value
+
+        context = self.context
+
+        # we need to detect when we are in add form
+        #
+        # for some reason add form for taskplanner content type is not marked
+        # with IAddForm or any other interface that i could use to distinguish
+        #
+        # code that should be working:
+        # from z3c.form.interfaces import IAddForm
+        # if IAddForm.providedBy(getattr(self, 'form')):
+        #
+        # as an ugly hack around just check url to continue working
+
+        # TODO: this needs to be fixed to properly detect taskplanners add form
+        if self.request.getURL().endswith('/++add++uu.taskplanner') or (
+                '/++add++' not in self.request.getURL() and
+                TaskPlanner.providedBy(context) and
+                'pattern_options' in args
+                ):
+            args['pattern_options']['date'] = False
+
         return args
 
     def render_parent(self):

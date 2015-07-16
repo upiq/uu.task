@@ -109,7 +109,9 @@ define('uutask-pattern-due', [
         .addClass('uutask-due-wrapper')
         .insertAfter(self.$el);
 
-      self.$due_date = $('<li>').appendTo(self.$wrapper);
+      if (self.options.date !== false) {
+        self.$due_date = $('<li>').appendTo(self.$wrapper);
+      }
       self.$due_date_computed = $('<li>').appendTo(self.$wrapper);
       self.$due_date_computed_dow = $('<li>').appendTo(self.$wrapper);
 
@@ -119,31 +121,35 @@ define('uutask-pattern-due', [
         self.$due_date_computed,
         self.$due_date_computed_dow
       ], function(i, $el) {
-        $('<input/>')
-          .prop('type', 'radio')
-          .prop('name', 'uutask-due-radio-' + self.uid)
-          .prop('checked', i === 0)
-          .appendTo($el)
-          .on('change', function(e) {
-            $('> li > div', self.$wrapper).hide();
-            $('> div', $el).show();
-          });
-        $('<label/>')
-          .html(self.options.i18n['label_' + (i + 1)])
-          .appendTo($el);
-        $('<div/>')
-          .addClass('uutask-due-widget')
-          .appendTo($el);
+        if ($el !== undefined) {
+          $('<input/>')
+            .prop('type', 'radio')
+            .prop('name', 'uutask-due-radio-' + self.uid)
+            .prop('checked', i === 0 || (i === 1 && self.options.date === false))
+            .appendTo($el)
+            .on('change', function(e) {
+              $('> li > div', self.$wrapper).hide();
+              $('> div', $el).show();
+            });
+          $('<label/>')
+            .html(self.options.i18n['label_' + (i + 1)])
+            .appendTo($el);
+          $('<div/>')
+            .addClass('uutask-due-widget')
+            .appendTo($el);
+        }
       });
 
 
-      self.$due_date_widget = $('<input/>')
-        .prop('type', 'text')
-        .appendTo($('> div', self.$due_date))
-        .patternPickadate(self.options.date);
-      self.$due_date_widget.data('pattern-pickadate').on('updated', function(e) {
-        self.$el.val(JSON.stringify({type: "date", value: $(this).val()}));
-      });
+      if (self.options.date !== false) {
+        self.$due_date_widget = $('<input/>')
+          .prop('type', 'text')
+          .appendTo($('> div', self.$due_date))
+          .patternPickadate(self.options.date);
+        self.$due_date_widget.data('pattern-pickadate').on('updated', function(e) {
+          self.$el.val(JSON.stringify({type: "date", value: $(this).val()}));
+        });
+      }
 
       self.$due_date_computed_widget = Utils.appendRule(
         $('> div', self.$due_date_computed), self.options.computed, true,
@@ -176,9 +182,14 @@ define('uutask-pattern-due', [
       }
 
 
-      $('> div', self.$due_date).show();
-      $('> div', self.$due_date_computed).hide();
-      $('> div', self.$due_date_computed_dow).hide();
+      if (self.options.date !== false) {
+        $('> div', self.$due_date).show();
+        $('> div', self.$due_date_computed).hide();
+        $('> div', self.$due_date_computed_dow).hide();
+      } else {
+        $('> div', self.$due_date_computed).show();
+        $('> div', self.$due_date_computed_dow).hide();
+      }
 
       if (value.type === 'date') {
         var pattern = self.$due_date_widget.data('pattern-pickadate')
