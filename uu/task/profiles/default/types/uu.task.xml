@@ -9,7 +9,7 @@
     </property>
     <property name="description">Assignable task with due date</property>
     <property name="klass">plone.dexterity.content.Container</property>
-    <property name="schema">uu.task.content.Task</property>
+    <property name="schema">uu.task.interfaces.ITask</property>
     <property name="title">Task</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/task.png</property>
 </object>

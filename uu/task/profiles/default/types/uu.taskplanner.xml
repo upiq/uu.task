@@ -9,7 +9,7 @@
     </property>
     <property name="description">Series of tasks with shared settings</property>
     <property name="klass">plone.dexterity.content.Container</property>
-    <property name="schema">uu.task.content.TaskPlanner</property>
+    <property name="schema">uu.task.interfaces.ITaskPlanner</property>
     <property name="title">Task Planner</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/calendar.png</property>
 </object>
