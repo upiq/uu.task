@@ -72,6 +72,10 @@
         permission="cmf.ManagePortal"
         />
 
+    <!-- Data converter -->
+    <adapter factory=".browser.PatternWidgetListDataConverter" />
+    <adapter factory=".browser.PatternWidgetDictDataConverter" />
+
     <!-- Widgets -->
     <adapter factory=".browser.ProjectManagerFieldWidget" />
     <adapter factory=".browser.AssignedToFieldWidget" />

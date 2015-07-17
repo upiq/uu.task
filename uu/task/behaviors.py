@@ -1,11 +1,15 @@
-import json
+import pytz
 
 from Products.CMFCore.utils import getToolByName
+from datetime import datetime
 from plone.app.vocabularies import SlicableVocabulary
 from plone.app.widgets.browser.vocabulary import _permissions
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from uu.task import _
+from uu.task import (
+    TIME_UNITS, TIME_RELATIONS, SOURCE_DATE, SOURCE_NOTIFY_DATE, DAYS_OF_WEEK
+)
 from zope import schema
 from zope.component.hooks import getSite
 from zope.interface import implements
@@ -15,12 +19,85 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 
 
-def is_json(value):
+def parse_datetime(value, tz=None, missing_value=None):
+    if not value:
+        return missing_value
+
+    tmp = value.split(' ')
+    if not tmp[0]:
+        return missing_value
+
+    value = tmp[0].split('-')
+    if len(tmp) == 2 and ':' in tmp[1]:
+        value += tmp[1].split(':')
+    else:
+        value += ['00', '00']
+
+    ret = datetime(*map(int, value))
+    if tz:
+        tzinfo = pytz.timezone(tz)
+        ret = tzinfo.localize(ret)
+    return ret
+
+
+def is_due_date_rule(
+        value,
+        field2_values=[i[0] for i in TIME_UNITS],
+        field3_values=[i[0] for i in TIME_RELATIONS],
+        field4_values=[i[0] for i in SOURCE_NOTIFY_DATE],
+        ):
+
+    field1 = value.get('field1')
+    field2 = value.get('field2')
+    field3 = value.get('field3')
+    field4 = value.get('field4')
+
+    if not field1 or not field2 or not field3 or not field4:
+        raise Invalid(_(u"Not valid Rule."))
+
     try:
-        json.loads(value)
+        int(field1)
     except:
-        raise Invalid(_(u"Not valid JSON."))
-    return True
+        raise Invalid(_(u"Not valid Rule."))
+
+    if field2 in field2_values and \
+            field3 in field3_values and \
+            field4 in field4_values:
+        return True
+
+    raise Invalid(_(u"Not valid Rule."))
+
+
+def is_due_date(value):
+    _type = value.get('type')
+    _value = value.get('value')
+
+    if not _type or not _value:
+        raise Invalid(_(u"Not valid Due date."))
+
+    if _type == 'date':
+        ## TODO: respect the selected zone from the widget and just fall back
+        ## to default_zone
+        #default_zone = self.widget.default_timezone
+        #zone = default_zone(self.widget.context)\
+        #    if safe_callable(default_zone) else default_zone
+        zone = None
+        try:
+            parse_datetime(_value, tz=zone)
+        except:
+            raise Invalid(_(u"Not valid Due date."))
+        return True
+
+    elif _type == 'computed':
+        return is_due_date_rule(_value,
+                                field4_values=[i[0] for i in SOURCE_DATE])
+
+    elif _type == 'computed_dow':
+        return is_due_date_rule(_value,
+                                field2_values=[i[0] for i in DAYS_OF_WEEK],
+                                field4_values=[i[0] for i in SOURCE_DATE])
+
+    raise Invalid(_(u"Not valid Due date."))
 
 
 @provider(IFormFieldProvider)
@@ -51,16 +128,18 @@ class IAssignedTask(model.Schema):
         missing_value=(),
     )
 
-    due = schema.TextLine(
+    due = schema.Dict(
         title=u"Due date",
         required=False,
-        constraint=is_json,
+        constraint=is_due_date,
     )
 
-    notification_rules = schema.TextLine(
+    notification_rules = schema.List(
         title=_(u"Notification rules"),
         required=False,
-        constraint=is_json,
+        value_type=schema.Dict(
+            constraint=is_due_date_rule,
+        ),
     )
 
 

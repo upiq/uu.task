@@ -1,55 +1,25 @@
+import json
+
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from plone.app.widgets.base import InputWidget
-from plone.app.widgets.dx import AjaxSelectWidget
-from plone.app.widgets.dx import BaseWidget
+from plone.app.widgets.dx import AjaxSelectWidget, BaseWidget
 from uu.task import _
+from uu.task import (
+    TIME_UNITS, TIME_RELATIONS, SOURCE_DATE, SOURCE_NOTIFY_DATE, DAYS_OF_WEEK
+)
 from uu.task.behaviors import IAssignedTask
 from uu.task.interfaces import ITaskPlanner
 from z3c.form.browser.text import TextWidget
-from z3c.form.interfaces import IAddForm
-from z3c.form.interfaces import IFieldWidget
-from z3c.form.interfaces import IFormLayer
-from z3c.form.interfaces import ITextWidget
+from z3c.form.converter import BaseDataConverter
+from z3c.form.interfaces import IAddForm, IFieldWidget, IFormLayer, ITextWidget
 from z3c.form.util import getSpecification
 from z3c.form.widget import FieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import adapter
-from zope.interface import implementer, alsoProvides, implementsOnly
-
-
-TIME_UNITS = (
-    ('hours', _(u'hour(s)')),
-    ('days', _(u'day(s)')),
-)
-
-TIME_RELATIONS = (
-    ('after', _(u'after')),
-    ('before', _(u'before')),
-    ('on', _(u'on')),
-)
-
-SOURCE_DATE = (
-    ('end', _(u'end date for task')),
-    ('start', _(u'start date for task')),
-    ('created', _(u'content creation date')),
-)
-
-SOURCE_NOTIFY_DATE = (
-    [('due', _(u'due date'))] +
-    list(SOURCE_DATE)
-)
-
-DAYS_OF_WEEK = (
-    ('MO', _(u'Monday')),
-    ('TU', _(u'Tuesday')),
-    ('WE', _(u'Wednesday')),
-    ('TH', _(u'Thursday')),
-    ('FR', _(u'Friday')),
-    ('SA', _(u'Saturday')),
-    ('SU', _(u'Sunday')),
-)
+from zope.component import adapter, adapts
+from zope.interface import implementer, alsoProvides, implementsOnly, Interface
+from zope.schema.interfaces import IList, IDict
 
 
 def get_taskplanner(item):
@@ -76,16 +46,56 @@ class TaskExtender(BrowserView):
     """
 
 
-class IInheritParentValue(ITextWidget):
+class IPatternWidget(ITextWidget):
+    """Marker interface for the PatternWidget.
     """
+
+
+class IInheritParentValue(Interface):
+    """Marker interface to inherit parent value.
     """
+
+
+class BasePatternWidgetDataConverter(BaseDataConverter):
+
+    _default_widget_value = None
+
+    def toWidgetValue(self, value):
+        if not value:
+            value = self._default_widget_value
+        return json.dumps(value)
+
+    def toFieldValue(self, value):
+        try:
+            value = json.loads(value)
+        except ValueError:
+            value = None
+        if not value:
+            return self.field.missing_value
+        return value
+
+
+class PatternWidgetListDataConverter(BasePatternWidgetDataConverter):
+    """Data converter for IList."""
+
+    adapts(IList, IPatternWidget)
+
+    _default_widget_value = list()
+
+
+class PatternWidgetDictDataConverter(BasePatternWidgetDataConverter):
+    """Data converter for IDict."""
+
+    adapts(IDict, IPatternWidget)
+
+    _default_widget_value = dict()
 
 
 class PatternWidget(BaseWidget, TextWidget):
     """
     """
 
-    implementsOnly(ITextWidget)
+    implementsOnly(IPatternWidget)
 
     _base = InputWidget
 
