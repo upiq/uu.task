@@ -56,7 +56,7 @@ in mkDerivation{
     flake8
     check-manifest
     pyroma
-  ];
+  ] ++ (builtins.attrValues pythonPackages.python.modules);
 
   checkPhase = ''
     make test
