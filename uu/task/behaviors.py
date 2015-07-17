@@ -1,12 +1,9 @@
-import pytz
-
 from Products.CMFCore.utils import getToolByName
-from datetime import datetime
 from plone.app.vocabularies import SlicableVocabulary
 from plone.app.widgets.browser.vocabulary import _permissions
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
-from uu.task import _
+from uu.task import _, parse_datetime
 from uu.task import (
     TIME_UNITS, TIME_RELATIONS, SOURCE_DATE, SOURCE_NOTIFY_DATE, DAYS_OF_WEEK
 )
@@ -19,28 +16,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 
 
-def parse_datetime(value, tz=None, missing_value=None):
-    if not value:
-        return missing_value
-
-    tmp = value.split(' ')
-    if not tmp[0]:
-        return missing_value
-
-    value = tmp[0].split('-')
-    if len(tmp) == 2 and ':' in tmp[1]:
-        value += tmp[1].split(':')
-    else:
-        value += ['00', '00']
-
-    ret = datetime(*map(int, value))
-    if tz:
-        tzinfo = pytz.timezone(tz)
-        ret = tzinfo.localize(ret)
-    return ret
-
-
-def is_due_date_rule(
+def is_notification_rule(
         value,
         field2_values=[i[0] for i in TIME_UNITS],
         field3_values=[i[0] for i in TIME_RELATIONS],
@@ -51,6 +27,10 @@ def is_due_date_rule(
     field2 = value.get('field2')
     field3 = value.get('field3')
     field4 = value.get('field4')
+
+    # when field3 value is "on" then dont validate field1 and field2
+    if field3 == "on" and field4 in field4_values:
+        return True
 
     if not field1 or not field2 or not field3 or not field4:
         raise Invalid(_(u"Not valid Rule."))
@@ -79,23 +59,25 @@ def is_due_date(value):
         ## TODO: respect the selected zone from the widget and just fall back
         ## to default_zone
         #default_zone = self.widget.default_timezone
-        #zone = default_zone(self.widget.context)\
+        #timezone = default_zone(self.widget.context)\
         #    if safe_callable(default_zone) else default_zone
-        zone = None
+        timezone = None
         try:
-            parse_datetime(_value, tz=zone)
+            parse_datetime(_value, tz=timezone)
         except:
             raise Invalid(_(u"Not valid Due date."))
         return True
 
     elif _type == 'computed':
-        return is_due_date_rule(_value,
-                                field4_values=[i[0] for i in SOURCE_DATE])
+        return is_notification_rule(
+            _value,
+            field4_values=[i[0] for i in SOURCE_DATE])
 
     elif _type == 'computed_dow':
-        return is_due_date_rule(_value,
-                                field2_values=[i[0] for i in DAYS_OF_WEEK],
-                                field4_values=[i[0] for i in SOURCE_DATE])
+        return is_notification_rule(
+            _value,
+            field2_values=[i[0] for i in DAYS_OF_WEEK],
+            field4_values=[i[0] for i in SOURCE_DATE])
 
     raise Invalid(_(u"Not valid Due date."))
 
@@ -138,7 +120,7 @@ class IAssignedTask(model.Schema):
         title=_(u"Notification rules"),
         required=False,
         value_type=schema.Dict(
-            constraint=is_due_date_rule,
+            constraint=is_notification_rule,
         ),
     )
 

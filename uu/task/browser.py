@@ -158,14 +158,14 @@ def DueFieldWidget(field, request):
     widget.pattern_options = dict()
     widget.pattern_options['date'] = dict()
     widget.pattern_options['computed'] = dict(
-        field2=TIME_UNITS,
-        field3=TIME_RELATIONS,
-        field4=SOURCE_DATE,
+        field2=[i[:2] for i in TIME_UNITS],
+        field3=[i[:2] for i in TIME_RELATIONS],
+        field4=[i[:2] for i in SOURCE_DATE],
     )
     widget.pattern_options['computed_dow'] = dict(
-        field2=DAYS_OF_WEEK,
-        field3=TIME_RELATIONS,
-        field4=SOURCE_DATE,
+        field2=[i[:2] for i in DAYS_OF_WEEK],
+        field3=[i[:2] for i in TIME_RELATIONS],
+        field4=[i[:2] for i in SOURCE_DATE],
     )
     alsoProvides(widget, IInheritParentValue)
     return widget
@@ -178,9 +178,9 @@ def NotificationRulesFieldWidget(field, request):
     widget.pattern = 'uutask-notification-rules'
     widget.pattern_options = dict()
     widget.pattern_options['rule'] = dict(
-        field2=TIME_UNITS,
-        field3=TIME_RELATIONS,
-        field4=SOURCE_NOTIFY_DATE,
+        field2=[i[:2] for i in TIME_UNITS],
+        field3=[i[:2] for i in TIME_RELATIONS],
+        field4=[i[:2] for i in SOURCE_NOTIFY_DATE],
     )
     widget.pattern_options['i18n'] = dict(
         add_rule=_(u"Add rule"),

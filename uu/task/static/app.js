@@ -19,6 +19,15 @@ define('uutask-utils', [
           ),
         field3: $('<select/>')
           .addClass('uutask-field3')
+          .on('change', function(e) {
+              if ($(this).val() === 'on') {
+                items.field1.hide();
+                items.field2.prev().hide();
+              } else {
+                items.field1.show();
+                items.field2.prev().show();
+              }
+            })
           .append(
             $.map(options.field3, function(item) {
               return $('<option/>').val(item[0]).html(item[1]);
@@ -33,11 +42,6 @@ define('uutask-utils', [
           )
       };
 
-      if (showTime === true) {
-        items.field5 = $('<input type="text"/>')
-          .addClass('uutask-field5');
-      }
-
       var $wrapper = $('<ul/>').addClass('uutask-rule');
       $el.append($wrapper.append(
         $.map(items, function(v) {
@@ -45,10 +49,15 @@ define('uutask-utils', [
         })
       ));
 
-      $('select.uutask-field2', $el).select2({ minimumResultsForSearch: -1, width: 100 });
-      $('select.uutask-field3', $el).select2({ minimumResultsForSearch: -1, width: 100 });
-      $('select.uutask-field4', $el).select2({ minimumResultsForSearch: -1, width: 150 });
-      $('.uutask-field5', $el).patternPickadate({date:false});
+      items.field2.select2({ minimumResultsForSearch: -1, width: 100 });
+      items.field3.select2({ minimumResultsForSearch: -1, width: 100 });
+      items.field4.select2({ minimumResultsForSearch: -1, width: 150 });
+
+      if (showTime === true) {
+        items.field5 = $('<input type="text"/>')
+          .addClass('uutask-field5');
+        items.field5.patternPickadate({date:false});
+      }
 
       $.map(items, function($el) {
         $el.on('change', function(e) {
@@ -152,13 +161,13 @@ define('uutask-pattern-due', [
       }
 
       self.$due_date_computed_widget = Utils.appendRule(
-        $('> div', self.$due_date_computed), self.options.computed, true,
+        $('> div', self.$due_date_computed), self.options.computed, false,
         function(data) {
           self.$el.val(JSON.stringify({type: "computed", value: data}));
         });
 
       self.$due_date_computed_dow_widget = Utils.appendRule(
-        $('> div', self.$due_date_computed_dow), self.options.computed_dow, true,
+        $('> div', self.$due_date_computed_dow), self.options.computed_dow, false,
         function(data) {
           self.$el.val(JSON.stringify({type: "computed_dow", value: data}));
         });
@@ -218,6 +227,14 @@ define('uutask-pattern-due', [
         $('> div', self.$due_date_computed).show();
         $('> div', self.$due_date_computed_dow).hide();
 
+        if (value.value.field3 === 'on') {
+          self.$due_date_computed_widget.field1.hide();
+          self.$due_date_computed_widget.field2.prev().hide();
+        } else {
+          self.$due_date_computed_widget.field1.show();
+          self.$due_date_computed_widget.field2.prev().show();
+        }
+
       } else if (value.type === 'computed_dow') {
         self.$due_date_computed_dow_widget.field1.val(value.value.field1);
         self.$due_date_computed_dow_widget.field2.select2("val", value.value.field2);
@@ -229,6 +246,14 @@ define('uutask-pattern-due', [
         $('> div', self.$due_date).hide();
         $('> div', self.$due_date_computed).hide();
         $('> div', self.$due_date_computed_dow).show();
+
+        if (value.value.field3 === 'on') {
+          self.$due_date_computed_dow_widget.field1.hide();
+          self.$due_date_computed_dow_widget.field2.prev().hide();
+        } else {
+          self.$due_date_computed_dow_widget.field1.show();
+          self.$due_date_computed_dow_widget.field2.prev().show();
+        }
       }
     }
   });
@@ -309,6 +334,14 @@ define('uutask-pattern-notification-rules', [
         $rule.field3.select2("val", value.field3); 
         $rule.field4.select2("val", value.field4); 
       }
+
+      if (value && value.field3 === 'on') {
+        $rule.field1.hide();
+        $rule.field2.prev().hide();
+      } else {
+        $rule.field1.show();
+        $rule.field2.prev().show();
+      }
       
       var $remove = $('<a href="#"/>')
         .addClass('notification-rules-remove')
@@ -336,7 +369,6 @@ define('uutask-pattern-notification-rules', [
         } catch (error) {
         }
       }
-      //var value = JSON.parse(self.$el.attr('val'));
     }
   });
 
