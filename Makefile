@@ -9,6 +9,7 @@ test:
 	pyroma .
 	flake8 uu/task/*.py
 	./parts/plone/bin/interpreter setup.py test
+	viewdoc
 
 push:
 	git push heroku

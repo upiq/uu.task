@@ -6,7 +6,7 @@ This repository serves as a place for development of a task managment add-on.
 Introduction
 ------------
 
-``uu.task`` provides configurable, effective **task-related email notifications** to **assigned parties**. It provides features:
+``uu.task`` provides configurable, effective task-related **email notifications** to **assigned parties**. It provides features:
 
 1. for project managers to configure and assign content items e.g. forms & events as **tasks with due dates**
 #. for assigned parties to receive email notification about tasks **at specific times**
@@ -34,7 +34,7 @@ Contributors
 Content Types
 -------------
 
-``uu.task`` adds content types:
+``uu.task`` adds two new content types to your Plone site:
 
 - **Task**
 - **Task Planner**
@@ -44,12 +44,9 @@ Content Types
 Behaviors
 ---------
 
-``uu.task`` adds a behavior:
+``uu.task`` adds a new content "behavior" to your Plone site:
 
 - **Assigned Task**
-
-.. image:: screenshot2.png
-.. image:: screenshot3.png
 
 Demo
 ----
@@ -62,7 +59,7 @@ A demo site is available here:
 Similar Add-ons
 ---------------
 
-``uu.task`` is inspired by similar add-ons. Here is a list and comparison of each.
+``uu.task`` is inspired by similar add-ons. Here is a comparison of each.
 
 +--------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
 |                                      |                                       |                                       |                                       |
@@ -134,9 +131,11 @@ Developers
 Testing
 ~~~~~~~
 
-Developers please run tests before committing e.g. ::
+Developers please run ``make test`` before committing changes.
 
-    $ make
+::
+
+    $ make test
     check-manifest
     lists of files in version control and sdist match
     pyroma .

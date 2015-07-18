@@ -2,10 +2,12 @@ include *.nix
 include *.png
 include *.py
 include *.rst
+include *.txt
 include Makefile
 include Procfile
 include buildout.cfg
 include heroku.cfg
+include omelette.cfg
 include teamwork.cfg
 recursive-include doc ICON-LICENSE
 recursive-include doc *.png
