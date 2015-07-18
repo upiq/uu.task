@@ -104,7 +104,7 @@ define('uutask-pattern-due', [
       i18n: {
         label_1: "Exact date",
         label_2: "Computed",
-        label_3: "Computed (raltive to day of the week)"
+        label_3: "Computed (relative to day of the week)"
       }
     },
     init: function() {
