@@ -48,6 +48,27 @@ def get_value(value, items):
             return item
 
 
+def get_notification_dates(context):
+    dates = []
+
+    rules = context.notification_rules
+    if rules:
+        for rule in rules:
+            # TODO: temporary since we dont have start/end field
+            #field4 = context.get(get_value(_value['field4'], SOURCE_NOTIFY_DATE))
+            field4 = datetime.now()
+            field3 = get_value(rule['field3'], TIME_RELATIONS)[2]
+            field2 = get_value(rule['field2'], TIME_UNITS)[2]
+
+            if field3 is None:
+                dates.append(field4)
+            else:
+                field1 = int(rule['field1'])
+                dates.append(field4 + field2(field3 * field1))
+
+    return dates
+
+
 def get_due_date(context):
     _type = context.due.get('type')
     _value = context.due.get('value')
@@ -60,12 +81,12 @@ def get_due_date(context):
         #field4 = context.get(get_value(_value['field4'], SOURCE_DATE))
         field4 = datetime.now()
         field3 = get_value(_value['field3'], TIME_RELATIONS)[2]
-        field2 = get_value(_value['field2'], TIME_UNITS)[2]
-        field1 = int(_value['field1'])
 
         if field3 is None:
             return field4
         else:
+            field2 = get_value(_value['field2'], TIME_UNITS)[2]
+            field1 = int(_value['field1'])
             return field4 + field2(field3 * field1)
 
     elif _type == 'computed_dow':
@@ -73,12 +94,12 @@ def get_due_date(context):
         #field4 = getattr(context, get_value(_value['field4'], SOURCE_DATE))
         field4 = datetime.now()
         field3 = get_value(_value['field3'], TIME_RELATIONS)[2]
-        field2 = get_value(_value['field2'], DAYS_OF_WEEK)[2]
-        field1 = int(_value['field1'])
 
         if field3 is None:
             return field4
         else:
+            field2 = get_value(_value['field2'], DAYS_OF_WEEK)[2]
+            field1 = int(_value['field1'])
             return field4 + field2(field3 * field1)
 
 
