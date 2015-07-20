@@ -96,4 +96,10 @@
         name="uu.task.UsersAndGroups"
         />
 
+
+    <!-- Indexes -->
+    <adapter factory=".behaviors.notifications_start_indexer" name="notifications_start" />
+    <adapter factory=".behaviors.notifications_end_indexer" name="notifications_end" />
+    <adapter factory=".behaviors.due_indexer" name="due" />
+
 </configure>

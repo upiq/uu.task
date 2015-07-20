@@ -2,8 +2,9 @@ from Products.CMFCore.utils import getToolByName
 from plone.app.vocabularies import SlicableVocabulary
 from plone.app.widgets.browser.vocabulary import _permissions
 from plone.autoform.interfaces import IFormFieldProvider
+from plone.indexer import indexer
 from plone.supermodel import model
-from uu.task import _, parse_datetime
+from uu.task import _, parse_datetime, get_notification_dates, get_due_date
 from uu.task import (
     TIME_UNITS, TIME_RELATIONS, SOURCE_DATE, SOURCE_NOTIFY_DATE, DAYS_OF_WEEK
 )
@@ -123,6 +124,27 @@ class IAssignedTask(model.Schema):
             constraint=is_notification_rule,
         ),
     )
+
+
+@indexer(IAssignedTask)
+def notifications_start_indexer(context):
+    dates = get_notification_dates(
+        IAssignedTask(context).notification_rules, context)
+    dates.sort()
+    return dates[0]
+
+
+@indexer(IAssignedTask)
+def notifications_end_indexer(context):
+    dates = get_notification_dates(
+        IAssignedTask(context).notification_rules, context)
+    dates.sort()
+    return dates[-1]
+
+
+@indexer(IAssignedTask)
+def due_indexer(context):
+    return get_due_date(IAssignedTask(context).due, context)
 
 
 class UsersGroupsVocabulary(SlicableVocabulary):
