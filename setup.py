@@ -20,6 +20,7 @@ setup(
     install_requires=[
         'setuptools',
         'plone.app.widgets<2.0.0',
+        'plone.app.event>1.999.999',
         # https://github.com/upiq/collective.teamwork/pull/1
         'plone.app.dexterity [grok]',
     ],
