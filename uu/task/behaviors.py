@@ -150,7 +150,7 @@ class UsersGroupsVocabulary(SlicableVocabulary):
             user = users.getUserById(term_id[len('user-'):], None)
             if user:
                 title = user.getProperty('fullname', None) or title
-            title = _(u'User: ') + title
+            title = _(u'User: ') + title.decode('utf8')
 
         elif term_id.startswith('group-'):
             title = term_id[len('group-'):]
@@ -158,7 +158,7 @@ class UsersGroupsVocabulary(SlicableVocabulary):
             group = groups.getGroupById(term_id[len('group-'):])
             if group:
                 title = group.getProperty('title', None) or title
-            title = _(u'Group: ') + title
+            title = _(u'Group: ') + title.decode('utf8')
 
         else:
             raise Exception("Term should start with `user-` or `group-` "
