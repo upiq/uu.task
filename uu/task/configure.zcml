@@ -1,105 +1,130 @@
-<configure xmlns="http://namespaces.zope.org/zope" xmlns:browser="http://namespaces.zope.org/browser"
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    xmlns:plone="http://namespaces.plone.org/plone">
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="uu.task">
 
-    <include package="plone.app.widgets" />
-
-    <browser:resourceDirectory name="uu.task" directory="static" />
-
-    <genericsetup:registerProfile
-        name="default"
-        title="uu.task"
-        description="Task Management and Notification System For Plone."
-        directory="profiles/default"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
-
-    <!-- UU Task -->
-
-    <!-- Custom permissions -->
-    <permission id="uu.task.add" title="UUTask: Add Task" />
-    <permission id="uu.task.change" title="UUTask: Change Task Status" />
-    <permission id="uu.task.edit" title="UUTask: Edit Task" />
-    <permission id="uu.task.remove" title="UUTask: Remove Task" />
-    <permission id="uu.task.view" title="UUTask: View Task" />
-
-    <browser:viewlet
-        for="uu.task.interfaces.ITask"
-        name="uu.task.viewlets.task"
-        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
-        template="templates/task-viewlet.pt"
-        permission="zope2.View"
-        />
-
-    <!-- UU Task Planner -->
-
-    <!-- Custom permissions -->
-    <permission id="uu.taskplanner.add" title="UUTaskPlanner: Add Task" />
-    <permission id="uu.taskplanner.change" title="UUTaskPlanner: Change Task Status" />
-    <permission id="uu.taskplanner.edit" title="UUTaskPlanner: Edit Task" />
-    <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
-    <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
-
-    <!-- Assigned Task -->
-
-    <!-- Behavior -->
-    <plone:behavior
-        title="Assigned Task"
-        description="Adds due date field (behavior provided by UU Task add-on)"
-        provides=".behaviors.IAssignedTask"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        />
-
-    <!-- Tasks Status -->
-
-    <!-- Browser View -->
-    <browser:page
-        name="uu-task-status"
-        for="*"
-        class=".browser.TaskStatus"
-        template="templates/task-status.pt"
-        permission="uu.task.view"
-        />
-
-    <!-- Task Extender -->
-
-    <!-- Browser View -->
-    <browser:page
-        name="uu-task-extender"
-        for="*"
-        class=".browser.TaskExtender"
-        template="templates/task-extender.pt"
-        permission="cmf.ManagePortal"
-        />
-
-    <!-- Data converter -->
-    <adapter factory=".browser.PatternWidgetListDataConverter" />
-    <adapter factory=".browser.PatternWidgetDictDataConverter" />
-
-    <!-- Widgets -->
-    <adapter factory=".browser.ProjectManagerFieldWidget" />
-    <adapter factory=".browser.AssignedToFieldWidget" />
-    <adapter factory=".browser.DueFieldWidget" />
-    <adapter factory=".browser.NotificationRulesFieldWidget" />
-
-    <browser:page
-        name="ploneform-render-widget"
-        for=".browser.IInheritParentValue"
-        layer="plone.app.widgets.interfaces.IWidgetsLayer"
-        class=".browser.RenderWidget"
-        permission="zope.Public"
-        />
-
-    <!-- Vocabularies -->
-    <utility
-        factory=".behaviors.UsersGroupsVocabularyFactory"
-        name="uu.task.UsersAndGroups"
-        />
+  <include package="plone.app.dexterity" />
+  <include package="plone.app.widgets" />
 
 
-    <!-- Indexes -->
-    <adapter factory=".behaviors.notifications_start_indexer" name="notifications_start" />
-    <adapter factory=".behaviors.notifications_end_indexer" name="notifications_end" />
-    <adapter factory=".behaviors.due_indexer" name="due" />
+  <!-- Permissions -->
+  <!-- TODO: are all this permissions really used? -->
+
+  <permission id="uu.task.add" title="UUTask: Add Task" />
+  <permission id="uu.task.change" title="UUTask: Change Task Status" />
+  <permission id="uu.task.edit" title="UUTask: Edit Task" />
+  <permission id="uu.task.remove" title="UUTask: Remove Task" />
+  <permission id="uu.task.view" title="UUTask: View Task" />
+  <permission id="uu.taskplanner.add" title="UUTaskPlanner: Add Task" />
+  <permission id="uu.taskplanner.change" title="UUTaskPlanner: Change Task Status" />
+  <permission id="uu.taskplanner.edit" title="UUTaskPlanner: Edit Task" />
+  <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
+  <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
+
+
+  <!-- Data converters -->
+
+  <adapter factory=".browser.PatternWidgetListDataConverter" />
+  <adapter factory=".browser.PatternWidgetDictDataConverter" />
+
+  <!-- Widgets -->
+
+  <adapter factory=".browser.ProjectManagerFieldWidget" />
+  <adapter factory=".browser.AssignedToFieldWidget" />
+  <adapter factory=".browser.DueFieldWidget" />
+  <adapter factory=".browser.NotificationRulesFieldWidget" />
+
+  <!-- Widget render template -->
+
+  <browser:page
+      name="ploneform-render-widget"
+      for=".browser.IInheritParentValue"
+      layer="plone.app.widgets.interfaces.IWidgetsLayer"
+      template="templates/widget.pt"
+      permission="zope.Public"
+      />
+
+
+  <!-- Resources -->
+
+  <browser:resourceDirectory
+    name="uu.task"
+    directory="static"
+    />
+
+
+  <!-- Viewlets -->
+
+  <browser:viewlet
+    for="uu.task.interfaces.ITask"
+    name="uu.task.viewlets.task"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+    template="templates/task-viewlet.pt"
+    permission="zope2.View"
+    />
+
+
+  <!-- Views -->
+
+  <browser:page
+      name="uu-task-status"
+      for="*"
+      class=".browser.TaskStatus"
+      template="templates/task-status.pt"
+      permission="uu.task.view"
+      />
+
+  <browser:page
+      name="uu-task-extender"
+      for="*"
+      class=".browser.TaskExtender"
+      template="templates/task-extender.pt"
+      permission="cmf.ManagePortal"
+      />
+
+
+  <!-- Behaviors -->
+  <!-- TODO: Why did we implemented this as behaivors? -->
+
+  <plone:behavior
+      title="Common Task Fields"
+      description="Used by bothAdds due date field (behavior provided by UU Task add-on)"
+      provides=".behaviors.IAssignedTask"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
+
+  <!-- Indexe adapters -->
+
+
+  <adapter factory=".behaviors.notifications_start_indexer" name="notifications_start" />
+  <adapter factory=".behaviors.notifications_end_indexer" name="notifications_end" />
+  <adapter factory=".behaviors.due_indexer" name="due" />
+
+
+  <!-- Accessor adapter / utility for Task -->
+
+  <adapter factory=".behaviors.TaskAccessor" />
+
+
+  <!-- Vocabularies -->
+
+  <utility
+    factory=".vocabulary.UsersGroupsVocabularyFactory"
+    name="uu.task.UsersAndGroups"
+    />
+
+
+  <!-- GenericSetup profiles and import steps -->
+
+  <genericsetup:registerProfile
+    name="default"
+    title="uu.task"
+    description="Task Management and Notification System For Plone."
+    directory="profiles/default"
+    provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
 
 </configure>

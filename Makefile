@@ -1,15 +1,31 @@
 # http://stackoverflow.com/a/30176470/185820
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := build
+
+build:
+	buildout -v
 
 clean:
 	python setup.py clean
     
-test:
+check-manifest:
 	check-manifest
 	pyroma .
-	flake8 uu/task/*.py
-	./parts/plone/bin/interpreter setup.py test
+
+check-lint:
+	flake8 setup.py
+	flake8 uu/task/
+
+check-test:
+	bin/test -s uu.task -v
+
+check: check-manifest check-lint check-test
+
+test: check
 	viewdoc
+
+coverage:
+	bin/coverage
+	bin/report
 
 push:
 	git push heroku

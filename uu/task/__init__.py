@@ -12,6 +12,8 @@ PKGNAME = 'uu.task'
 
 _ = MessageFactory(PKGNAME)
 
+EMPTY_VALUE = object()
+
 TIME_UNITS = (
     ('hours', _(u'hour(s)'), lambda x: relativedelta(hour=x)),
     ('days', _(u'day(s)'), lambda x: relativedelta(day=x)),

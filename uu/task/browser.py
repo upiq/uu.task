@@ -1,6 +1,5 @@
 import json
 
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from plone.app.widgets.base import InputWidget
@@ -22,15 +21,7 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapter, adapts
 from zope.interface import implementer, alsoProvides, implementsOnly, Interface
 from zope.schema.interfaces import IList, IDict
-
-
-def get_taskplanner(item):
-    if ITaskPlanner.providedBy(item):
-        return item
-    elif ISiteRoot.providedBy(item):
-        return None
-    else:
-        return get_taskplanner(item.aq_parent)
+from uu.task.utils import get_parent_taskplanner
 
 
 class TaskStatus(BrowserView):
@@ -120,21 +111,21 @@ class PatternWidget(BaseWidget, TextWidget):
 
         return args
 
+
 def render_parent(widget):
     if widget.form.mode != INPUT_MODE:
         return
 
-    if ISiteRoot.providedBy(widget.context):
-        return None
+    context = widget.context
+    if not IAddForm.providedBy(widget.form._parent):
+        context = widget.context.aq_parent
 
-    if IAddForm.providedBy(widget.form._parent):
-        taskplanner = get_taskplanner(widget.context)
-    else:
-        taskplanner = get_taskplanner(widget.context.aq_parent)
+    taskplanner = get_parent_taskplanner(context)
 
     if not taskplanner:
         return None
 
+    # TODO: we need to render this differently
     return 'Parent: %s' % getattr(taskplanner, widget.field.__name__)
 
 

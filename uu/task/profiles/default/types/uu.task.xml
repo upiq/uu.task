@@ -6,7 +6,6 @@
         <element value="plone.app.content.interfaces.INameFromTitle"/>
         <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
         <element value="uu.task.behaviors.IAssignedTask"/>
-        <element value="plone.app.event.dx.behaviors.IEventBasic"/>
     </property>
     <property name="description">Assignable task with due date</property>
     <property name="klass">plone.dexterity.content.Container</property>
