@@ -13,7 +13,9 @@ from uu.task.behaviors import IAssignedTask
 from uu.task.interfaces import ITaskPlanner
 from z3c.form.browser.text import TextWidget
 from z3c.form.converter import BaseDataConverter
-from z3c.form.interfaces import IAddForm, IFieldWidget, IFormLayer, ITextWidget
+from z3c.form.interfaces import (
+    IAddForm, IFieldWidget, IFormLayer, ITextWidget, INPUT_MODE
+)
 from z3c.form.util import getSpecification
 from z3c.form.widget import FieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
@@ -118,16 +120,22 @@ class PatternWidget(BaseWidget, TextWidget):
 
         return args
 
-    def render_parent(self):
-        if ISiteRoot.providedBy(self.context):
-            return None
+def render_parent(widget):
+    if widget.form.mode != INPUT_MODE:
+        return
 
-        taskplanner = get_taskplanner(self.context.aq_parent)
+    if ISiteRoot.providedBy(widget.context):
+        return None
 
-        if not taskplanner:
-            return None
+    if IAddForm.providedBy(widget.form._parent):
+        taskplanner = get_taskplanner(widget.context)
+    else:
+        taskplanner = get_taskplanner(widget.context.aq_parent)
 
-        return 'Parent: %s' % getattr(taskplanner, self.field.__name__)
+    if not taskplanner:
+        return None
+
+    return 'Parent: %s' % getattr(taskplanner, widget.field.__name__)
 
 
 @adapter(getSpecification(IAssignedTask['project_manager']), IFormLayer)
@@ -136,6 +144,7 @@ def ProjectManagerFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.UsersAndGroups'
     widget.pattern_options['allowNewItems'] = False
+    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -146,6 +155,7 @@ def AssignedToFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.UsersAndGroups'
     widget.pattern_options['allowNewItems'] = False
+    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -167,6 +177,7 @@ def DueFieldWidget(field, request):
         field3=[i[:2] for i in TIME_RELATIONS],
         field4=[i[:2] for i in SOURCE_DATE],
     )
+    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -186,6 +197,7 @@ def NotificationRulesFieldWidget(field, request):
         add_rule=_(u"Add rule"),
         remove=_(u"Remove"),
     )
+    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
