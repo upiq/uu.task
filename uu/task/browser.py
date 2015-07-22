@@ -36,7 +36,6 @@ from uu.task.interfaces import (
     SOURCE_NOTIFY_DATE,
     DAYS_OF_WEEK,
     ITaskAccessor,
-    ITaskPlannerMarker,
 )
 
 
@@ -121,7 +120,7 @@ class PatternWidget(BaseWidget, TextWidget):
         if (IAddForm.providedBy(self.form._parent) and
                 self.form._parent.portal_type == 'uu.taskplanner') or \
            (not IAddForm.providedBy(self.form._parent) and
-                ITaskPlannerMarker.providedBy(self.context) and
+                ITaskPlanner.providedBy(self.context) and
                 'pattern_options' in args):
             args['pattern_options']['date'] = False
 

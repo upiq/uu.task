@@ -101,18 +101,6 @@
     name="uu.task.UsersAndGroups"
     />
 
-  <!-- Behaviours -->
-
-  <plone:behavior
-    title="Task Marker"
-    provides=".interfaces.ITaskMarker"
-    />
-
-  <plone:behavior
-    title="TaskPlanner Marker"
-    provides=".interfaces.ITaskPlannerMarker"
-    />
-
   <!-- GenericSetup profiles and import steps -->
 
   <genericsetup:registerProfile

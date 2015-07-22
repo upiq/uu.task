@@ -45,13 +45,3 @@ class ITaskAccessor(Interface):
     assignee = Attribute(u"Assign user(s) or/and group(s).")
     due = Attribute(u"Due date.")
     notifications = Attribute(u"Notifications.")
-
-
-class ITaskPlannerMarker(Interface):
-    """Marker interface for TaskPlanner.
-    """
-
-
-class ITaskMarker(Interface):
-    """Marker interface for Task.
-    """

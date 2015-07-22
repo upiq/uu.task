@@ -5,7 +5,6 @@
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
         <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
-        <element value="uu.task.interfaces.ITaskPlannerMarker"/>
     </property>
     <property name="description">Series of tasks with shared settings</property>
     <property name="klass">plone.dexterity.content.Container</property>

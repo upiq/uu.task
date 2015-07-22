@@ -17,8 +17,6 @@ from uu.task.interfaces import (
     TIME_UNITS,
     DAYS_OF_WEEK,
     ITaskAccessor,
-    ITaskPlannerMarker,
-    ITaskMarker,
 )
 from uu.task.utils import (
     validate_due,
@@ -98,7 +96,7 @@ class ITask(ITaskCommon):
     )
 
 
-@adapter(ITaskPlannerMarker)
+@adapter(ITaskPlanner)
 @implementer(ITaskAccessor)
 class TaskPlannerAccessor(object):
 
@@ -111,7 +109,7 @@ class TaskPlannerAccessor(object):
         """
 
         # we found TaskPlanner object
-        if ITaskPlannerMarker.providedBy(obj):
+        if ITaskPlanner.providedBy(obj):
             return obj
 
         # return None once we reach Plone site root object
@@ -155,7 +153,7 @@ class TaskPlannerAccessor(object):
         setattr(self.context, 'assignee', safe_unicode(value))
 
 
-@adapter(ITaskMarker)
+@adapter(ITask)
 @implementer(ITaskAccessor)
 class TaskAccessor(TaskPlannerAccessor):
 
