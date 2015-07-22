@@ -3,33 +3,23 @@ uu.task: UPIQ Task Management Add-on for Plone
 
 This repository serves as a place for development of a task managment add-on.
 
+
 Introduction
 ------------
 
-``uu.task`` provides configurable, effective task-related **email notifications** to **assigned parties**. It provides features:
+``uu.task`` provides configurable, effective task-related **email
+notifications** to **assigned parties**. It provides features:
 
-1. for project managers to configure and assign content items e.g. forms & events as **tasks with due dates**
-#. for assigned parties to receive email notification about tasks **at specific times**
-#. for assigned parties to communicate task status to project managers and **set notification preferences**
+1. for project managers to configure and assign content items e.g. forms
+   & events as **tasks with due dates**
 
-Copyright
----------
+#. for assigned parties to receive email notification about tasks **at specific
+   times**
 
-All content within this repository, unless otherwise noted elsewhere, is
-Copyright 2015, University of Utah.  
+#. for assigned parties to communicate task status to project managers and
+   **set notification preferences**
 
-Original works in this package are licensed under the GNU General Public
-License v. 2.0. All original images, documentation, style-sheets, and 
-JavaScript assets are additionally licensed under an MIT-style license.
 
-See ``doc/COPYING.txt``
-
-Contributors
-------------
-
-* `Sean Upton <https://github.com/seanupton>` (UPIQ, University of Utah Health Sciences)
-* `Alex Clark <http://aclark.net/>` (ACLARK.NET, LLC)
-* `Rok Garbas <https://github.com/garbas>` (ACLARK.NET, LLC)
 
 Content Types
 -------------
@@ -41,12 +31,6 @@ Content Types
 
 .. image:: screenshot.png
 
-Behaviors
----------
-
-``uu.task`` adds a new content "behavior" to your Plone site:
-
-- **Assigned Task**
 
 Demo
 ----
@@ -125,8 +109,46 @@ Similar Add-ons
 .. _`collective.task`: https://github.com/collective/collective.task
 .. _`more than one principal`: https://github.com/upiq/uu.task/issues/3
 
+
 Developers
 ----------
+
+Development environment with Nix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Below instructions were only tested on Linux.
+
+1. Install Nix_::
+
+        % curl https://nixos.org/nix/install > bash
+
+#. Clone ``uu.task``::
+
+        % git clone https://github.com/upiq/uu.task
+
+#. Enter environment::
+
+        % cd uu.task
+        uu.task/ % nix-shell
+
+
+.. _Nix: https://nixos.org/nix
+
+
+How to use ITaskAccessor
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    > from uu.task.interfaces import ITaskAccessor
+    > task = ITaskAccessor(context)
+
+    > print context.due  # raw value
+    { ... }
+
+    > print task.due     # computed value
+    <datetime ...>
+
 
 Testing
 ~~~~~~~
@@ -171,3 +193,24 @@ Developers please run ``make test`` before committing changes.
     Ran 6 tests in 0.001s
 
     OK
+
+
+Contributors
+------------
+
+* `Sean Upton <https://github.com/seanupton>` (UPIQ, University of Utah Health Sciences)
+* `Alex Clark <http://aclark.net/>` (ACLARK.NET, LLC)
+* `Rok Garbas <https://github.com/garbas>` (ACLARK.NET, LLC)
+
+
+Copyright
+---------
+
+All content within this repository, unless otherwise noted elsewhere, is
+Copyright 2015, University of Utah.  
+
+Original works in this package are licensed under the GNU General Public
+License v. 2.0. All original images, documentation, style-sheets, and 
+JavaScript assets are additionally licensed under an MIT-style license.
+
+See ``doc/COPYING.txt``
