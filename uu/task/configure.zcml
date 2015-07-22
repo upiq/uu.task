@@ -8,7 +8,6 @@
   <include package="plone.app.dexterity" />
   <include package="plone.app.widgets" />
 
-
   <!-- Permissions -->
   <!-- TODO: are all this permissions really used? -->
 
@@ -23,7 +22,6 @@
   <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
   <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
 
-
   <!-- Data converters -->
 
   <adapter factory=".browser.PatternWidgetListDataConverter" />
@@ -32,7 +30,9 @@
   <!-- Widgets -->
 
   <adapter factory=".browser.ProjectManagerFieldWidget" />
-  <adapter factory=".browser.AssignedToFieldWidget" />
+  <adapter factory=".browser.AssigneeFieldWidget" />
+  <adapter factory=".browser.StartDateFieldWidget" />
+  <adapter factory=".browser.EndDateFieldWidget" />
   <adapter factory=".browser.DueFieldWidget" />
   <adapter factory=".browser.NotificationRulesFieldWidget" />
 
@@ -46,7 +46,6 @@
       permission="zope.Public"
       />
 
-
   <!-- Resources -->
 
   <browser:resourceDirectory
@@ -54,17 +53,15 @@
     directory="static"
     />
 
-
   <!-- Viewlets -->
 
   <browser:viewlet
-    for="uu.task.interfaces.ITask"
+    for="uu.task.content.ITask"
     name="uu.task.viewlets.task"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     template="templates/task-viewlet.pt"
     permission="zope2.View"
     />
-
 
   <!-- Views -->
 
@@ -84,29 +81,18 @@
       permission="cmf.ManagePortal"
       />
 
+  <!-- Indexes -->
 
-  <!-- Behaviors -->
-  <!-- TODO: Why did we implemented this as behaivors? -->
-
-  <plone:behavior
-      title="Common Task Fields"
-      description="Used by bothAdds due date field (behavior provided by UU Task add-on)"
-      provides=".behaviors.IAssignedTask"
-      for="plone.dexterity.interfaces.IDexterityContent"
-      />
-
-  <!-- Indexe adapters -->
-
-
-  <adapter factory=".behaviors.notifications_start_indexer" name="notifications_start" />
-  <adapter factory=".behaviors.notifications_end_indexer" name="notifications_end" />
-  <adapter factory=".behaviors.due_indexer" name="due" />
-
+  <adapter factory=".content.start_indexer" name="start" />
+  <adapter factory=".content.end_indexer" name="end" />
+  <adapter factory=".content.notifications_start_indexer" name="notifications_start" />
+  <adapter factory=".content.notifications_end_indexer" name="notifications_end" />
+  <adapter factory=".content.due_indexer" name="due" />
 
   <!-- Accessor adapter / utility for Task -->
 
-  <adapter factory=".behaviors.TaskAccessor" />
-
+  <adapter factory=".content.TaskAccessor" />
+  <adapter factory=".content.TaskPlannerAccessor" />
 
   <!-- Vocabularies -->
 
@@ -115,6 +101,17 @@
     name="uu.task.UsersAndGroups"
     />
 
+  <!-- Behaviours -->
+
+  <plone:behavior
+    title="Task Marker"
+    provides=".interfaces.ITaskMarker"
+    />
+
+  <plone:behavior
+    title="TaskPlanner Marker"
+    provides=".interfaces.ITaskPlannerMarker"
+    />
 
   <!-- GenericSetup profiles and import steps -->
 
@@ -125,6 +122,5 @@
     directory="profiles/default"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
-
 
 </configure>

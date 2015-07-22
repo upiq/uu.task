@@ -5,11 +5,11 @@
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
         <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
-        <element value="uu.task.behaviors.IAssignedTask"/>
+        <element value="uu.task.interfaces.ITaskPlannerMarker"/>
     </property>
     <property name="description">Series of tasks with shared settings</property>
     <property name="klass">plone.dexterity.content.Container</property>
-    <property name="schema">uu.task.interfaces.ITaskPlanner</property>
+    <property name="schema">uu.task.content.ITaskPlanner</property>
     <property name="title">Task Planner</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/calendar.png</property>
 </object>

@@ -3,25 +3,41 @@ import json
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from plone.app.widgets.base import InputWidget
-from plone.app.widgets.dx import AjaxSelectWidget, BaseWidget
-from uu.task import _
-from uu.task import (
-    TIME_UNITS, TIME_RELATIONS, SOURCE_DATE, SOURCE_NOTIFY_DATE, DAYS_OF_WEEK
-)
-from uu.task.behaviors import IAssignedTask
-from uu.task.interfaces import ITaskPlanner
+from plone.app.widgets.dx import AjaxSelectWidget, BaseWidget, DatetimeWidget
 from z3c.form.browser.text import TextWidget
 from z3c.form.converter import BaseDataConverter
 from z3c.form.interfaces import (
-    IAddForm, IFieldWidget, IFormLayer, ITextWidget, INPUT_MODE
+    IAddForm,
+    IFieldWidget,
+    IFormLayer,
+    ITextWidget,
+    INPUT_MODE,
 )
 from z3c.form.util import getSpecification
 from z3c.form.widget import FieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import adapter, adapts
-from zope.interface import implementer, alsoProvides, implementsOnly, Interface
-from zope.schema.interfaces import IList, IDict
-from uu.task.utils import get_parent_taskplanner
+from zope.component import adapter, adapts, getUtility
+from zope.interface import (
+    implementer,
+    alsoProvides,
+    implementsOnly,
+    Interface,
+    providedBy,
+)
+from zope.schema.interfaces import IList, IDict, IVocabularyFactory
+
+from uu.task import _
+from uu.task.utils import default_timezone
+from uu.task.content import ITask, ITaskCommon, ITaskPlanner
+from uu.task.interfaces import (
+    TIME_UNITS,
+    TIME_RELATIONS,
+    SOURCE_DATE,
+    SOURCE_NOTIFY_DATE,
+    DAYS_OF_WEEK,
+    ITaskAccessor,
+    ITaskPlannerMarker,
+)
 
 
 class TaskStatus(BrowserView):
@@ -105,7 +121,7 @@ class PatternWidget(BaseWidget, TextWidget):
         if (IAddForm.providedBy(self.form._parent) and
                 self.form._parent.portal_type == 'uu.taskplanner') or \
            (not IAddForm.providedBy(self.form._parent) and
-                ITaskPlanner.providedBy(self.context) and
+                ITaskPlannerMarker.providedBy(self.context) and
                 'pattern_options' in args):
             args['pattern_options']['date'] = False
 
@@ -120,16 +136,17 @@ def render_parent(widget):
     if not IAddForm.providedBy(widget.form._parent):
         context = widget.context.aq_parent
 
-    taskplanner = get_parent_taskplanner(context)
+    if ITask in providedBy(context) or ITaskPlanner in providedBy(context):
+        task = ITaskAccessor(context)
+        users_groups = getUtility(
+            IVocabularyFactory, name=u"uu.task.UsersAndGroups")(context)
+        value = getattr(task, widget.field.__name__, None)
+        if value:
+            return 'Parent: %s' % (', '.join(
+                [i.title for i in users_groups.fromValues(value)]))
 
-    if not taskplanner:
-        return None
 
-    # TODO: we need to render this differently
-    return 'Parent: %s' % getattr(taskplanner, widget.field.__name__)
-
-
-@adapter(getSpecification(IAssignedTask['project_manager']), IFormLayer)
+@adapter(getSpecification(ITaskCommon['project_manager']), IFormLayer)
 @implementer(IFieldWidget)
 def ProjectManagerFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
@@ -140,9 +157,9 @@ def ProjectManagerFieldWidget(field, request):
     return widget
 
 
-@adapter(getSpecification(IAssignedTask['assigned_to']), IFormLayer)
+@adapter(getSpecification(ITaskCommon['assignee']), IFormLayer)
 @implementer(IFieldWidget)
-def AssignedToFieldWidget(field, request):
+def AssigneeFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.UsersAndGroups'
     widget.pattern_options['allowNewItems'] = False
@@ -151,7 +168,23 @@ def AssignedToFieldWidget(field, request):
     return widget
 
 
-@adapter(getSpecification(IAssignedTask['due']), IFormLayer)
+@adapter(getSpecification(ITask['start']), IFormLayer)
+@implementer(IFieldWidget)
+def StartDateFieldWidget(field, request):
+    widget = FieldWidget(field, DatetimeWidget(request))
+    widget.default_timezone = default_timezone
+    return widget
+
+
+@adapter(getSpecification(ITask['end']), IFormLayer)
+@implementer(IFieldWidget)
+def EndDateFieldWidget(field, request):
+    widget = FieldWidget(field, DatetimeWidget(request))
+    widget.default_timezone = default_timezone
+    return widget
+
+
+@adapter(getSpecification(ITask['due']), IFormLayer)
 @implementer(IFieldWidget)
 def DueFieldWidget(field, request):
     widget = FieldWidget(field, PatternWidget(request))
@@ -173,7 +206,7 @@ def DueFieldWidget(field, request):
     return widget
 
 
-@adapter(getSpecification(IAssignedTask['notification_rules']), IFormLayer)
+@adapter(getSpecification(ITask['notifications']), IFormLayer)
 @implementer(IFieldWidget)
 def NotificationRulesFieldWidget(field, request):
     widget = FieldWidget(field, PatternWidget(request))

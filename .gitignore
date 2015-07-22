@@ -1,11 +1,13 @@
 *.py?
 
+/.coverage
 /.installed.cfg
 /.mr.developer.cfg
 /bin/
 /develop-eggs/
 /downloads-cache
 /eggs/
+/htmlcov/
 /parts/
 /src/
 /uu.task.egg-info/
