@@ -2,11 +2,9 @@ import types
 
 from Products.CMFCore.interfaces._tools import IMemberData
 from Products.CMFPlone.utils import safe_unicode
-from Products.PlonePAS.interfaces.group import IGroupData
 from plone import api
 from plone.app.vocabularies import SlicableVocabulary
 from plone.app.widgets.browser.vocabulary import _permissions
-from uu.task import _
 from zope.interface import implements, providedBy
 from zope.schema.interfaces import IVocabulary, IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
