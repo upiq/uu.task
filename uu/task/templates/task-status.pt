@@ -26,8 +26,8 @@
         </ul>
       </div>
 
-      <div class="task-status-asignee cell width-4 position-8">
-        <label>Asignee:</label>
+      <div class="task-status-assignee cell width-4 position-8">
+        <label>Assignee:</label>
         <ul>
           <li tal:condition="python: not task.assignee">not set</li>
           <li tal:condition="python: task.assignee"
