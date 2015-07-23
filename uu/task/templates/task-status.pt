@@ -7,9 +7,9 @@
         <label>Due:</label>
         <ul>
           <li tal:condition="python:not task.due">not set</li>
-          <li tal:condition="python:task.due"
-              tal:define="due python:view.formatted_date(task.due)">
-              <time tal:attributes="datetime due/iso"
+          <li tal:condition="python:task.due">
+              <time tal:define="due python:view.formatted_date(task.due)"
+                    tal:attributes="datetime due/iso"
                     tal:content="python:due['date'] + ' ' + due['time'] + due['extra']" />
           </li>
         </ul>
@@ -37,19 +37,27 @@
         </ul>
       </div>
 
-      <div class="task-status-state cell width-4 position-12">
-        <label>Status:</label>
-        <ul>
-          <li>
-            <span tal:content="task/state/title">Created</span>
-            <!--ul>
-              <li>To in progress</li>
-              <li>To completed</li>
-              <li>To incomplete</li>
-            </ul-->
+      <div class="task-status-status cell width-4 position-12">
+        <div>
+          <label>Status:</label>
+          <ul>
+            <li>
+              <a href="#" class="pat-toggle"
+                  data-pat-toggle="value:task-status-dropdown-activated;target:.task-status-dropdown;targetScope:.task-status-status;">
+                <span tal:content="task/state_title">Created</span>
+                <span class="task-status-arrow-down">&#09660;</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ul class="task-status-dropdown">
+          <li tal:repeat="item task/state_transitions">
+            <a tal:attributes="href python:'%s?uu.task-change-to=%s' % (context.absolute_url(), item[0])"
+               tal:content="python:item[1]">Transition</a>
           </li>
         </ul>
       </div>
+
 
     </div>
   </div>

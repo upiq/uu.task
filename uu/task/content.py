@@ -1,16 +1,24 @@
+from BTrees.OOBTree import OOBTree
 from DateTime import DateTime
-from Products.CMFPlone.utils import safe_callable
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
+from datetime import datetime
 from plone.event.utils import pydt
 from plone.indexer import indexer
 from plone.supermodel import model
+from time import mktime
+from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter, getUtility
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
 from uu.task.behaviors import ITask, ITaskPlanner, ITaskCommon
 from uu.task.interfaces import (
+    TASK_STATE_KEY,
+    TASK_STATE_INITIAL,
+    TASK_STATES,
+    TASK_STATES_TRANSITIONS,
     TIME_RELATIONS,
     TIME_UNITS,
     DAYS_OF_WEEK,
@@ -175,9 +183,39 @@ class TaskAccessor(object):
     def notifications(self, value):
         setattr(self.context, 'notifications', safe_unicode(value))
 
+    def _timestamp(self):
+        return int(mktime(datetime.now().timetuple()))
+
+    def _setup_annotations(self):
+        annotations = IAnnotations(self.context)
+        if TASK_STATE_KEY not in annotations:
+            annotations[TASK_STATE_KEY] = OOBTree()
+            annotations[TASK_STATE_KEY][self._timestamp()] = TASK_STATE_INITIAL
+        return annotations
+    
     @property
     def state(self):
-        return dict(id="created", title="Created")
+        annotations = self._setup_annotations()
+        if len(annotations[TASK_STATE_KEY].keys()) == 0:
+            return None
+        return annotations[TASK_STATE_KEY][
+            sorted(annotations[TASK_STATE_KEY].keys())[-1]]
+
+    @state.setter
+    def state(self, value):
+        if value not in TASK_STATES.keys():
+            raise Exception("State must be one of %s, but it is '%s'" % (
+                TASK_STATES, value))
+        annotations = self._setup_annotations()
+        annotations[TASK_STATE_KEY][self._timestamp()] = value
+
+    @property
+    def state_transitions(self):
+        return TASK_STATES_TRANSITIONS[self.state]
+
+    @property
+    def state_title(self):
+        return TASK_STATES[self.state] or self.state
 
 
 @indexer(ITask)

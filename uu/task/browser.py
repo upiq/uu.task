@@ -2,7 +2,7 @@ from Products.Five.browser import BrowserView
 from datetime import datetime
 from plone.app.layout.viewlets import ViewletBase
 
-from uu.task.interfaces import ITaskAccessor
+from uu.task.interfaces import TASK_STATES, ITaskAccessor
 from uu.task.utils import ulocalized_time, DT
 
 
@@ -23,10 +23,10 @@ class TaskStatus(ViewletBase):
     @property
     def computed_state(self):
         task = self.task
-        state = task.state['id']
+        state = task.state
         if state != 'completed' and task.due and datetime.now() > task.due:
             return 'overdue'
-        return state
+        return dict(id=state, title=TASK_STATES[state])
 
     def formatted_date(self, item):
         DT_item = DT(item)

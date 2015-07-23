@@ -5,6 +5,34 @@ from zope.interface import Interface, Attribute
 from uu.task import _
 
 
+TASK_STATE_KEY = "uu.task.state"
+
+TASK_STATE_INITIAL = 'created'
+
+TASK_STATES = dict(
+    created=_(u'Created'),
+    inprogress=_(u'In-progress'),
+    completed=_(u'Completed'),
+    discarded=_(u'Discarded'),
+)
+
+TASK_STATES_TRANSITIONS = dict(
+    created=[
+        ('inprogress', _(u'Start working')),
+        ('discarded', _(u'Discard')),
+    ],
+    inprogress=[
+        ('completed', _(u'Complete')),
+        ('discarded', _(u'Discard')),
+    ],
+    completed=[
+        ('created', _(u'Reopen')),
+    ],
+    discarded=[
+        ('created', _(u'Reopen')),
+    ],
+)
+
 TIME_UNITS = (
     ('hours', _(u'hour(s)'), lambda x: relativedelta(hour=x)),
     ('days', _(u'day(s)'), lambda x: relativedelta(day=x)),

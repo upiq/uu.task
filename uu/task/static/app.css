@@ -26,14 +26,19 @@
 #content .task-status-wrapper {
   float: left;
   width: 100%;
-  background: #DDDDDD;
   border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
 }
+#content .task-status-wrapper .task-status-dropdown, 
+#content .task-status-wrapper {
+  background: #DDDDDD;
+}
+#content .task-status-wrapper.computed-state-overdue .task-status-dropdown,
 #content .task-status-wrapper.computed-state-overdue {
   background: rgba(255, 0, 0, 0.3);
 }
+#content .task-status-wrapper.computed-state-completed .task-status-dropdown,
 #content .task-status-wrapper.computed-state-completed {
   background: rgba(117, 173, 10, 0.5)
 }
@@ -43,24 +48,83 @@
 #content .task-status {
   margin: 0.4em 0.1em;
 }
-#content .task-status .cell > label {
+#content .task-status .cell > label,
+#content .task-status .cell > div > label {
   display: inline-block;
   margin: 0;
   margin-right: 0.2em;
 }
-#content .task-status .cell > ul {
+#content .task-status .cell > ul,
+#content .task-status .cell > div > ul {
   display: inline-block;
   list-style: none;
   margin: 0;
 }
-#content .task-status .cell > ul > li {
+#content .task-status .cell > ul > li,
+#content .task-status .cell > div > ul > li {
   display: inline-block;
 }
-#content .task-status .cell > ul > li:after {
+#content .task-status .cell > ul > li:after,
+#content .task-status .cell > div > ul > li:after {
   content: ", ";
   position: relative;
   left: -0.3em;
 }
-#content .task-status .cell > ul > li:last-child:after {
+#content .task-status .cell > ul > li:last-child:after,
+#content .task-status .cell > div > ul > li:last-child:after {
   content: "";
+}
+#content .task-status-status {
+  position: absolute;
+  bottom: 0;
+}
+#content .task-status-status div > ul > li {
+  white-space: nowrap;
+  position: relative;
+}
+#content .task-status-status div > ul > li > a{
+  color: #333;
+  border: 0;
+}
+#content .task-status .cell > ul.task-status-dropdown-activated {
+  display: block !important;
+}
+#content .task-status .cell > ul.task-status-dropdown {
+  top: 27px;
+  padding: 0.4em 0;
+  right: -0.3em;
+  float: right;
+  display: none;
+  list-style: none;
+  margin: 0;
+  z-index: 5;
+  position: absolute;
+  width: auto;
+  min-width: 100%;
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  -webkit-border-bottom-right-radius: 0.5em;
+  -webkit-border-bottom-left-radius: 0.5em;
+  -moz-border-radius-bottomleft: 0.5em;
+  -moz-border-radius-bottomright: 0.5em;
+}
+#content .task-status .cell > ul.task-status-dropdown > li {
+  display: block;
+  padding: 0 0.5em;
+  margin: 0;
+}
+#content .task-status .cell > ul.task-status-dropdown > li:after {
+  content: "";
+}
+
+#content .task-status .cell > ul.task-status-dropdown > li a {
+  color: #333;
+  width: 100%;
+  display: block;
+  padding: 0.5em;
+  margin-left: -0.5em;
+  border: 0;
+}
+#content .task-status .cell > ul.task-status-dropdown > li a:hover {
+  background: #EEE;
 }
