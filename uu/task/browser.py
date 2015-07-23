@@ -59,19 +59,29 @@ class TaskStatus(ViewletBase):
     def change_task_state(self, new_state):
         messages = IStatusMessage(self.request)
         response = self.request.response
+        task = self.task
+        state = task.state
 
         # are we allowed to change task state?
         #  - current user has 'Modify portal content' permission
         #  - current user is one of assigees
-        task = self.task
         if not api.user.has_permission("Modify portal content") and \
            not api.user.get_current().getId() in ITask(self.context).assignee:
             messages.add(u"Not allowed to change task state.", type=u"error")
 
         # is transition to new_state allowed?
-        state = task.state
-        if new_state not in [i[0] for i in TASK_STATES_TRANSITIONS[state]]:
+        elif new_state not in [i[0] for i in TASK_STATES_TRANSITIONS[state]]:
             messages.add(u"Transition to '%s' state now allowed." % new_state,
+                         type=u"error")
+
+        # only allow to advance from created state to inprogress state if all
+        # fields are set
+        elif state == 'created' and new_state == 'inprogress' and \
+                not task.due and not task.project_manager and \
+                not task.assignee:
+            messages.add(u"Transition to '%s' state now allowed due to "
+                         u"missing entry in on of the fields: Due, "
+                         u"Project manager, Assignee." % new_state,
                          type=u"error")
 
         # store new_state
