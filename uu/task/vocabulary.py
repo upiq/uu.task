@@ -12,7 +12,7 @@ from zope.schema.interfaces import IVocabulary, IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 
 
-class UsersGroupsVocabulary(SlicableVocabulary):
+class UsersVocabulary(SlicableVocabulary):
 
     implements(IVocabulary)
 
@@ -20,43 +20,22 @@ class UsersGroupsVocabulary(SlicableVocabulary):
     def createTerm(cls, term):
         if isinstance(term, basestring):
             term_id = term
-            if term.startswith('user-'):
-                username = term_id[len('user-'):]
-                term_value = api.user.get(username=username)
-                if not term_value:
-                    raise Exception(u"User with username '%s' does not "
-                                    u"exists." % username)
-                term_title = term_value.getProperty('fullname') or username
-                term_title = _(u'User: ') + safe_unicode(term_title)
-
-            elif term_id.startswith('group-'):
-                groupname = term_id[len('group-'):]
-                term_value = api.group.get(groupname=groupname)
-                if not term_value:
-                    raise Exception(u"Group with groupname '%s' does not "
-                                    u"exists." % groupname)
-                term_title = term_value.getProperty('title') or groupname
-                term_title = _(u'Group: ') + safe_unicode(term_title)
-
-            else:
-                raise Exception(u"Term should start with `user-` or `group-` "
-                                u"instead is '%s'." % term_id)
+            term_value = api.user.get(userid=term)
 
         elif IMemberData in providedBy(term):
-            term_id = 'user-' + term.getUserName()
-            term_title = term.getProperty('fullname')
-            term_title = _(u'User: ') + safe_unicode(term_title)
-            term_value = term
-
-        elif IGroupData in providedBy(term):
-            term_id = 'group-' + term.getGroupName()
-            term_title = term.getProperty('title')
-            term_title = _(u'Group: ') + safe_unicode(term_title)
+            term_id = term.getUserId()
             term_value = term
 
         else:
             raise Exception(u"Term is something we can not recognize as a "
-                            u"user or group.")
+                            u"user.")
+
+        if not term_value:
+            raise Exception(u"User with id '%s' does not "
+                            u"exists." % term_id)
+
+        term_title = safe_unicode(
+            term_value.getProperty('fullname') or term_value.getUserName())
 
         return SimpleTerm(term_value, term_id, term_title)
 
@@ -74,28 +53,17 @@ class UsersGroupsVocabulary(SlicableVocabulary):
 
     fromValues = fromItems
 
-    def getTerm(self, term_id):
-        return self.createTerm(term_id)
+    def getTerm(self, term):
+        return self.createTerm(term)
 
     getTermByToken = getTerm
 
     def __contains__(self, term):
         if isinstance(term, basestring):
-            if term.startswith('user-'):
-                return api.user.get(
-                    username=term[len('user-'):]) and True or False
-
-            elif term.startswith('group-'):
-                return api.group.get(
-                    groupname=term[len('group-'):]) and True or False
+            return api.user.get(userid=term) and True or False
 
         elif IMemberData in providedBy(term):
-            return api.user.get(
-                username=term.getUserName()) and True or False
-
-        elif IGroupData in providedBy(term):
-            return api.group.get(
-                groupname=term.getGroupName()) and True or False
+            return api.user.get(userid=term.getUserId()) and True or False
 
         return False
 
@@ -109,18 +77,14 @@ class UsersGroupsVocabulary(SlicableVocabulary):
         return len(self._terms)
 
 
-class UsersGroupsVocabularyFactory(object):
+class UsersFactory(object):
 
     implements(IVocabularyFactory)
 
     def __call__(self, context, query=''):
         users = api.portal.get_tool(name='portal_membership')
-        groups = api.portal.get_tool(name='portal_groups')
-        return UsersGroupsVocabulary.fromItems(
-            ['user-' + i.getUserName() for i in users.searchForMembers(
-                fullname=query)] +
-            ['group-' + i.id for i in groups.searchForGroups(
-                title_or_name=query)])
+        return UsersVocabulary.fromItems(
+            [i.getUserId() for i in users.searchForMembers(fullname=query)])
 
 
-_permissions['uu.task.UsersAndGroups'] = 'Modify portal content'
+_permissions['uu.task.Users'] = 'Modify portal content'

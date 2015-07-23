@@ -9,80 +9,64 @@
   <include package="plone.app.widgets" />
 
   <!-- Permissions -->
-  <!-- TODO: are all this permissions really used? -->
-
   <permission id="uu.task.add" title="UUTask: Add Task" />
-  <permission id="uu.task.change" title="UUTask: Change Task Status" />
-  <permission id="uu.task.edit" title="UUTask: Edit Task" />
-  <permission id="uu.task.remove" title="UUTask: Remove Task" />
-  <permission id="uu.task.view" title="UUTask: View Task" />
   <permission id="uu.taskplanner.add" title="UUTaskPlanner: Add Task" />
-  <permission id="uu.taskplanner.change" title="UUTaskPlanner: Change Task Status" />
-  <permission id="uu.taskplanner.edit" title="UUTaskPlanner: Edit Task" />
-  <permission id="uu.taskplanner.remove" title="UUTaskPlanner: Remove Task" />
-  <permission id="uu.taskplanner.view" title="UUTaskPlanner: View Task" />
 
   <!-- Data converters -->
+  <adapter factory=".behaviors.PatternWidgetListDataConverter" />
+  <adapter factory=".behaviors.PatternWidgetDictDataConverter" />
 
-  <adapter factory=".browser.PatternWidgetListDataConverter" />
-  <adapter factory=".browser.PatternWidgetDictDataConverter" />
+  <!-- Behaviors -->
+  <plone:behavior
+      title="Task"
+      provides=".behaviors.ITask"
+      />
+  <plone:behavior
+      title="TaskPlanner"
+      provides=".behaviors.ITaskPlanner"
+      />
 
-  <!-- Widgets -->
+  <!-- Custom Widgets for Behaviors schemas -->
+  <adapter factory=".behaviors.ProjectManagerFieldWidget" />
+  <adapter factory=".behaviors.AssigneeFieldWidget" />
+  <adapter factory=".behaviors.StartDateFieldWidget" />
+  <adapter factory=".behaviors.EndDateFieldWidget" />
+  <adapter factory=".behaviors.DueFieldWidget" />
+  <adapter factory=".behaviors.NotificationRulesFieldWidget" />
 
-  <adapter factory=".browser.ProjectManagerFieldWidget" />
-  <adapter factory=".browser.AssigneeFieldWidget" />
-  <adapter factory=".browser.StartDateFieldWidget" />
-  <adapter factory=".browser.EndDateFieldWidget" />
-  <adapter factory=".browser.DueFieldWidget" />
-  <adapter factory=".browser.NotificationRulesFieldWidget" />
+  <!-- Resources -->
+  <browser:resourceDirectory name="uu.task" directory="static" />
 
-  <!-- Widget render template -->
-
+  <!-- View -->
   <browser:page
       name="ploneform-render-widget"
-      for=".browser.IInheritParentValue"
+      for=".interfaces.IInheritParentValue"
       layer="plone.app.widgets.interfaces.IWidgetsLayer"
       template="templates/widget.pt"
       permission="zope.Public"
       />
 
-  <!-- Resources -->
 
-  <browser:resourceDirectory
-    name="uu.task"
-    directory="static"
-    />
-
-  <!-- Viewlets -->
-
+  <!-- Viewlets
+    TODO: we need to add a dropdown somewhere to changej 
   <browser:viewlet
-    for="uu.task.content.ITask"
+    for="uu.task.behaviors.ITask"
     name="uu.task.viewlets.task"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     template="templates/task-viewlet.pt"
     permission="zope2.View"
-    />
+    /-->
 
   <!-- Views -->
-
   <browser:page
-      name="uu-task-status"
+      name="uu-task-notifications"
       for="*"
-      class=".browser.TaskStatus"
-      template="templates/task-status.pt"
-      permission="uu.task.view"
-      />
-
-  <browser:page
-      name="uu-task-extender"
-      for="*"
-      class=".browser.TaskExtender"
-      template="templates/task-extender.pt"
-      permission="cmf.ManagePortal"
+      class=".browser.TaskNotificationsView"
+      template="templates/task-notifications.pt"
+      permission="zope.Public"
       />
 
   <!-- Indexes -->
-
   <adapter factory=".content.start_indexer" name="start" />
   <adapter factory=".content.end_indexer" name="end" />
   <adapter factory=".content.notifications_start_indexer" name="notifications_start" />
@@ -90,19 +74,15 @@
   <adapter factory=".content.due_indexer" name="due" />
 
   <!-- Accessor adapter / utility for Task -->
-
   <adapter factory=".content.TaskAccessor" />
-  <adapter factory=".content.TaskPlannerAccessor" />
 
   <!-- Vocabularies -->
-
   <utility
-    factory=".vocabulary.UsersGroupsVocabularyFactory"
-    name="uu.task.UsersAndGroups"
+    factory=".vocabulary.UsersFactory"
+    name="uu.task.Users"
     />
 
   <!-- GenericSetup profiles and import steps -->
-
   <genericsetup:registerProfile
     name="default"
     title="uu.task"

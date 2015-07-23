@@ -7,10 +7,8 @@ from plone.app.testing import (
 )
 
 
-USER1 = 'user1'
-USER2 = 'user2'
-GROUP1 = 'group1'
-GROUP2 = 'group2'
+USER1 = 'custom-user1'
+USER2 = 'custom-user2'
 
 
 class UUTaskFixture(PloneSandboxLayer):
@@ -30,10 +28,6 @@ class UUTaskFixture(PloneSandboxLayer):
                 email="test@example.com",
                 properties=dict(fullname=username),
             )
-
-        for groupname, username in [(GROUP1, USER1), (GROUP2, USER2)]:
-            api.group.create(groupname=groupname, title=groupname)
-            api.group.add_user(groupname=groupname, username=username)
 
 
 UUTASK_FIXTURE = UUTaskFixture()

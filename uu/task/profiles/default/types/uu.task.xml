@@ -4,11 +4,12 @@
     </property>
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
-        <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
+        <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
+        <element value="uu.task.behaviors.ITask"/>
     </property>
     <property name="description">Assignable task with due date</property>
     <property name="klass">plone.dexterity.content.Container</property>
-    <property name="schema">uu.task.content.ITask</property>
+    <property name="schema">uu.task.content.ITaskSchema</property>
     <property name="title">Task</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/task.png</property>
 </object>

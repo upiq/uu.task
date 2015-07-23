@@ -2,103 +2,36 @@ from DateTime import DateTime
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.utils import safe_unicode
-from plone.autoform.interfaces import IFormFieldProvider
 from plone.event.utils import pydt
 from plone.indexer import indexer
 from plone.supermodel import model
-from zope import schema
 from zope.component import adapter, getUtility
-from zope.interface import provider, implementer
+from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-from uu.task import _
+from uu.task.behaviors import ITask, ITaskPlanner, ITaskCommon
 from uu.task.interfaces import (
     TIME_RELATIONS,
     TIME_UNITS,
     DAYS_OF_WEEK,
     ITaskAccessor,
 )
-from uu.task.utils import (
-    validate_due,
-    validate_notifications,
-    parse_datetime,
-)
+from uu.task.utils import parse_datetime
 
 
-class ITaskCommon(model.Schema):
-
-    project_manager = schema.Tuple(
-        title=_(u"Project manager"),
-        value_type=schema.TextLine(),
-        required=False,
-    )
-
-    assignee = schema.Tuple(
-        title=_(u"Assigned to"),
-        value_type=schema.TextLine(),
-        required=False,
-    )
+class ITaskPlannerSchema(model.Schema):
+    """TaskPlanner content type schema.
+    """
 
 
-@provider(IFormFieldProvider)
-class ITaskPlanner(ITaskCommon):
-
-    model.fieldset(
-        'assigned',
-        label=_(u'Assign'),
-        fields=(
-            'project_manager',
-            'assignee',
-        ),
-    )
+class ITaskSchema(model.Schema):
+    """Task content type schema.
+    """
 
 
-@provider(IFormFieldProvider)
-class ITask(ITaskCommon):
-
-    model.fieldset(
-        'assigned',
-        label=_(u'Assign'),
-        fields=(
-            'start',
-            'end',
-            'project_manager',
-            'assignee',
-            'due',
-            'notifications',
-        ),
-    )
-
-    start = schema.Datetime(
-        title=_(u'Task Starts'),
-        required=False,
-        #defaultFactory=default_start
-    )
-
-    end = schema.Datetime(
-        title=_(u'TaskEnds'),
-        required=False,
-        #defaultFactory=default_end
-    )
-
-    due = schema.Dict(
-        title=u"Due date",
-        required=False,
-        constraint=validate_due,
-    )
-
-    notifications = schema.List(
-        title=_(u"Notification rules"),
-        required=False,
-        value_type=schema.Dict(
-            constraint=validate_notifications,
-        ),
-    )
-
-
-@adapter(ITaskPlanner)
+@adapter(ITaskCommon)
 @implementer(ITaskAccessor)
-class TaskPlannerAccessor(object):
+class TaskAccessor(object):
 
     def __init__(self, context):
         self.context = context
@@ -120,7 +53,7 @@ class TaskPlannerAccessor(object):
         else:
             return self._get_taskplanner(obj.aq_parent)
 
-    def _get_user_or_group(self, field_name, default=tuple()):
+    def _get_users(self, field_name, default=tuple()):
         value = getattr(self.context, field_name, None)
 
         if value is None:
@@ -131,14 +64,14 @@ class TaskPlannerAccessor(object):
         if value is None:
             return default
 
-        users_groups = getUtility(
-            IVocabularyFactory, name=u"uu.task.UsersAndGroups")(self.context)
+        users = getUtility(IVocabularyFactory,
+                           name=u"plone.app.vocabularies.Users")(self.context)
 
-        return [users_groups.getTermByToken(i).value for i in value]
+        return [users.getTermByToken(i).value for i in value]
 
     @property
     def project_manager(self):
-        return self._get_user_or_group('project_manager')
+        return self._get_users('project_manager')
 
     @project_manager.setter
     def project_manager(self, value):
@@ -146,16 +79,11 @@ class TaskPlannerAccessor(object):
 
     @property
     def assignee(self):
-        return self._get_user_or_group('assignee')
+        return self._get_users('assignee')
 
     @assignee.setter
     def assignee(self, value):
         setattr(self.context, 'assignee', safe_unicode(value))
-
-
-@adapter(ITask)
-@implementer(ITaskAccessor)
-class TaskAccessor(TaskPlannerAccessor):
 
     def _get_value(self, value, items):
         for item in items:
@@ -275,4 +203,4 @@ def notifications_end_indexer(context):
 
 @indexer(ITask)
 def due_indexer(context):
-    return ITask(context).due
+    return ITaskAccessor(context).due

@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
+from z3c.form.interfaces import ITextWidget
 from zope.interface import Interface, Attribute
 
 from uu.task import _
@@ -45,3 +46,13 @@ class ITaskAccessor(Interface):
     assignee = Attribute(u"Assign user(s) or/and group(s).")
     due = Attribute(u"Due date.")
     notifications = Attribute(u"Notifications.")
+
+
+class IPatternWidget(ITextWidget):
+    """Marker interface for the PatternWidget.
+    """
+
+
+class IInheritParentValue(Interface):
+    """Marker interface to inherit parent value.
+    """

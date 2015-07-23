@@ -1,48 +1,14 @@
 <rolemap>
-  <roles>
-    <role name="Project manager"/>
-    <role name="Assigned party"/>
-  </roles>
   <permissions>
 
-    <!-- UU Task -->
     <permission name="UUTask: Add Task" acquire="True">
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTask: Change Task Status" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTask: Edit Task" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTask: Remove Task" acquire="True">
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTask: View Task" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
+      <role name="Manager" />
+      <role name="Site Administrator" />
     </permission>
 
-    <!-- UU Task Planner -->
     <permission name="UUTaskPlanner: Add Task" acquire="True">
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTaskPlanner: Change Task Status" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTaskPlanner: Edit Task" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTaskPlanner: Remove Task" acquire="True">
-      <role name="Project manager"/>
-    </permission>
-    <permission name="UUTaskPlanner: View Task" acquire="True">
-      <role name="Assigned party"/>
-      <role name="Project manager"/>
+      <role name="Manager" />
+      <role name="Site Administrator" />
     </permission>
 
   </permissions>

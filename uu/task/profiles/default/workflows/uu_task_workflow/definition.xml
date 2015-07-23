@@ -1,3 +1,0 @@
-<dc-workflow workflow_id="uu_task_workflow" title="UU Task Workflow" description="" state_variable="review_state" manager_bypass="False" initial_state="created">
-    <state state_id="created" title=""></state>
-</dc-workflow>
