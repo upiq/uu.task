@@ -27,6 +27,8 @@
       />
 
   <!-- Custom Widgets for Behaviors schemas -->
+  <adapter factory=".content.TaskPlannerTextFieldWidget" />
+  <adapter factory=".content.TaskTextFieldWidget" />
   <adapter factory=".behaviors.ProjectManagerFieldWidget" />
   <adapter factory=".behaviors.AssigneeFieldWidget" />
   <adapter factory=".behaviors.StartDateFieldWidget" />
@@ -44,6 +46,18 @@
       layer="plone.app.widgets.interfaces.IWidgetsLayer"
       template="templates/widget.pt"
       permission="zope.Public"
+      />
+  <browser:page
+      name="task_view"
+      for=".content.ITaskSchema"
+      template="templates/task-view.pt"
+      permission="zope2.View"
+      />
+  <browser:page
+      name="taskplanner_view"
+      for=".content.ITaskPlannerSchema"
+      template="templates/taskplanner-view.pt"
+      permission="zope2.View"
       />
   <browser:viewlet
     for="uu.task.behaviors.ITask"

@@ -4,15 +4,21 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from datetime import datetime
+from plone.app.textfield import RichText as RichTextField
+from plone.app.widgets.dx import RichTextWidget
 from plone.event.utils import pydt
 from plone.indexer import indexer
 from plone.supermodel import model
 from time import mktime
+from z3c.form.interfaces import IFormLayer, IFieldWidget
+from z3c.form.util import getSpecification
+from z3c.form.widget import FieldWidget
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter, getUtility
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
+from uu.task import _
 from uu.task.behaviors import ITask, ITaskPlanner, ITaskCommon
 from uu.task.interfaces import (
     TASK_STATE_KEY,
@@ -31,10 +37,26 @@ class ITaskPlannerSchema(model.Schema):
     """TaskPlanner content type schema.
     """
 
+    model.primary('text')
+
+    text = RichTextField(
+        title=_(u'Text'),
+        description=u"",
+        required=False,
+    )
+
 
 class ITaskSchema(model.Schema):
     """Task content type schema.
     """
+
+    model.primary('text')
+
+    text = RichTextField(
+        title=_(u'Text'),
+        description=u"",
+        required=False,
+    )
 
 
 @adapter(ITaskCommon)
@@ -249,3 +271,15 @@ def notifications_end_indexer(context):
 @indexer(ITask)
 def due_indexer(context):
     return ITaskAccessor(context).due
+
+
+@adapter(getSpecification(ITaskPlannerSchema['text']), IFormLayer)
+@implementer(IFieldWidget)
+def TaskPlannerTextFieldWidget(field, request):
+    return FieldWidget(field, RichTextWidget(request))
+
+
+@adapter(getSpecification(ITaskSchema['text']), IFormLayer)
+@implementer(IFieldWidget)
+def TaskTextFieldWidget(field, request):
+    return FieldWidget(field, RichTextWidget(request))

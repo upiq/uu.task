@@ -12,4 +12,8 @@
     <property name="schema">uu.task.content.ITaskSchema</property>
     <property name="title">Task</property>
     <property name="icon_expr">string:${portal_url}/++resource++uu.task/task.png</property>
+    <property name="default_view">task_view</property>
+    <property name="view_methods">
+        <element value="task_view"/>
+    </property>
 </object>
