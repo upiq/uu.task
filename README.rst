@@ -107,10 +107,9 @@ Similar Add-ons
 Developers
 ----------
 
-Development environment with Nix
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Development environment with Nix [1]_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Below instructions were only tested on Linux.
 
 1. Install Nix_::
 
@@ -198,3 +197,5 @@ License v. 2.0. All original images, documentation, style-sheets, and
 JavaScript assets are additionally licensed under an MIT-style license.
 
 See ``doc/COPYING.txt``
+
+.. [1] Tested on Linux
