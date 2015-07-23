@@ -1,8 +1,16 @@
 from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
 from datetime import datetime
+from plone import api
 from plone.app.layout.viewlets import ViewletBase
 
-from uu.task.interfaces import TASK_STATES, ITaskAccessor
+from uu.task import _
+from uu.task.behaviors import ITask
+from uu.task.interfaces import (
+    TASK_STATES,
+    TASK_STATES_TRANSITIONS,
+    ITaskAccessor,
+)
 from uu.task.utils import ulocalized_time, DT
 
 
@@ -13,8 +21,11 @@ class TaskNotifications(BrowserView):
 
 class TaskStatus(ViewletBase):
 
-    #def update(self):
-    #    super(TaskStatus, self).update()
+    def update(self):
+        super(TaskStatus, self).update()
+
+        if 'uu.task-change-to' in self.request.form:
+            self.change_task_state(self.request.form['uu.task-change-to'])
 
     @property
     def task(self):
@@ -44,3 +55,28 @@ class TaskStatus(ViewletBase):
             iso=item.isoformat(),
             extra=datetime.now() > item and ' (past-due)' or '',
         )
+
+    def change_task_state(self, new_state):
+        messages = IStatusMessage(self.request)
+        response = self.request.response
+
+        # are we allowed to change task state?
+        #  - current user has 'Modify portal content' permission
+        #  - current user is one of assigees
+        task = self.task
+        if not api.user.has_permission("Modify portal content") and \
+           not api.user.get_current().getId() in ITask(self.context).assignee:
+            messages.add(u"Not allowed to change task state.", type=u"error")
+
+        # is transition to new_state allowed?
+        state = task.state
+        if new_state not in [i[0] for i in TASK_STATES_TRANSITIONS[state]]:
+            messages.add(u"Transition to '%s' state now allowed." % new_state,
+                         type=u"error")
+
+        # store new_state
+        else:
+            task.state = new_state
+            messages.add(_(u"Task workflow changed sucessfully."), type=u"info")
+
+        response.redirect(self.context.absolute_url())

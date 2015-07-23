@@ -21,7 +21,7 @@ class UsersVocabulary(SlicableVocabulary):
             term_value = api.user.get(userid=term)
 
         elif IMemberData in providedBy(term):
-            term_id = term.getUserId()
+            term_id = term.getId()
             term_value = term
 
         else:
@@ -33,7 +33,7 @@ class UsersVocabulary(SlicableVocabulary):
                             u"exists." % term_id)
 
         term_title = safe_unicode(
-            term_value.getProperty('fullname') or term_value.getUserName())
+            term_value.getProperty('fullname') or term_value.getId())
 
         return SimpleTerm(term_value, term_id, term_title)
 
@@ -61,7 +61,7 @@ class UsersVocabulary(SlicableVocabulary):
             return api.user.get(userid=term) and True or False
 
         elif IMemberData in providedBy(term):
-            return api.user.get(userid=term.getUserId()) and True or False
+            return api.user.get(userid=term.getId()) and True or False
 
         return False
 
@@ -82,7 +82,7 @@ class UsersFactory(object):
     def __call__(self, context, query=''):
         users = api.portal.get_tool(name='portal_membership')
         return UsersVocabulary.fromItems(
-            [i.getUserId() for i in users.searchForMembers(fullname=query)])
+            [i.getId() for i in users.searchForMembers(fullname=query)])
 
 
 _permissions['uu.task.Users'] = 'Modify portal content'
