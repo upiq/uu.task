@@ -1,8 +1,7 @@
 uu.task: UPIQ Task Management Add-on for Plone
 ==============================================
 
-This repository serves as a place for development of a task managment add-on.
-
+This repository serves as a location for development of the ``uu.task`` task management add-on for Plone.
 
 Introduction
 ------------
@@ -19,8 +18,6 @@ notifications** to **assigned parties**. It provides features:
 #. for assigned parties to communicate task status to project managers and
    **set notification preferences**
 
-
-
 Content Types
 -------------
 
@@ -31,14 +28,12 @@ Content Types
 
 .. image:: screenshot.png
 
-
 Demo
 ----
 
 A demo site is available here:
 
 - http://uu-task-demo.herokuapp.com/
-
 
 Similar Add-ons
 ---------------
@@ -109,7 +104,6 @@ Similar Add-ons
 .. _`collective.task`: https://github.com/collective/collective.task
 .. _`more than one principal`: https://github.com/upiq/uu.task/issues/3
 
-
 Developers
 ----------
 
@@ -131,9 +125,7 @@ Below instructions were only tested on Linux.
         % cd uu.task
         uu.task/ % nix-shell
 
-
 .. _Nix: https://nixos.org/nix
-
 
 How to use ITaskAccessor
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +140,6 @@ How to use ITaskAccessor
 
     > print task.due     # computed value
     <datetime ...>
-
 
 Testing
 ~~~~~~~
@@ -195,7 +186,6 @@ Contributors
 * `Sean Upton <https://github.com/seanupton>` (UPIQ, University of Utah Health Sciences)
 * `Alex Clark <http://aclark.net/>` (ACLARK.NET, LLC)
 * `Rok Garbas <https://github.com/garbas>` (ACLARK.NET, LLC)
-
 
 Copyright
 ---------
