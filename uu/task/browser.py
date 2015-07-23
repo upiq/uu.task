@@ -6,7 +6,3 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 class TaskNotificationsView(BrowserView):
     """View that makes it possible for assignee to change notifications.
     """
-
-
-class RenderWidget(ViewMixinForTemplates, BrowserView):
-    index = ViewPageTemplateFile('templates/widget.pt')
