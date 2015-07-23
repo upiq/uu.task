@@ -1,5 +1,5 @@
 <object>
-    <!--order manager="plone.abovecontentbody"> 
-        <viewlet name="uu.task.viewlets.task" />
-    </order-->
+ <order manager="plone.belowcontenttitle">
+  <viewlet name="uu.task.status" insert-above="*" />
+ </order>
 </object>

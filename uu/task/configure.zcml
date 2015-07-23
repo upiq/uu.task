@@ -37,7 +37,7 @@
   <!-- Resources -->
   <browser:resourceDirectory name="uu.task" directory="static" />
 
-  <!-- View -->
+  <!-- View/Viewlets -->
   <browser:page
       name="ploneform-render-widget"
       for=".interfaces.IInheritParentValue"
@@ -45,23 +45,20 @@
       template="templates/widget.pt"
       permission="zope.Public"
       />
-
-
-  <!-- Viewlets
-    TODO: we need to add a dropdown somewhere to changej 
   <browser:viewlet
     for="uu.task.behaviors.ITask"
-    name="uu.task.viewlets.task"
-    manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
-    template="templates/task-viewlet.pt"
+    name="uu.task.status"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+    template="templates/task-status.pt"
+    class=".browser.TaskStatus"
     permission="zope2.View"
-    /-->
+    />
 
   <!-- Views -->
   <browser:page
       name="uu-task-notifications"
       for="*"
-      class=".browser.TaskNotificationsView"
+      class=".browser.TaskNotifications"
       template="templates/task-notifications.pt"
       permission="zope.Public"
       />

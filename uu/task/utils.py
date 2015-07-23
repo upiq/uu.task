@@ -1,9 +1,11 @@
 import pytz
 
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.i18nl10n import ulocalized_time as orig_ulocalized_time
 from datetime import datetime
 from plone.event.utils import default_timezone as fallback_default_timezone
-from plone.event.utils import validated_timezone
+from plone.event.utils import validated_timezone, pydt, is_datetime, is_date
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -153,3 +155,71 @@ def default_timezone(context=None, as_tzinfo=False):
         return pytz.timezone(portal_timezone)
 
     return portal_timezone
+
+
+def DT(dt, exact=False):
+    """Return a Zope DateTime instance from a Python datetime instance.
+
+    :param dt: Python datetime, Python date, Zope DateTime instance or string.
+    :param exact: If True, the resolution goes down to microseconds. If False,
+                  the resolution are seconds. Defaul is False.
+    :type exact: Boolean
+    :returns: Zope DateTime
+    :rtype: Zope DateTime
+
+    """
+
+    def _adjust_DT(DT, exact):
+        if exact:
+            ret = DT
+        else:
+            ret = DateTime(
+                DT.year(),
+                DT.month(),
+                DT.day(),
+                DT.hour(),
+                DT.minute(),
+                int(DT.second()),
+                DT.timezone()
+            )
+        return ret
+
+    tz = default_timezone(getSite())
+    ret = None
+    if is_datetime(dt):
+        zone_id = getattr(dt.tzinfo, 'zone', tz)
+        tz = validated_timezone(zone_id, tz)
+        second = dt.second
+        if exact:
+            second += dt.microsecond / 1000000.0
+        ret = DateTime(
+            dt.year, dt.month, dt.day,
+            dt.hour, dt.minute, second,
+            tz
+        )
+    elif is_date(dt):
+        ret = DateTime(dt.year, dt.month, dt.day, 0, 0, 0, tz)
+    elif isinstance(dt, DateTime):
+        # No timezone validation. DateTime knows how to handle it's zones.
+        ret = _adjust_DT(dt, exact=exact)
+    else:
+        # Try to convert by DateTime itself
+        ret = _adjust_DT(DateTime(dt), exact=exact)
+    return ret
+
+
+# Workaround for buggy strftime with timezone handling in DateTime.
+# See: https://github.com/plone/plone.app.event/pull/47
+# TODO: should land in CMFPlone or fixed in DateTime.
+_strftime = lambda v, fmt: pydt(v).strftime(fmt)
+
+
+class PatchedDateTime(DateTime):
+    def strftime(self, fmt):
+        return _strftime(self, fmt)
+
+
+def ulocalized_time(time, *args, **kwargs):
+    """Corrects for DateTime bugs doing wrong thing with timezones"""
+    wrapped_time = PatchedDateTime(time)
+    return orig_ulocalized_time(wrapped_time, *args, **kwargs)

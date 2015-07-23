@@ -1,0 +1,57 @@
+<div>
+  <div tal:define="task view/task"
+       tal:attributes="class python:'computed-state-%s task-status-wrapper' % view.computed_state">
+    <div class="task-status row">
+
+      <div class="tast-status-due cell width-4 position-0">
+        <label>Due:</label>
+        <ul>
+          <li tal:condition="python:not task.due">not set</li>
+          <li tal:condition="python:task.due"
+              tal:define="due python:view.formatted_date(task.due)">
+              <time tal:attributes="datetime due/iso"
+                    tal:content="python:due['date'] + ' ' + due['time'] + due['extra']" />
+          </li>
+        </ul>
+      </div>
+
+      <div class="task-status-project-manager cell width-4 position-4">
+        <label>Project manager:</label>
+        <ul>
+          <li tal:condition="python: not task.project_manager">not set</li>
+          <li tal:condition="python: task.project_manager"
+              tal:repeat="item python: task.project_manager">
+            <a href="#">Rok Garbas</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="task-status-asignee cell width-4 position-8">
+        <label>Asignee:</label>
+        <ul>
+          <li tal:condition="python: not task.assignee">not set</li>
+          <li tal:condition="python: task.assignee"
+              tal:repeat="item python: task.assignee">
+            <a href="#">Rok Garbas</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="task-status-state cell width-4 position-12">
+        <label>Status:</label>
+        <ul>
+          <li>
+            <span tal:content="task/state/title">Created</span>
+            <!--ul>
+              <li>To in progress</li>
+              <li>To completed</li>
+              <li>To incomplete</li>
+            </ul-->
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="task-status-wrapper-clear"> </div>
+</div>

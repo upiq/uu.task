@@ -94,6 +94,9 @@ class TaskAccessor(object):
         if value is None:
             value = getattr(self.context, 'due', None)
 
+        if not value:
+            return
+
         _type = value.get('type')
         _value = value.get('value')
 
@@ -171,6 +174,10 @@ class TaskAccessor(object):
     @notifications.setter
     def notifications(self, value):
         setattr(self.context, 'notifications', safe_unicode(value))
+
+    @property
+    def state(self):
+        return dict(id="created", title="Created")
 
 
 @indexer(ITask)
