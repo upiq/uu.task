@@ -114,16 +114,16 @@ Below instructions were only tested on Linux.
 
 1. Install Nix_::
 
-        % curl https://nixos.org/nix/install > bash
+    $ curl https://nixos.org/nix/install | bash
 
 #. Clone ``uu.task``::
 
-        % git clone https://github.com/upiq/uu.task
+    $ git clone https://github.com/upiq/uu.task
 
 #. Enter environment::
 
-        % cd uu.task
-        uu.task/ % nix-shell
+    $ cd uu.task
+    $ nix-shell
 
 .. _Nix: https://nixos.org/nix
 
