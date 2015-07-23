@@ -169,31 +169,25 @@ Developers please run ``make test`` before committing changes.
     Your cheese is so fresh most people think it's a cream: Mascarpone
     ------------------------------
     flake8 uu/task/*.py
-    ./parts/plone/bin/interpreter setup.py test
-    running test
-    running egg_info
-    writing requirements to uu.task.egg-info/requires.txt
-    writing uu.task.egg-info/PKG-INFO
-    writing namespace_packages to uu.task.egg-info/namespace_packages.txt
-    writing top-level names to uu.task.egg-info/top_level.txt
-    writing dependency_links to uu.task.egg-info/dependency_links.txt
-    writing entry points to uu.task.egg-info/entry_points.txt
-    reading manifest file 'uu.task.egg-info/SOURCES.txt'
-    reading manifest template 'MANIFEST.in'
-    writing manifest file 'uu.task.egg-info/SOURCES.txt'
-    running build_ext
-    test_three (uu.task.tests.AnotherTestCase) ... ok
-    test_two (uu.task.tests.AnotherTestCase) ... ok
-    test_one (uu.task.tests.TestCase) ... ok
-    test_five (uu.task.tests.YetAnotherTestCase) ... ok
-    test_four (uu.task.tests.YetAnotherTestCase) ... ok
-    test_six (uu.task.tests.YetAnotherTestCase) ... ok
-
-    ----------------------------------------------------------------------
-    Ran 6 tests in 0.001s
-
-    OK
-
+    flake8 uu/task/
+    bin/test -s uu.task -v
+    Running tests at level 1
+    Running uu.task.testing.UUTaskFixture:Integration tests:
+      Set up plone.testing.zca.LayerCleanup in 0.000 seconds.
+      Set up plone.testing.z2.Startup in 0.426 seconds.
+      Set up plone.app.testing.layers.PloneFixture in 11.991 seconds.
+      Set up uu.task.testing.UUTaskFixture in 1.465 seconds.
+      Set up uu.task.testing.UUTaskFixture:Integration in 0.000 seconds.
+      Running:
+                                                                                      
+      Ran 2 tests with 0 failures and 0 errors in 0.028 seconds.
+    Tearing down left over layers:
+      Tear down uu.task.testing.UUTaskFixture:Integration in 0.000 seconds.
+      Tear down uu.task.testing.UUTaskFixture in 0.003 seconds.
+      Tear down plone.app.testing.layers.PloneFixture in 0.083 seconds.
+      Tear down plone.testing.z2.Startup in 0.005 seconds.
+      Tear down plone.testing.zca.LayerCleanup in 0.002 seconds.
+    viewdoc
 
 Contributors
 ------------
