@@ -1,9 +1,14 @@
+import json
+
 from BTrees.OOBTree import OOBTree
 from DateTime import DateTime
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from datetime import datetime
+from persistent.list import PersistentList
+from persistent.dict import PersistentDict
+from plone import api
 from plone.app.textfield import RichText as RichTextField
 from plone.app.widgets.dx import RichTextWidget
 from plone.event.utils import pydt
@@ -21,6 +26,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from uu.task import _
 from uu.task.behaviors import ITask, ITaskPlanner, ITaskCommon
 from uu.task.interfaces import (
+    TASK_NOTIFICATIONS_KEY,
     TASK_STATE_KEY,
     TASK_STATE_INITIAL,
     TASK_STATES,
@@ -71,8 +77,11 @@ class TaskAccessor(object):
            is found. Or until we reach Plone site root object.
         """
 
+        if not obj:
+            return None
+
         # we found TaskPlanner object
-        if ITaskPlanner.providedBy(obj):
+        elif ITaskPlanner.providedBy(obj):
             return obj
 
         # return None once we reach Plone site root object
@@ -81,7 +90,7 @@ class TaskAccessor(object):
 
         # recurse call until one of the above conditions is met
         else:
-            return self._get_taskplanner(obj.aq_parent)
+            return self._get_taskplanner(obj.__parent__)
 
     def _get_users(self, field_name, default=tuple()):
         value = getattr(self.context, field_name, None)
@@ -123,6 +132,10 @@ class TaskAccessor(object):
     def _get_due(self, value=None):
         if value is None:
             value = getattr(self.context, 'due', None)
+            if not value:
+                taskplanner = self._get_taskplanner(self.context)
+                if taskplanner:
+                    value = getattr(taskplanner, 'due', None)
 
         if not value:
             return
@@ -135,6 +148,10 @@ class TaskAccessor(object):
 
         elif _type == 'computed':
             field4 = getattr(self.context, _value['field4'])
+
+            if not field4:
+                return
+
             field3 = self._get_value(_value['field3'], TIME_RELATIONS)[2]
 
             if safe_callable(field4):
@@ -151,6 +168,10 @@ class TaskAccessor(object):
 
         elif _type == 'computed_dow':
             field4 = getattr(self.context, _value['field4'])
+
+            if not field4:
+                return
+
             field3 = self._get_value(_value['field3'], TIME_RELATIONS)[2]
 
             if safe_callable(field4):
@@ -176,7 +197,24 @@ class TaskAccessor(object):
     @property
     def notifications(self):
         dates = []
-        rules = getattr(self.context, 'notifications', None)
+        rules = None
+
+        # if assignee is asking for notifications look first if there are
+        # customezed ones
+        current = api.user.get_current().getId()
+        annotations = self._setup_annotations()
+        assignee = getattr(self.context, 'assignee', None)
+        if assignee and current in assignee and \
+                current in annotations[TASK_NOTIFICATIONS_KEY]:
+            rules = annotations[TASK_NOTIFICATIONS_KEY][current]
+
+        # in all other cases just return notifications
+        else:
+            rules = getattr(self.context, 'notifications', None)
+            if not rules:
+                taskplanner = self._get_taskplanner(self.context)
+                if taskplanner:
+                    rules = getattr(taskplanner, 'notifications', None)
 
         if rules:
             for rule in rules:
@@ -185,6 +223,10 @@ class TaskAccessor(object):
                         getattr(self.context, rule['field4']))
                 else:
                     field4 = getattr(self.context, rule['field4'])
+
+                if not field4:
+                    continue
+
                 field3 = self._get_value(rule['field3'], TIME_RELATIONS)[2]
 
                 if safe_callable(field4):
@@ -203,16 +245,52 @@ class TaskAccessor(object):
 
     @notifications.setter
     def notifications(self, value):
-        setattr(self.context, 'notifications', safe_unicode(value))
+
+        # check that value is list
+        if not isinstance(value, list):
+            raise Exception("Notifcations should be list of dictionaries, "
+                            "that can be dumped using json module.")
+
+        # check that all list items are dictionaries
+        for item in value:
+            if not isinstance(item, dict):
+                raise Exception("Notifcations should be list of dictionaries, "
+                                "that can be dumped using json module.")
+
+        # check that we can dump value using json module
+        try:
+            json.dumps(value)
+        except:
+            raise Exception("Notifcations should be list of dictionaries, "
+                            "that can be dumped using json module.")
+
+        # if assignee is storing notifications then we store to annotations
+        current = api.user.get_current().getId()
+        assignee = getattr(self.context, 'assignee', None)
+        if assignee and current in assignee:
+            annotations = self._setup_annotations()
+            rules = PersistentList()
+            for item in value:
+                rules.append(PersistentDict(item))
+            annotations[TASK_NOTIFICATIONS_KEY][current] = rules
+
+        # otherwise we store
+        else:
+            setattr(self.context, 'notifications', value)
 
     def _timestamp(self):
         return int(mktime(datetime.now().timetuple()))
 
     def _setup_annotations(self):
         annotations = IAnnotations(self.context)
+
         if TASK_STATE_KEY not in annotations:
             annotations[TASK_STATE_KEY] = OOBTree()
             annotations[TASK_STATE_KEY][self._timestamp()] = TASK_STATE_INITIAL
+
+        if TASK_NOTIFICATIONS_KEY not in annotations:
+            annotations[TASK_NOTIFICATIONS_KEY] = OOBTree()
+
         return annotations
     
     @property

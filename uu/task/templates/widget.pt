@@ -34,9 +34,11 @@
         Error
     </div>
 
-    <div class="parentValue"
-         tal:content="structure widget/render_parent|nothing">
-      Parent: value
+    <div class="task-inherited"
+      tal:define="inherited python:view.inherited(widget.field.__name__)"
+         tal:condition="inherited">
+         <label>Parent: </label>
+         <span tal:content="inherited">Value</span>
     </div>
 
     <input type="text" tal:replace="structure widget/render"

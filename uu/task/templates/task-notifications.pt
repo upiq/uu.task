@@ -25,9 +25,9 @@
     <div class="task-notifications-list">
       <ul>
         <li tal:repeat="item task/notifications">
-          <time tal:define="due python:view.formatted_date(task.due)"
-                tal:attributes="datetime due/iso"
-                tal:content="python:due['date'] + ' ' + due['time'] + due['extra']" />
+          <time tal:define="item2 python:view.formatted_date(item)"
+                tal:attributes="datetime item2/iso"
+                tal:content="python:item2['date'] + ' ' + item2['time'] + item2['extra']" />
         </li>
       </ul>
 

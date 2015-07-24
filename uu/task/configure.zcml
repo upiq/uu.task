@@ -45,6 +45,7 @@
       for=".interfaces.IInheritParentValue"
       layer="plone.app.widgets.interfaces.IWidgetsLayer"
       template="templates/widget.pt"
+      class=".browser.TaskWidget"
       permission="zope.Public"
       />
   <browser:page
@@ -99,7 +100,7 @@
     />
   <subscriber
     for=".behaviors.ITask
-         zope.lifecycleevent.IObjectCreatedEvent"
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
     handler=".behaviors.set_localroles"
     />
 

@@ -1,14 +1,16 @@
 import json
 
 from Products.Five.browser import BrowserView
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.statusmessages.interfaces import IStatusMessage
 from datetime import datetime
 from plone import api
 from plone.app.layout.viewlets import ViewletBase
+from plone.event.utils import utc
 from zope.interface import Invalid
 
 from uu.task import _
-from uu.task.behaviors import ITask
+from uu.task.behaviors import ITask, ITaskPlanner
 from uu.task.interfaces import (
     TASK_STATES,
     TASK_STATES_TRANSITIONS,
@@ -40,7 +42,7 @@ class TaskCommon(object):
                 time_only=True,
                 context=self.context),
             iso=item.isoformat(),
-            extra=datetime.now() > item and ' (past-due)' or '',
+            extra=utc(datetime.now()) > item and ' (past-due)' or '',
         )
 
     def has_permission(self):
@@ -107,7 +109,12 @@ class TaskNotifications(BrowserView, TaskCommon):
         return json.dumps(options)
 
     def notifications_value(self):
-        return json.dumps(self.context.notifications)
+        value = self.context.notifications
+        if not value:
+            taskplanner = self.task._get_taskplanner(self.context)
+            if taskplanner:
+                value = getattr(taskplanner, 'notifications', None)
+        return json.dumps(value)
 
 
 class TaskStatus(ViewletBase, TaskCommon):
@@ -117,6 +124,11 @@ class TaskStatus(ViewletBase, TaskCommon):
 
         if 'uu.task-change-to' in self.request.form:
             self.change_task_state(self.request.form['uu.task-change-to'])
+
+    def user_url(self, user):
+        return '%s/author/%s' % (
+            api.portal.get().absolute_url(),
+            user.getUserName())
 
     @property
     def computed_state(self):
@@ -145,9 +157,8 @@ class TaskStatus(ViewletBase, TaskCommon):
 
         # only allow to advance from created state to inprogress state if all
         # fields are set
-        elif state == 'created' and new_state == 'inprogress' and \
-                not task.due and not task.project_manager and \
-                not task.assignee:
+        elif state == 'created' and new_state == 'inprogress' and (
+                not task.due or not task.project_manager or not task.assignee):
             messages.add(u"Transition to '%s' state now allowed due to "
                          u"missing entry in on of the fields: Due, "
                          u"Project manager, Assignee." % new_state,
@@ -159,3 +170,44 @@ class TaskStatus(ViewletBase, TaskCommon):
             messages.add(_(u"Task workflow changed sucessfully."), type=u"info")
 
         response.redirect(self.context.absolute_url())
+
+
+class TaskWidget(ViewMixinForTemplates, BrowserView):
+    """
+    """
+
+    @property
+    def task(self):
+        return ITaskAccessor(self.context.context)
+
+    def formatted_date(self, item):
+        DT_item = DT(item)
+        return '%s %s' % (
+            ulocalized_time(
+                DT_item,
+                long_format=False,
+                time_only=None,
+                context=self.context.context),
+            ulocalized_time(
+                DT_item,
+                long_format=False,
+                time_only=True,
+                context=self.context.context),
+        )
+
+    def inherited(self, field_name):
+        if ITaskPlanner.providedBy(self.context.context):
+            return None
+
+        value = getattr(self.task, field_name, None)
+        if value:
+            if field_name in ['project_manager', 'assignee']:
+                return ', '.join([
+                    item.getProperty('fullname') for item in value])
+                
+            elif field_name == 'due':
+                return self.formatted_date(value)
+
+            elif field_name == 'notifications':
+                return ', '.join([
+                    self.formatted_date(item) for item in value])

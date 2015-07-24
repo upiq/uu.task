@@ -163,30 +163,12 @@ class PatternWidget(BaseWidget, TextWidget):
         return args
 
 
-def render_parent(widget):
-    if widget.form.mode != INPUT_MODE:
-        return
-
-    context = widget.context
-    if not IAddForm.providedBy(widget.form):
-        context = widget.context.aq_parent
-
-    if ITaskCommon in providedBy(context):
-        task = ITaskAccessor(context)
-        users = getUtility(IVocabularyFactory, name=u"uu.task.Users")(context)
-        value = getattr(task, widget.field.__name__, None)
-        if value:
-            return 'Parent: %s' % (', '.join(
-                [i.title for i in users.fromValues(value)]))
-
-
 @adapter(getSpecification(ITaskCommon['project_manager']), IFormLayer)
 @implementer(IFieldWidget)
 def ProjectManagerFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.Users'
     widget.pattern_options['allowNewItems'] = False
-    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -197,7 +179,6 @@ def AssigneeFieldWidget(field, request):
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = 'uu.task.Users'
     widget.pattern_options['allowNewItems'] = False
-    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -235,7 +216,6 @@ def DueFieldWidget(field, request):
         field3=[i[:2] for i in TIME_RELATIONS],
         field4=[i[:2] for i in SOURCE_DATE],
     )
-    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 
@@ -255,7 +235,6 @@ def NotificationRulesFieldWidget(field, request):
         add_rule=_(u"Add rule"),
         remove=_(u"Remove"),
     )
-    widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
 

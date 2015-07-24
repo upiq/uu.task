@@ -1,3 +1,4 @@
+from datetime import timedelta
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 from z3c.form.interfaces import ITextWidget
 from zope.interface import Interface, Attribute
@@ -6,6 +7,7 @@ from uu.task import _
 
 
 TASK_STATE_KEY = "uu.task.state"
+TASK_NOTIFICATIONS_KEY = "uu.task.notifications"
 
 TASK_STATE_INITIAL = 'created'
 
@@ -34,8 +36,8 @@ TASK_STATES_TRANSITIONS = dict(
 )
 
 TIME_UNITS = (
-    ('hours', _(u'hour(s)'), lambda x: relativedelta(hour=x)),
-    ('days', _(u'day(s)'), lambda x: relativedelta(day=x)),
+    ('hours', _(u'hour(s)'), lambda x: timedelta(hours=x)),
+    ('days', _(u'day(s)'), lambda x: timedelta(days=x)),
 )
 
 TIME_RELATIONS = (
