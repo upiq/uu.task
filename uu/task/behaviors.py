@@ -9,22 +9,20 @@ from z3c.form.interfaces import (
     IAddForm,
     IFieldWidget,
     IFormLayer,
-    INPUT_MODE,
 )
 from z3c.form.browser.text import TextWidget
 from z3c.form.converter import BaseDataConverter
 from z3c.form.util import getSpecification
 from z3c.form.widget import FieldWidget
 from zope import schema
-from zope.component import adapter, getUtility, adapts
+from zope.component import adapter, adapts
 from zope.interface import (
     implementer,
     implementsOnly,
     alsoProvides,
-    providedBy,
     provider,
 )
-from zope.schema.interfaces import IVocabularyFactory, IList, IDict
+from zope.schema.interfaces import IContextAwareDefaultFactory, IList, IDict
 
 from uu.task import _
 from uu.task.interfaces import (
@@ -44,11 +42,17 @@ from uu.task.utils import (
 )
 
 
+@provider(IContextAwareDefaultFactory)
+def current_user(context):
+    return (unicode(api.user.get_current().getId()), )
+
+
 class ITaskCommon(model.Schema):
 
     project_manager = schema.Tuple(
         title=_(u"Project manager"),
         value_type=schema.TextLine(),
+        defaultFactory=current_user,
         required=False,
     )
 
