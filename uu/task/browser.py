@@ -1,43 +1,30 @@
+import json
+
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from datetime import datetime
 from plone import api
 from plone.app.layout.viewlets import ViewletBase
+from zope.interface import Invalid
 
 from uu.task import _
 from uu.task.behaviors import ITask
 from uu.task.interfaces import (
     TASK_STATES,
     TASK_STATES_TRANSITIONS,
+    TIME_UNITS,
+    TIME_RELATIONS,
+    SOURCE_NOTIFY_DATE,
     ITaskAccessor,
 )
-from uu.task.utils import ulocalized_time, DT
+from uu.task.utils import ulocalized_time, DT, validate_notifications
 
 
-class TaskNotifications(BrowserView):
-    """View that makes it possible for assignee to change notifications.
-    """
-
-
-class TaskStatus(ViewletBase):
-
-    def update(self):
-        super(TaskStatus, self).update()
-
-        if 'uu.task-change-to' in self.request.form:
-            self.change_task_state(self.request.form['uu.task-change-to'])
+class TaskCommon(object):
 
     @property
     def task(self):
         return ITaskAccessor(self.context)
-
-    @property
-    def computed_state(self):
-        task = self.task
-        state = task.state
-        if state != 'completed' and task.due and datetime.now() > task.due:
-            return 'overdue'
-        return dict(id=state, title=TASK_STATES[state])
 
     def formatted_date(self, item):
         DT_item = DT(item)
@@ -56,11 +43,88 @@ class TaskStatus(ViewletBase):
             extra=datetime.now() > item and ' (past-due)' or '',
         )
 
-    def has_permission_to_change_state(self):
+    def has_permission(self):
         if api.user.has_permission("Modify portal content") or \
                 api.user.get_current().getId() in ITask(self.context).assignee:
             return True
         return False
+
+
+class TaskNotifications(BrowserView, TaskCommon):
+    """View that makes it possible for assignee to change notifications.
+    """
+
+    def __init__(self, context, request):
+        super(TaskNotifications, self).__init__(context, request)
+        self.error = None
+
+    def __call__(self):
+        if 'form.widgets.submit' in self.request.form:
+            self.save_notifications(
+                self.request.form['form.widget.notifications'])
+        return super(TaskNotifications, self).__call__()
+
+    def save_notifications(self, new_notifications):
+        messages = IStatusMessage(self.request)
+        response = self.request.response
+        task = self.task
+
+        # are we allowed to save notificationschange task state?
+        #  - current user has 'Modify portal content' permission
+        #  - current user is one of assigees
+        if not self.has_permission():
+            messages.add(
+                u"Not allowed to customize notifications.", type=u"error")
+
+        # save notification in to context
+        else:
+            try:
+                self.error = None
+                new_notifications = json.loads(new_notifications)
+                for item in new_notifications:
+                    validate_notifications(item)
+                task.notifications = new_notifications
+                messages.add(
+                    _(u"Notifications saved sucessfully."), type=u"info")
+            except Invalid, e:
+                self.error = e.message
+
+        if not self.error:
+            response.redirect(
+                self.context.absolute_url() + '/@@task_notifications')
+
+    def notifications_pattern(self):
+        options = dict()
+        options['rule'] = dict(
+            field2=[i[:2] for i in TIME_UNITS],
+            field3=[i[:2] for i in TIME_RELATIONS],
+            field4=[i[:2] for i in SOURCE_NOTIFY_DATE],
+        )
+        options['i18n'] = dict(
+            add_rule=_(u"Add rule"),
+            remove=_(u"Remove"),
+        )
+        return json.dumps(options)
+
+    def notifications_value(self):
+        return json.dumps(self.context.notifications)
+
+
+class TaskStatus(ViewletBase, TaskCommon):
+
+    def update(self):
+        super(TaskStatus, self).update()
+
+        if 'uu.task-change-to' in self.request.form:
+            self.change_task_state(self.request.form['uu.task-change-to'])
+
+    @property
+    def computed_state(self):
+        task = self.task
+        state = task.state
+        if state != 'completed' and task.due and datetime.now() > task.due:
+            return 'overdue'
+        return dict(id=state, title=TASK_STATES[state])
 
     def change_task_state(self, new_state):
         messages = IStatusMessage(self.request)
@@ -71,7 +135,7 @@ class TaskStatus(ViewletBase):
         # are we allowed to change task state?
         #  - current user has 'Modify portal content' permission
         #  - current user is one of assigees
-        if not self.has_permission_to_change_state():
+        if not self.has_permission():
             messages.add(u"Not allowed to change task state.", type=u"error")
 
         # is transition to new_state allowed?

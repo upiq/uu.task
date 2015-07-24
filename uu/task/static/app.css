@@ -128,3 +128,18 @@
 #content .task-status .cell > ul.task-status-dropdown > li a:hover {
   background: #EEE;
 }
+
+#content .task-notifications-list > ul {
+  list-style: disc;
+  margin: 1em 1em 1em 2em;
+}
+#content .task-notifications-list > ul > li {
+  display: list-item;
+  margin: 0.5em 0;
+}
+#content .task-notifications-edit {
+  display: none;
+}
+#content.task-notifications-activated .task-notifications-edit {
+  display: block !important;
+}

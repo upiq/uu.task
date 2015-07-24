@@ -48,6 +48,13 @@
       permission="zope.Public"
       />
   <browser:page
+      name="task_notifications"
+      for=".content.ITaskSchema"
+      template="templates/task-notifications.pt"
+      class=".browser.TaskNotifications"
+      permission="zope2.View"
+      />
+  <browser:page
       name="task_view"
       for=".content.ITaskSchema"
       template="templates/task-view.pt"
@@ -67,15 +74,6 @@
     class=".browser.TaskStatus"
     permission="zope2.View"
     />
-
-  <!-- Views -->
-  <browser:page
-      name="uu-task-notifications"
-      for="*"
-      class=".browser.TaskNotifications"
-      template="templates/task-notifications.pt"
-      permission="zope.Public"
-      />
 
   <!-- Indexes -->
   <adapter factory=".content.start_indexer" name="start" />
