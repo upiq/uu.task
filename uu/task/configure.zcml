@@ -93,6 +93,18 @@
     name="uu.task.Users"
     />
 
+  <!-- Events -->
+  <subscriber
+    for=".behaviors.ITask
+         zope.lifecycleevent.IObjectModifiedEvent"
+    handler=".behaviors.set_localroles"
+    />
+  <subscriber
+    for=".behaviors.ITask
+         zope.lifecycleevent.IObjectCreatedEvent"
+    handler=".behaviors.set_localroles"
+    />
+
   <!-- GenericSetup profiles and import steps -->
   <genericsetup:registerProfile
     name="default"

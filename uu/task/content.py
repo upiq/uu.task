@@ -95,7 +95,7 @@ class TaskAccessor(object):
             return default
 
         users = getUtility(IVocabularyFactory,
-                           name=u"plone.app.vocabularies.Users")(self.context)
+                           name=u"uu.task.Users")(self.context)
 
         return [users.getTermByToken(i).value for i in value]
 

@@ -45,12 +45,14 @@
               <a href="#" class="pat-toggle"
                   data-pat-toggle="value:task-status-dropdown-activated;target:.task-status-dropdown;targetScope:.task-status-status;">
                 <span tal:content="task/state_title">Created</span>
-                <span class="task-status-arrow-down">&#09660;</span>
+                <span tal:condition="view/has_permission_to_change_state"
+                      class="task-status-arrow-down">&#09660;</span>
               </a>
             </li>
           </ul>
         </div>
-        <ul class="task-status-dropdown">
+        <ul tal:condition="view/has_permission_to_change_state"
+            class="task-status-dropdown">
           <li tal:repeat="item task/state_transitions">
             <a tal:attributes="href python:'%s?uu.task-change-to=%s' % (context.absolute_url(), item[0])"
                tal:content="python:item[1]">Transition</a>

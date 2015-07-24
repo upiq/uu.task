@@ -1,5 +1,6 @@
 import json
 
+from plone import api
 from plone.app.widgets.base import InputWidget
 from plone.app.widgets.dx import AjaxSelectWidget, DatetimeWidget, BaseWidget
 from plone.autoform.interfaces import IFormFieldProvider
@@ -257,3 +258,27 @@ def NotificationRulesFieldWidget(field, request):
     widget.render_parent = lambda: render_parent(widget)
     alsoProvides(widget, IInheritParentValue)
     return widget
+
+
+def set_localroles(obj, event):
+    users = ITaskAccessor(obj).assignee
+
+    # revoke roles
+    for userid, roles in obj.get_local_roles():
+        user = api.user.get(userid=userid)
+        if user in users and 'Reader' in roles:
+            api.user.revoke_roles(
+                user=user,
+                roles=['Reader'],
+                obj=obj,
+            )
+
+    # grant roles
+    for user in users:
+        if user in users and 'Reader' in roles:
+            continue
+        api.user.grant_roles(
+            user=user,
+            roles=['Reader'],
+            obj=obj,
+        )

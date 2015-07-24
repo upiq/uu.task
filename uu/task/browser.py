@@ -56,6 +56,12 @@ class TaskStatus(ViewletBase):
             extra=datetime.now() > item and ' (past-due)' or '',
         )
 
+    def has_permission_to_change_state(self):
+        if api.user.has_permission("Modify portal content") or \
+                api.user.get_current().getId() in ITask(self.context).assignee:
+            return True
+        return False
+
     def change_task_state(self, new_state):
         messages = IStatusMessage(self.request)
         response = self.request.response
@@ -65,8 +71,7 @@ class TaskStatus(ViewletBase):
         # are we allowed to change task state?
         #  - current user has 'Modify portal content' permission
         #  - current user is one of assigees
-        if not api.user.has_permission("Modify portal content") and \
-           not api.user.get_current().getId() in ITask(self.context).assignee:
+        if not self.has_permission_to_change_state():
             messages.add(u"Not allowed to change task state.", type=u"error")
 
         # is transition to new_state allowed?
