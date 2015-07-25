@@ -42,7 +42,7 @@ class TaskCommon(object):
                 time_only=True,
                 context=self.context),
             iso=item.isoformat(),
-            extra=utc(datetime.now()) > item and ' (past-due)' or '',
+            extra=utc(datetime.now()) > utc(item) and ' (past-due)' or '',
         )
 
     def has_permission(self):
@@ -135,7 +135,7 @@ class TaskStatus(ViewletBase, TaskCommon):
         task = self.task
         state = task.state
         if state != 'completed' and task.due and \
-                utc(datetime.now()) > task.due:
+                utc(datetime.now()) > utc(task.due):
             return 'overdue'
         return dict(id=state, title=TASK_STATES[state])
 

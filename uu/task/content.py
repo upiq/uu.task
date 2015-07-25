@@ -115,6 +115,7 @@ class TaskAccessor(object):
     @project_manager.setter
     def project_manager(self, value):
         setattr(self.context, 'project_manager', safe_unicode(value))
+        self.context.reindexObject()
 
     @property
     def assignee(self):
@@ -123,6 +124,7 @@ class TaskAccessor(object):
     @assignee.setter
     def assignee(self, value):
         setattr(self.context, 'assignee', safe_unicode(value))
+        self.context.reindexObject()
 
     def _get_value(self, value, items):
         for item in items:
@@ -193,6 +195,7 @@ class TaskAccessor(object):
     @due.setter
     def due(self, value):
         setattr(self.context, 'due', safe_unicode(value))
+        self.context.reindexObject()
 
     @property
     def notifications(self):
@@ -278,6 +281,8 @@ class TaskAccessor(object):
         else:
             setattr(self.context, 'notifications', value)
 
+        self.context.reindexObject()
+
     def _timestamp(self):
         return int(mktime(datetime.now().timetuple()))
 
@@ -308,6 +313,7 @@ class TaskAccessor(object):
                 TASK_STATES, value))
         annotations = self._setup_annotations()
         annotations[TASK_STATE_KEY][self._timestamp()] = value
+        self.context.reindexObject()
 
     @property
     def state_transitions(self):
