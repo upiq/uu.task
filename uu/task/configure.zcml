@@ -49,6 +49,13 @@
       permission="zope.Public"
       />
   <browser:page
+      name="task_send_notifications"
+      for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+      template="templates/task-send-notifications.pt"
+      class=".browser.TaskSendNotifications"
+      permission="cmf.ManagePortal"
+      />
+  <browser:page
       name="task_notifications"
       for=".content.ITaskSchema"
       template="templates/task-notifications.pt"
@@ -77,11 +84,14 @@
     />
 
   <!-- Indexes -->
-  <adapter factory=".content.start_indexer" name="start" />
-  <adapter factory=".content.end_indexer" name="end" />
-  <adapter factory=".content.notifications_start_indexer" name="notifications_start" />
-  <adapter factory=".content.notifications_end_indexer" name="notifications_end" />
-  <adapter factory=".content.due_indexer" name="due" />
+  <adapter factory=".content.index_start" name="task_start" />
+  <adapter factory=".content.index_end" name="task_end" />
+  <adapter factory=".content.index_due" name="task_due" />
+  <adapter factory=".content.index_notifications_day" name="task_notifications_day" />
+  <adapter factory=".content.index_notifications_hour" name="task_notifications_hour" />
+  <adapter factory=".content.index_project_manager" name="task_project_manager" />
+  <adapter factory=".content.index_assignee" name="task_assignee" />
+  <adapter factory=".content.index_state" name="task_state" />
 
   <!-- Accessor adapter / utility for Task -->
   <adapter factory=".content.TaskAccessor" />

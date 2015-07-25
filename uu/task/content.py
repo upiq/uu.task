@@ -319,35 +319,50 @@ class TaskAccessor(object):
 
 
 @indexer(ITask)
-def start_indexer(context):
+def index_start(context):
     return ITaskAccessor(context).start
 
 
 @indexer(ITask)
-def end_indexer(context):
+def index_end(context):
     return ITaskAccessor(context).end
 
 
 @indexer(ITask)
-def notifications_start_indexer(context):
-    dates = ITaskAccessor(context).notificatios
-    if len(dates) == 0 or dates is None:
-        return
-    dates.sort()
-    return dates[0]
+def index_notifications_day(context):
+    index = []
+    for item in ITaskAccessor(context).notifications:
+        index.append(int(mktime(datetime(
+            item.year, item.month, item.day).timetuple())))
+    return index
 
 
 @indexer(ITask)
-def notifications_end_indexer(context):
-    dates = ITaskAccessor(context).notificatios
-    if len(dates) == 0 or dates is None:
-        return
-    dates.sort()
-    return dates[-1]
+def index_notifications_hour(context):
+    index = []
+    for item in ITaskAccessor(context).notifications:
+        index.append(int(mktime(datetime(
+            item.year, item.month, item.day, item.hour).timetuple())))
+    return index
 
 
 @indexer(ITask)
-def due_indexer(context):
+def index_project_manager(context):
+    return [i.getId() for i in ITaskAccessor(context).project_manager]
+
+
+@indexer(ITask)
+def index_assignee(context):
+    return [i.getId() for i in ITaskAccessor(context).assignee]
+
+
+@indexer(ITask)
+def index_state(context):
+    return ITaskAccessor(context).state
+
+
+@indexer(ITask)
+def index_due(context):
     return ITaskAccessor(context).due
 
 

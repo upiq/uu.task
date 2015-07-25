@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="uu.task">
+<body>
+
+<metal:content
+  fill-slot="content"
+  tal:define="task view/task"
+  tal:condition="view/has_permission">
+
+  <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+    Status message
+  </div>
+
+  <h1>
+    Notifications for "<span tal:content="context/title">Task</span>"
+  </h1>
+
+  <div id="content" class="task-notifications">
+
+    <div class="task-notifications-list">
+      <ul>
+        <li tal:repeat="item task/notifications">
+          <time tal:define="item2 python:view.formatted_date(item)"
+                tal:attributes="datetime item2/iso"
+                tal:content="python:item2['date'] + ' ' + item2['time'] + item2['extra']" />
+        </li>
+      </ul>
+
+      <a class="submit-widget button-field context pat-toggle"
+         data-pat-toggle="value:task-notifications-activated;target:.task-notifications;">
+        Customize
+      </a>
+    </div>
+
+    <form class="task-notifications-edit" method="post"
+          tal:attributes="action python:context.absolute_url() + '/@@task_notifications'">
+
+      <div class="field">
+        <input class="pat-uutask-notification-rules" type="text"
+              name="form.widget.notifications"
+              tal:attributes="value view/notifications_value;
+                              data-pat-uutask-notification-rules view/notifications_pattern" />
+      </div>
+
+      <input class="submit-widget button-field context"
+             name="form.widgets.submit" value="Save" type="submit">
+      <input class="submit-widget button-field"
+             value="Cancel" type="submit" />
+    </form>
+
+  </div>
+
+</metal:content>
+
+</body>
+</html>

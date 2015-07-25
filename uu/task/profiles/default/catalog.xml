@@ -1,10 +1,21 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
 
-    <index name="due" meta_type="DateIndex" />
-    <index name="notifications" meta_type="DateRangeIndex"
-        since_field="notifications_start"
-        until_field="notifications_end"
-        />
+    <index name="task_due" meta_type="DateIndex" />
+    <index name="task_notifications_day" meta_type="KeywordIndex">
+      <indexed_attr value="task_notifications_day" />
+    </index>
+    <index name="task_notifications_hour" meta_type="KeywordIndex">
+      <indexed_attr value="task_notifications_hour" />
+    </index>
+    <index name="task_project_manager" meta_type="KeywordIndex">
+      <indexed_attr value="task_project_manager" />
+    </index>
+    <index name="task_assignee" meta_type="KeywordIndex">
+      <indexed_attr value="task_assignee" />
+    </index>
+    <index name="task_state" meta_type="FieldIndex">
+      <indexed_attr value="task_state" />
+    </index>
 
 </object>

@@ -134,7 +134,8 @@ class TaskStatus(ViewletBase, TaskCommon):
     def computed_state(self):
         task = self.task
         state = task.state
-        if state != 'completed' and task.due and datetime.now() > task.due:
+        if state != 'completed' and task.due and \
+                utc(datetime.now()) > task.due:
             return 'overdue'
         return dict(id=state, title=TASK_STATES[state])
 
@@ -196,7 +197,7 @@ class TaskWidget(ViewMixinForTemplates, BrowserView):
         )
 
     def inherited(self, field_name):
-        if ITaskPlanner.providedBy(self.context.context):
+        if not ITask.providedBy(self.context.context):
             return None
 
         value = getattr(self.task, field_name, None)
@@ -211,3 +212,11 @@ class TaskWidget(ViewMixinForTemplates, BrowserView):
             elif field_name == 'notifications':
                 return ', '.join([
                     self.formatted_date(item) for item in value])
+
+
+class TaskSendNotifications(BrowserView, TaskCommon):
+    """
+    """
+
+    def __init__(self, context, request):
+        super(TaskSendNotifications, self).__init__(context, request)
