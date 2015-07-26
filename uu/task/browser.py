@@ -153,16 +153,16 @@ class TaskStatus(ViewletBase, TaskCommon):
 
         # is transition to new_state allowed?
         elif new_state not in [i[0] for i in TASK_STATES_TRANSITIONS[state]]:
-            messages.add(u"Transition to '%s' state now allowed." % new_state,
+            messages.add(u"Transition to '%s' state not allowed." % new_state,
                          type=u"error")
 
         # only allow to advance from created state to inprogress state if all
         # fields are set
         elif state == 'created' and new_state == 'inprogress' and (
                 not task.due or not task.project_manager or not task.assignee):
-            messages.add(u"Transition to '%s' state now allowed due to "
-                         u"missing entry in on of the fields: Due, "
-                         u"Project manager, Assignee." % new_state,
+            messages.add(u"Transition to '%s' state not allowed."
+                         u" Missing Due, "
+                         u"Project Manager and/or Assignee field." % new_state,
                          type=u"error")
 
         # store new_state
