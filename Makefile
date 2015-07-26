@@ -20,12 +20,15 @@ check-test:
 
 check: check-manifest check-lint check-test
 
-test: check
-	viewdoc
-
 coverage:
 	bin/coverage
 	bin/report
 
 push:
 	git push heroku
+
+serve:
+	bin/plone fg
+
+test: check
+	viewdoc
