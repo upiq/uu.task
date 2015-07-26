@@ -4,7 +4,7 @@
     <div class="task-status row">
 
       <div class="tast-status-due cell width-4 position-0">
-        <label>Due:</label>
+        <label>Due date:</label>
         <ul>
           <li tal:condition="python:not task.due">not set</li>
           <li tal:condition="python:task.due">
@@ -21,8 +21,11 @@
           <li tal:condition="python: not task.project_manager">not set</li>
           <li tal:condition="python: task.project_manager"
               tal:repeat="item python: task.project_manager">
+
             <a tal:attributes="href python:view.user_url(item)"
-               tal:content="python:item.getProperty('fullname')">Fullname</a>
+               tal:content="python:item.getProperty('fullname') or
+                    item.getProperty('id')">Fullname or id</a>
+
           </li>
         </ul>
       </div>
