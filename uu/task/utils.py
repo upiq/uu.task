@@ -1,5 +1,3 @@
-import pytz
-
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time as orig_ulocalized_time
@@ -19,6 +17,8 @@ from uu.task.interfaces import (
     SOURCE_NOTIFY_DATE,
     DAYS_OF_WEEK,
 )
+
+import pytz
 
 
 def parse_datetime(value, tz=None, missing_value=None):

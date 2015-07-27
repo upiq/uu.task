@@ -1,5 +1,3 @@
-import json
-
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.statusmessages.interfaces import IStatusMessage
@@ -10,7 +8,7 @@ from plone.event.utils import utc
 from zope.interface import Invalid
 
 from uu.task import _
-from uu.task.behaviors import ITask, ITaskPlanner
+from uu.task.behaviors import ITask
 from uu.task.interfaces import (
     TASK_STATES,
     TASK_STATES_TRANSITIONS,
@@ -20,6 +18,8 @@ from uu.task.interfaces import (
     ITaskAccessor,
 )
 from uu.task.utils import ulocalized_time, DT, validate_notifications
+
+import json
 
 
 class TaskCommon(object):

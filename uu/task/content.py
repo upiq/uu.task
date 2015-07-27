@@ -1,5 +1,3 @@
-import json
-
 from BTrees.OOBTree import OOBTree
 from DateTime import DateTime
 from Products.CMFCore.interfaces import ISiteRoot
@@ -37,6 +35,8 @@ from uu.task.interfaces import (
     ITaskAccessor,
 )
 from uu.task.utils import parse_datetime
+
+import json
 
 
 class ITaskPlannerSchema(model.Schema):

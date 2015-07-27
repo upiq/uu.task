@@ -1,5 +1,3 @@
-import json
-
 from plone import api
 from plone.app.widgets.base import InputWidget
 from plone.app.widgets.dx import AjaxSelectWidget, DatetimeWidget, BaseWidget
@@ -40,6 +38,8 @@ from uu.task.utils import (
     validate_notifications,
     default_timezone,
 )
+
+import json
 
 
 @provider(IContextAwareDefaultFactory)

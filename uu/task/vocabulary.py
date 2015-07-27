@@ -1,5 +1,3 @@
-import types
-
 from Products.CMFCore.interfaces._tools import IMemberData
 from Products.CMFPlone.utils import safe_unicode
 from plone import api
@@ -8,6 +6,8 @@ from plone.app.widgets.browser.vocabulary import _permissions
 from zope.interface import implements, providedBy
 from zope.schema.interfaces import IVocabulary, IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
+
+import types
 
 
 class UsersVocabulary(SlicableVocabulary):
