@@ -168,7 +168,7 @@ class TaskStatus(ViewletBase, TaskCommon):
         # store new_state
         else:
             task.state = new_state
-            messages.add(_(u"Task workflow changed sucessfully."), type=u"info")
+            messages.add(_(u"Task status changed."), type=u"info")
 
         response.redirect(self.context.absolute_url())
 
