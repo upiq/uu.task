@@ -28,12 +28,12 @@ Content Types
 
 .. image:: screenshot.png
 
-Demo
-----
+Demonstration
+-------------
 
-A demo site is available here:
+A demontration site is available here:
 
-- http://uu-task-demo.herokuapp.com/
+- http://plone-task.herokuapp.com/
 
 Similar Add-ons
 ---------------
